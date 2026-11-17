@@ -28,7 +28,7 @@
 
 * **🔐 Acesso ao Painel Administrativo (Modo Demonstração):**
 
-  1. Acesse a aplicação publicada e clique no botão **"Entrar"** no canto superior direito.
+  1. Acesse [**https://fabiocabmed.github.io/clientenozap/**](https://fabiocabmed.github.io/clientenozap/) e clique no botão **"Entrar"** no canto superior direito.
 
   2. **E-mail:** `admin@clientenozap.com.br` *(já pré-preenchido)*
 
@@ -124,7 +124,7 @@ Durante a validação financeira, calibramos os planos considerando um Custo por
 
 | **5. Fontes de Receita** | Assinaturas mensais recorrentes (MRR) em 3 faixas: **Começo (R$ 147/mês)**, **Agenda Cheia (R$ 267/mês)** e **Máximo (R$ 447/mês)**. |
 
-| **6. Recursos Principais** | Aplicação Web (Página de Venda + Configurador + Vitrine Local + Motor de Mini-LP por IA + Painel Executivo), contas de anúncios locais, sistema de **Ponte Rastreada** (captura nominal) e WhatsApp comercial. |
+| **6. Recursos Principais** | Aplicação Web (`https://fabiocabmed.github.io/clientenozap/`), contas de anúncios locais, sistema de **Ponte Rastreada** (captura nominal) e WhatsApp comercial. |
 
 | **7. Atividades-Chave** | Criar e otimizar campanhas locais por ofício/bairro, auditar entregas nominais no painel, monitorar o Radar de Turnover (churn por ofício) e conduzir renovações e upsells. |
 
@@ -174,7 +174,7 @@ Durante a validação financeira, calibramos os planos considerando um Custo por
 
 
 
-### 4.1. Super Prompt Mestre Utilizado para Construção (v4.0)
+### 4.1. Super Prompt Original Utilizado para Arquitetura e Geração Inicial
 
 
 
@@ -184,113 +184,511 @@ Durante a validação financeira, calibramos os planos considerando um Custo por
 
 
 
-Atue como um Arquiteto de Software Full-Stack Sênior, Especialista em Growth Engineering e Product Designer.
-
-Desenvolva a aplicação web completa, responsiva, interativa e autocontida do **ClienteNoZap (MVP v4.0)** — plataforma de geração e entrega de demanda hiperlocalizada via WhatsApp para autônomos, profissionais liberais e MEIs da Região Metropolitana de Belém (Belém, Ananindeua, Marituba e Benevides - PA).
+Atue como um Arquiteto de Software Full-Stack Sênior, Especialista em Growth Engineering e Product Designer Sênior. Construa a aplicação web completa **ClienteNoZap**, uma plataforma de geração e entrega de demanda hiperlocalizada via WhatsApp para autônomos, profissionais liberais e MEIs da Região Metropolitana de Belém (Belém, Ananindeua, Marituba e Benevides).
 
 
 
-A aplicação deve ser entregue em um único arquivo `index.html` limpo, responsivo e pronto para hospedagem gratuita no GitHub Pages (HTML5 + Tailwind CSS CDN + Lucide Icons CDN + JavaScript Modular ES6+).
+A aplicação deve ser entregue em arquitetura front-end limpa, responsiva e autocontida (HTML5 semântico, Tailwind CSS via CDN, ícones Lucide Icons e JavaScript Vanilla modular ES6+), 100% pronta para publicação imediata e gratuita via GitHub Pages, com persistência estruturada em `localStorage` e dados iniciais realistas pré-carregados.
+
+
+
+---
 
 
 
 ## 1. DESIGN SYSTEM, DIREÇÃO DE ARTE E EXPERIÊNCIA DO USUÁRIO (UI/UX)
 
-- **Conceito Visual:** Estética comercial moderna ("SaaS de Alta Conversão + Confiança Local"), limpa, direta e fácil de navegar no celular por prestadores de serviço.
+
+
+- **Conceito Visual:** Estética comercial moderna ("SaaS de Alta Conversão + Confiança Local"), transmitindo agilidade, clareza financeira e resultado imediato na palma da mão.
 
 - **Paleta de Cores Principal:**
 
-  - Primária / Conversão (Verde WhatsApp / Esmeralda): `#10B981` (hover `#059669`)
+  - **Primária / Conversão (Verde WhatsApp / Esmeralda):** `#10B981` (hover `#059669`, fundo suave `#ECFDF5`, borda `#A7F3D0`).
 
-  - Secundária / Autoridade (Azul Ardósia Profundo): `#0F172A`
+  - **Secundária / Autoridade (Azul Ardósia Profundo):** `#0F172A` (superfícies escuras `#1E293B`, texto principal `#0F172A`, texto secundário `#475569`).
 
-  - Superfícies e Fundos: `#F8FAFC` (fundo geral), `#FFFFFF` (cards e modais)
+  - **Superfícies e Fundos:** `#F8FAFC` (fundo geral), `#FFFFFF` (cards e modais com borda `#E2E8F0` e sombra suave `shadow-sm`).
 
-- **Semântica de Status e Alertas:**
+  - **Semântica de Status e Alertas:**
 
-  - Ativo / Meta Saudável: `#10B981`
+    - Ativo / Meta Saudável: `#10B981`
 
-  - Atenção / Renovação Próxima (>= 80% da meta): `#F59E0B`
+    - Atenção / Renovação Próxima (>= 80% da meta): `#F59E0B`
 
-  - Crítico / Churn / Cancelado: `#EF4444`
+    - Crítico / Churn / Cancelado: `#EF4444`
 
-- **Tipografia:** `Plus Jakarta Sans` (títulos e KPIs com peso 700/800) e `Inter` (textos e formulários).
+- **Tipografia:** `Plus Jakarta Sans` (títulos e KPIs com peso `700`/`800`) e `Inter` (corpo de texto, tabelas e formulários com peso `400`/`500`/`600`) carregadas via Google Fonts.
 
-- **Responsividade & Mobile-First:** Máscara automática de telefone `(91) 9XXXX-XXXX` e feedback via Toasts.
+- **Responsividade & Mobile-First:** Todos os fluxos (Página de Venda, Vitrine, Mini-LP de IA e Painel Admin) devem funcionar perfeitamente em telas de smartphone (360px+) e desktop (1280px+), considerando que os autônomos acessam majoritariamente pelo celular.
 
 
 
-## 2. MODELAGEM DE DADOS (SCHEMA DO LOCALSTORAGE)
+---
 
-Utilize a chave mestre `clientenozap_db_v1` armazenando um objeto JSON estruturado com:
 
-1. `config`: `gestorWhatsapp` (`"5591980789170"`), `gestorNome`, `supabaseUrl`, `supabaseAnonKey`, `resendEmailAlert` (campos opcionais salvos apenas localmente, sem expor chaves no código).
 
-2. `interessados`: `id`, `responsavelNome`, `nome`, `whatsapp`, `oficio`, `oficioExibicao`, `cidade`, `bairro`, `planoId`, `planoNome`, `valorMensal`, `metaLeads`, `dataCadastro`, `status`.
+## 2. MODELAGEM DE DADOS (SCHEMA DO `LOCALSTORAGE`)
 
-3. `assinantes`: `id`, `responsavelNome`, `nome`, `whatsapp`, `oficio`, `oficioExibicao`, `cidade`, `bairro`, `planoId`, `planoNome`, `valorMensal`, `metaLeads`, `cicloAtual`, `status` (`"ativo"` | `"cancelado"`), `dataAtivacao`, `dataCancelamento`, `motivoCancelamento`, `iaProfile` (`headline`, `subheadline`, `diferenciais`, `bannerIndex`, `bannerUrl`, `corDestaque`, `checkinRealizado`).
 
-4. `entregas`: `id`, `assinanteId`, `assinanteNome`, `consumidorNome`, `consumidorWhatsapp`, `origem` (`"Vitrine Local"` | `"Mini-LP IA (Anúncio)"`), `ciclo`, `dataHora`.
 
-5. `depoimentos`: `id`, `nome`, `negocio`, `regiao`, `estrelas`, `fotoUrl`, `texto`, `data`.
+Utilize a chave mestre `clientenozap_db_v1` armazenando um objeto JSON estruturado com 4 coleções e configurações:
+
+
+
+1. **`config` (Objeto):**
+
+   - `gestorWhatsapp`: String (padrão `"5591988880000"` — editável no Painel Admin).
+
+   - `gestorNome`: String (`"Fábio Medeiros — Consultor ClienteNoZap"`).
+
+   - `supabaseUrl`: String (vazio por padrão, salvo apenas localmente).
+
+   - `supabaseAnonKey`: String (vazio por padrão, salvo apenas localmente).
+
+   - `resendEmailAlert`: String (vazio por padrão, salvo apenas localmente).
+
+
+
+2. **`interessados` (Array de Objetos — Funil de Novos Cadastros da Landing Page):**
+
+   - `id`: String única (`"INT-..."`).
+
+   - `nome`: String (Nome do profissional ou negócio).
+
+   - `whatsapp`: String (Telefone formatado).
+
+   - `oficio`: Enum (`"Mecânica & Auto"`, `"Beleza & Estética"`, `"Refrigeração & Elétrica"`, `"Reformas & Reparos"`, `"Outros"`).
+
+   - `cidade`: Enum (`"Belém"`, `"Ananindeua"`, `"Marituba"`, `"Benevides"`).
+
+   - `bairro`: String (Ex: `"Cidade Nova"`, `"Marco"`, `"Pedreira"`, `"Centro"`).
+
+   - `planoId`: Enum (`"comeco"`, `"agenda_cheia"`, `"maximo"`).
+
+   - `planoNome`: String (`"Plano Começo"`, `"Plano Agenda Cheia"`, `"Plano Máximo"`).
+
+   - `valorMensal`: Number (`147`, `267` ou `447`).
+
+   - `metaLeads`: Number (`15`, `30` ou `55`).
+
+   - `dataCadastro`: String formatada.
+
+   - `status`: Enum (`"novo"`, `"em_negociacao"`).
+
+
+
+3. **`assinantes` (Array de Objetos — Carteira Ativa e Histórico de Churn):**
+
+   - `id`: String única (`"ASS-..."`).
+
+   - `nome`: String.
+
+   - `whatsapp`: String.
+
+   - `oficio`: String.
+
+   - `cidade`: String.
+
+   - `bairro`: String.
+
+   - `planoId`: String.
+
+   - `planoNome`: String.
+
+   - `valorMensal`: Number.
+
+   - `metaLeads`: Number (teto estimado do pacote: `15`, `30` ou `55`).
+
+   - `status`: Enum (`"ativo"`, `"cancelado"`).
+
+   - `dataAtivacao`: String.
+
+   - `dataCancelamento`: String | null.
+
+   - `motivoCancelamento`: String | null (`"Preço / Orçamento"`, `"Pouco fechamento de serviço"`, `"Agenda lotada / Pausa temporária"`, `"Mudança de ramo / Outros"`).
+
+   - `iaProfile`: Objeto gerado automaticamente pelo Motor de IA na ativação (e editável pelo gestor):
+
+     - `headline`: String personalizada.
+
+     - `subheadline`: String personalizada.
+
+     - `diferenciais`: Array de 3 strings específicas do ofício.
+
+     - `bannerIndex`: Number (`0`, `1` ou `2` — permite alternar entre 3 variações visuais por nicho).
+
+     - `bannerUrl`: String (URL temática verificada do Unsplash + fallback CSS).
+
+     - `corDestaque`: String (hex/classe temática do nicho).
+
+     - `checkinRealizado`: Boolean (controle de acompanhamento semanal).
+
+
+
+4. **`entregas` (Array de Objetos — Registro Nominal da Ponte Rastreada):**
+
+   - `id`: String única (`"LED-..."`).
+
+   - `assinanteId`: String (chave estrangeira vinculando ao assinante).
+
+   - `assinanteNome`: String.
+
+   - `consumidorNome`: String (capturado no modal da Ponte Rastreada).
+
+   - `consumidorWhatsapp`: String (capturado no modal da Ponte Rastreada).
+
+   - `origem`: Enum (`"Vitrine Local"`, `"Mini-LP IA (Anúncio)"`).
+
+   - `dataHora`: String formatada.
+
+   - **Regra de Consistência:** O contador de leads entregues de cada assinante deve ser sempre calculado dinamicamente via `entregas.filter(e => e.assinanteId === assinante.id).length`.
+
+
+
+---
 
 
 
 ## 3. ARQUITETURA DE NAVEGAÇÃO E TELAS
 
+
+
 ### 3.1. Barra de Navegação Superior Fixa (Header)
 
-- Esquerda: Logotipo **ClienteNoZap** (`Grande Belém • Demanda Local`).
+- **Esquerda:** Logotipo **ClienteNoZap** (ícone de raio/chat verde + tipografia forte).
 
-- Centro: `Como Funciona`, `Depoimentos`, `Planos`, `Vitrine de Profissionais`.
+- **Centro (Navegação Pública):**
 
-- Direita: Botão **"Entrar"** (modal de login admin) ou **"Painel Admin"** + **"Sair"** quando autenticado via `sessionStorage`.
+  - `Como Funciona` (ancora na Página de Venda)
+
+  - `Planos` (ancora na Página de Venda)
+
+  - `Vitrine de Profissionais` (alterna para a visão do Diretório Local)
+
+- **Direita (Acesso Administrativo):**
+
+  - Se deslogado: Botão **"Entrar"** (estilizado em azul ardósia com ícone de cadeado/usuário, abrindo o Modal de Login).
+
+  - Se logado: Badge **"Painel Admin"** (alterna direto para o dashboard) + Botão discreto **"Sair"**.
+
+
+
+---
 
 
 
 ### 3.2. TELA 1 — PÁGINA DE VENDA (PORTA DE ENTRADA PRINCIPAL)
 
-1. **Hero Section:** Badge regional da Grande Belém, Headline H1 persuasiva, CTA primário *"Escolher Meu Pacote / Fazer Cadastro"* e botão *"Ver Profissionais Parceiros"*.
+A aplicação deve abrir sempre nesta tela para maximizar a conversão comercial:
 
-2. **Seção "Como Funciona" (3 Etapas):** Escolha ofício/bairro/pacote → IA cria sua página e divulgamos na região → Atenda e feche direto no WhatsApp.
+1. **Hero Section de Alta Conversão:**
 
-3. **Seção "Depoimentos" (Prova Social Interativa):** Cards de assinantes verificados com nota em estrelas, foto e região + botão *"Deixe seu Depoimento"* abrindo modal para envio pelo próprio cliente.
+   - Tag superior: `Exclusivo para Autônomos e MEIs — Belém, Ananindeua, Marituba e Benevides`.
 
-4. **Planos & Configurador Interativo de Cadastro:**
+   - Headline H1: *"Você foca no seu serviço, a gente coloca clientes do seu bairro chamando no seu WhatsApp."*
 
-   - 3 Cards clicáveis sincronizados com o formulário: **Plano Começo (R$ 147/mês)**, **Plano Agenda Cheia (R$ 267/mês — Mais Escolhido)** e **Plano Máximo (R$ 447/mês)**.
+   - Subheadline: *"Feito para mecânicos, manicures, técnicos de refrigeração, eletricistas e prestadores locais. Sem precisar entender de anúncios ou criar site: nossa IA monta sua página profissional e enviamos pedidos de orçamento direto no seu Zap."*
 
-   - Formulário com `Seu Nome (Profissional)*`, `Nome do Negócio/Serviço`, `Seu WhatsApp (para receber clientes)*`, `Ofício*` (com campo condicional dinâmico ao selecionar `"Outros"`), `Cidade*` (`Belém`, `Ananindeua`, `Marituba`, `Benevides`), `Bairro Principal*` e `Pacote Escolhido*`.
+   - Botão CTA Primário: **"Escolher Meu Pacote / Fazer Cadastro"** (scroll suave até a seção de planos/formulário) + Botão Secundário: **"Ver Profissionais Parceiros"**.
 
-   - Ao submeter: salva em `interessados` e abre modal de confirmação com botão verde que redireciona para `https://wa.me/{gestorWhatsapp}` com mensagem formatada.
+   - Mini-barra de prova social: `+450 orçamentos entregues na Grande Belém` | `Página exclusiva criada por IA` | `Sem fidelidade anual`.
+
+2. **Seção "Como Funciona" (3 Etapas Claras):**
+
+   - **Card 1:** *Escolha seu ofício, bairro e pacote* — Selecione quantos clientes você quer receber por mês e onde você atende.
+
+   - **Card 2:** *Nossa IA cria sua página e divulgamos na sua região* — Montamos sua vitrine profissional personalizada e rodamos anúncios direcionados no seu bairro.
+
+   - **Card 3:** *Atenda e feche direto no seu WhatsApp* — O cliente interessado chama no seu Zap pedindo orçamento. Você negocia preço, horário e fecha o serviço.
+
+3. **Seção de Planos & Configurador Interativo de Cadastro:**
+
+   - **Grid de 3 Cards de Planos** (com seleção interativa que destaca a borda verde do plano escolhido e preenche automaticamente o formulário logo abaixo):
+
+     - **Plano Começo — R$ 147/mês:**
+
+       - `12 a 15 clientes interessados/mês no Zap`
+
+       - Divulgação direcionada no seu bairro
+
+       - Mini-Landing Page exclusiva criada por IA
+
+       - Perfil ativo na Vitrine ClienteNoZap
+
+       - Botão: *"Selecionar Plano Começo"*
+
+     - **Plano Agenda Cheia — R$ 267/mês** *(Badge Superior: MAIS ESCOLHIDO)*:
+
+       - `25 a 30 clientes interessados/mês no Zap`
+
+       - Divulgação no bairro + regiões vizinhas
+
+       - Mini-Landing Page exclusiva criada por IA
+
+       - Destaque prioritário na Vitrine Local
+
+       - Acompanhamento semanal de qualidade
+
+       - Botão: *"Selecionar Agenda Cheia"*
+
+     - **Plano Máximo — R$ 447/mês:**
+
+       - `45 a 55 clientes interessados/mês no Zap`
+
+       - Cobertura ampla na cidade
+
+       - Mini-Landing Page exclusiva criada por IA
+
+       - Topo da Vitrine + Prioridade nas campanhas
+
+       - Suporte VIP via WhatsApp
+
+       - Botão: *"Selecionar Plano Máximo"*
+
+   - **Formulário de Cadastro do Profissional (Logo abaixo dos planos):**
+
+     - Campos obrigatórios com validação visual e máscara de telefone:
+
+       1. *Seu Nome ou Nome do Serviço* (ex: `Oficina do João` ou `Studio Ana Beleza`)
+
+       2. *Seu WhatsApp com DDD* (ex: `(91) 98888-7777`)
+
+       3. *Qual é o seu ofício?* (Select: `Mecânica & Auto`, `Beleza & Estética`, `Refrigeração & Elétrica`, `Reformas & Reparos`, `Outros`)
+
+       4. *Cidade de atuação* (Select: `Belém`, `Ananindeua`, `Marituba`, `Benevides`)
+
+       5. *Bairro principal* (Input texto, ex: `Cidade Nova`, `Marco`, `Pedreira`)
+
+       6. *Pacote escolhido* (Select sincronizado com os cards acima)
+
+     - **Comportamento ao Submeter:**
+
+       - Salva o lead imediatamente na coleção `interessados` do `localStorage`.
+
+       - Abre um **Modal de Confirmação Comercial** informando que o pré-cadastro foi reservado e exibindo um botão grande verde **"Finalizar Ativação no WhatsApp"**, que abre `https://wa.me/{config.gestorWhatsapp}?text=...` com a mensagem estruturada:
+
+         `"Olá! Acabei de fazer meu cadastro no ClienteNoZap.%0A*Nome/Negócio:* {nome}%0A*Ofício:* {oficio}%0A*Região:* {bairro} - {cidade}%0A*Plano:* {planoNome} (R$ {valor}/mês)%0AQuero ativar minha página e começar a receber clientes!"`
+
+
+
+---
 
 
 
 ### 3.3. TELA 2 — VITRINE LOCAL & MOTOR DE MINI-LANDING PAGES POR IA
 
-1. **Vitrine Pública:** Filtros em tempo real por busca textual, Ofício e Cidade. Cards com imagem clicável, badge de categoria, selo *Verificado* e botões *"Pedir Orçamento no Zap"* e *"Ver Página"*.
+1. **Vitrine Pública (`Vitrine de Profissionais`):**
 
-2. **Motor Semântico de Mini-LP por IA (`resolveSegmentTheme`):** Detecta automaticamente 13+ segmentos (incluindo ofícios digitados em "Outros", como Barbearia, Diarista, Fretes, Jardinagem, Confeitaria, Pet, Informática, Chaveiro e Encanador), aplicando paleta de cores, galeria de fotos Unsplash com fallback CSS e copys locais. Controles de edição visíveis apenas para o administrador logado; botão *Compartilhar Página* visível para todos.
+   - Cabeçalho explicativo para consumidores da região: *"Encontre profissionais verificados perto de você na Grande Belém"*.
 
-3. **Ponte Rastreada:** Modal expresso capturando `Seu Nome` e `Seu WhatsApp` do consumidor final, gravando entrega nominal em `entregas` antes de liberar o link `https://wa.me/` do profissional.
+   - **Barra de Filtros em Tempo Real:** Filtro por `Ofício` (`Todos` + 5 categorias), filtro por `Cidade` (`Todas`, `Belém`, `Ananindeua`, `Marituba`, `Benevides`) e busca por texto (nome ou bairro).
+
+   - **Cards dos Assinantes Ativos:**
+
+     - Imagem de topo temática do nicho (`assinante.iaProfile.bannerUrl` com fallback CSS gradiente elegante caso offline).
+
+     - Badge de Ofício + Selo azul/verde `Profissional Verificado`.
+
+     - Nome do Profissional, Cidade/Bairro e resumo curto.
+
+     - Dois botões de ação no rodapé do card:
+
+       - **"Ver Página Profissional (IA)"** -> Abre a **Mini-Landing Page Exclusiva** daquele assinante.
+
+       - **"Pedir Orçamento no Zap"** -> Abre diretamente o modal da **Ponte Rastreada**.
+
+2. **Motor de Mini-Landing Page Personalizada por IA (Tela/Modal Full-View do Assinante):**
+
+   - Simula a página exclusiva de vendas gerada automaticamente para cada profissional assinante (que também serve como link de destino para os anúncios pagos do Meta/Google Ads).
+
+   - Barra superior de controle: Botão **"← Voltar para Vitrine"**, botão **"Alternar Tema IA"** (cicla entre 3 variações visuais de banner/layout do nicho para demonstração de design) e botão **"Copiar Link de Campanha"** (exibe toast de confirmação).
+
+   - **Estrutura Visual Gerada Automaticamente pelo Motor de IA (Todos os 5 Nichos Cobertos):**
+
+     - **Banner Fotográfico Temático + Gradiente Escuro + Paleta Adaptativa:**
+
+       - `Mecânica & Auto`: Acentos em Âmbar/Laranja (`#F59E0B`) + 3 fotos temáticas de oficina/mecânica automotiva.
+
+       - `Beleza & Estética`: Acentos em Rosa/Dourado (`#EC4899`) + 3 fotos temáticas de salão/estética/manicure.
+
+       - `Refrigeração & Elétrica`: Acentos em Azul Ciano (`#06B6D4`) + 3 fotos temáticas de climatização/elétrica.
+
+       - `Reformas & Reparos`: Acentos em Verde Esmeralda (`#10B981`) + 3 fotos temáticas de pintura/reforma residencial.
+
+       - `Outros`: Acentos em Índigo/Violeta (`#6366F1`) + 3 fotos temáticas de atendimento profissional local.
+
+     - **Headline Dinâmica IA:** Ex: *"Precisando de {oficio} em {bairro} ({cidade})? A {nome} atende você com agilidade e confiança!"*
+
+     - **3 Cards de Diferenciais do Nicho (Gerados por IA):**
+
+       - *Mecânica & Auto:* `Diagnóstico Transparente`, `Peças de Qualidade`, `Atendimento Rápido na Região`.
+
+       - *Beleza & Estética:* `Materiais 100% Esterilizados`, `Atendimento Personalizado`, `Horários Flexíveis no Bairro`.
+
+       - *Refrigeração & Elétrica:* `Visita Técnica Ágil`, `Garantia no Serviço`, `Solução Segura e Limpa`.
+
+       - *Reformas & Reparos:* `Orçamento Sem Compromisso`, `Acabamento Profissional`, `Cumprimento de Prazo`.
+
+       - *Outros:* `Atendimento Direto no Bairro`, `Orçamento Rápido no Zap`, `Profissional Verificado`.
+
+     - **CTA Principal da Mini-LP:** Botão pulsante verde **"Solicitar Orçamento no WhatsApp Agora"** que aciona a Ponte Rastreada.
+
+3. **Modal da Ponte Rastreada (Captura de Lead Final):**
+
+   - Intercepta o clique de orçamento para registrar a entrega antes de abrir o WhatsApp do profissional.
+
+   - Campos: **Seu Nome** e **Seu WhatsApp**.
+
+   - **Execução ao Confirmar:**
+
+     1. Cria um novo registro na coleção `entregas` vinculado ao `assinanteId` com data e hora atuais.
+
+     2. Atualiza instantaneamente os contadores do assinante e os gráficos do Painel Admin.
+
+     3. Exibe tela de confirmação com botão direto para abrir o WhatsApp do profissional (`https://wa.me/{assinante.whatsapp}?text=Olá {assinante.nome}, vi seu perfil no ClienteNoZap ({assinante.bairro})! Meu nome é {consumidorNome} e gostaria de pedir um orçamento.`).
 
 
 
-### 3.4. TELA 3 & 4 — LOGIN E PAINEL ADMINISTRATIVO EXECUTIVO (4 ABAS)
-
-1. **Dashboard & Relatórios:** KPIs dinâmicos (MRR, Assinantes Ativos, Clientes Entregues, Taxa de Churn), faixa de **Unit Economics** (MRR vs. Verba de Tráfego ~48% vs. Margem Líquida ~52%), gráfico *"Nichos que Mais Assinam"* e *"Radar de Turnover (Churn por Ofício)"*.
-
-2. **Funil de Interessados:** Leads da Página de Venda com *"Chamar no Zap"* e *"Ativar Assinatura (Gerar Página IA)"* em 1 clique.
-
-3. **Assinantes & Entregas:** Central de Lembretes Inteligentes (>= 80% da meta e check-ins pendentes), barra de progresso por ciclo, auditoria nominal (`Auditar`), edição de perfil/galeria (`Editar`), `Check-in Zap`, `Renovar Zap`, `Confirmar Renovação` (com suporte a upsell e início de novo ciclo preservando histórico), `Pedir Depoimento` e `Churn`.
-
-4. **Integrações & Config:** Edição do WhatsApp comercial do gestor, campos locais opcionais para Supabase/Resend e botão *"Restaurar Dados de Demonstração"*.
+---
 
 
 
-## 4. SEED DATA INICIAL (GRANDE BELÉM)
+### 3.4. TELA 3 — LOGIN ADMINISTRATIVO (`Entrar`)
 
-Inicializar com 6 assinantes ativos na Grande Belém, 2 cancelados (alimentando o Radar de Turnover), 108 entregas nominais matematicamente consistentes, 3 interessados no funil e 3 depoimentos verificados.
+- Modal limpo e seguro com e-mail e senha pré-preenchidos para demonstração (`admin@clientenozap.com.br` / `123456`) e botão **"Entrar no Painel de Gestão"**.
+
+
+
+---
+
+
+
+### 3.5. TELA 4 — PAINEL ADMINISTRATIVO & INTELIGÊNCIA COMERCIAL
+
+Interface estilo SaaS profissional com menu em **4 Abas**:
+
+
+
+1. **Aba 1 — Dashboard Executivo & Relatórios:**
+
+   - **4 Cards de KPIs Principais Calculados Dinamicamente:**
+
+     - **MRR (Receita Recorrente Mensal):** Soma de `valorMensal` de todos os assinantes com `status === 'ativo'` (formatado em `R$`).
+
+     - **Assinantes Ativos:** Contagem total de profissionais ativos.
+
+     - **Clientes Entregues no Mês:** Total de registros na coleção `entregas`.
+
+     - **Taxa Geral de Cancelamento (Churn %):** `(Cancelados / (Ativos + Cancelados)) * 100`.
+
+   - **Faixa de Saúde Financeira da Operação (Unit Economics):**
+
+     - Exibe 3 indicadores calculados sobre o MRR atual: **Receita Bruta (MRR)** | **Verba Estimada de Tráfego Pago (~48% do MRR)** | **Margem Operacional Líquida Estimada (~52% do MRR)**.
+
+   - **Bloco Analítico 1 — Nichos que Mais Assinam (Ranking):**
+
+     - Agrupa assinantes ativos por `oficio`, exibe quantidade, MRR gerado por categoria e barra de progresso proporcional.
+
+   - **Bloco Analítico 2 — Radar de Turnover (Cancelamento por Ofício):**
+
+     - Calcula e exibe visualmente a taxa percentual de turnover por categoria (`Cancelados no Nicho / Total Histórico no Nicho * 100`), destacando o nicho com maior perda e listando os motivos de cancelamento registrados para tomada de decisão comercial.
+
+
+
+2. **Aba 2 — Funil de Interessados (Novos Cadastros):**
+
+   - Lista todos os profissionais da coleção `interessados` com data, ofício, cidade/bairro, plano desejado e valor.
+
+   - **Ações de 1 Clique por Linha/Card:**
+
+     - **"Chamar no Zap"**: Abre WhatsApp com mensagem comercial pronta de fechamento.
+
+     - **"Ativar Assinatura (Gerar Página IA)"**: Exibe breve feedback visual de geração por IA, move o profissional para `assinantes` com `status = 'ativo'`, gera automaticamente sua Mini-LP temática, publica na Vitrine Local e soma ao MRR.
+
+
+
+3. **Aba 3 — Assinantes Ativos, Entregas & Lembretes:**
+
+   - **Central de Lembretes Inteligentes (Topo da Aba):**
+
+     - Exibe alertas visuais automáticos para assinantes que já receberam `>= 80%` dos leads do pacote (oportunidade de renovação/upsell) e para assinantes pendentes de check-in semanal.
+
+   - **Cards/Tabela de Gestão da Carteira:**
+
+     - Exibe Nome, Ofício, Cidade/Bairro, Plano (`R$ /mês`) e **Barra de Progresso de Entregas** (`entregasDoAssinante / metaLeads` — muda de cor para âmbar acima de 80% e verde quando completa 100%).
+
+     - **Botão "Abrir Mini-LP IA":** Abre a página personalizada gerada por IA daquele assinante.
+
+     - **Botão "Editar Perfil / Mini-LP":** Abre modal permitindo ao gestor ajustar Nome, Bairro, WhatsApp, Headline ou Diferenciais da página do assinante.
+
+     - **Botão "Auditar Clientes Enviados":** Abre modal com tabela nominal (`Consumidor`, `WhatsApp`, `Origem`, `Data/Hora`) de todos os leads entregues para aquele profissional, além de um botão `+ Simular Entrega Manual` para facilitar testes rápidos.
+
+     - **Gatilhos Diretos de Retenção no WhatsApp:**
+
+       - Botão **"Check-in Qualidade (Zap)"**: Abre WhatsApp do assinante com script pronto perguntando se ele fechou os leads da semana e marca o check-in como realizado.
+
+       - Botão **"Renovar Pacote (Zap)"** (destacado quando entrega >= 80%): Abre WhatsApp do assinante com proposta pronta de renovação antecipada.
+
+     - **Botão "Registrar Cancelamento (Churn)":** Abre modal pedindo o motivo (`Preço / Orçamento`, `Pouco fechamento de serviço`, `Agenda lotada / Pausa temporária`, `Mudança de ramo / Outros`), altera o status para `cancelado`, remove da vitrine e atualiza o **Radar de Turnover** no Dashboard.
+
+
+
+4. **Aba 4 — Integrações & Configurações:**
+
+   - **Configuração Operacional Ativa:** Input para editar o `WhatsApp Comercial do Gestor` com botão `Salvar Configuração` (atualiza imediatamente o destino dos formulários da Página de Venda).
+
+   - **Preparação Técnica para Escala (Fase 2 — Sem Exposição de Chaves no Código):**
+
+     - Card **Supabase (Banco de Dados Externo):** Campos para `Project URL` e `Anon Public Key` salvos exclusivamente no `localStorage` do navegador do gestor.
+
+     - Card **Resend (Alertas Transacionais por E-mail):** Campo para `E-mail de Notificação de Novo Lead` + botão **"Simular Envio de Alerta"** para validação visual da integração.
+
+   - **Ferramentas de Demonstração:** Botão **"Restaurar Dados de Demonstração"** (recarrega os dados iniciais da Grande Belém).
+
+
+
+---
+
+
+
+## 4. DADOS INICIAIS DE DEMONSTRAÇÃO (SEED DATA MATEMATICAMENTE CONSISTENTE)
+
+
+
+Na primeira execução (quando o `localStorage` estiver vazio), popular automaticamente com:
+
+- **6 Assinantes Ativos na Grande Belém:**
+
+  1. *Oficina Mecânica J&M* (`Mecânica & Auto` — Cidade Nova, Ananindeua — Plano Agenda Cheia R$ 267 — **26** entregas nominais geradas / meta 30 -> gera alerta de renovação!).
+
+  2. *Studio Camila Nails & Design* (`Beleza & Estética` — Marco, Belém — Plano Começo R$ 147 — **11** entregas nominais geradas / meta 15).
+
+  3. *ClimaFrio Refrigeração* (`Refrigeração & Elétrica` — Pedreira, Belém — Plano Máximo R$ 447 — **38** entregas nominais geradas / meta 55).
+
+  4. *Auto Elétrica Paraense* (`Mecânica & Auto` — Centro, Marituba — Plano Começo R$ 147 — **13** entregas nominais geradas / meta 15 -> gera alerta de renovação!).
+
+  5. *Mestre Carlos Reformas* (`Reformas & Reparos` — Umarizal, Belém — Plano Agenda Cheia R$ 267 — **14** entregas nominais geradas / meta 30).
+
+  6. *Espaço Bella Hair* (`Beleza & Estética` — Centro, Benevides — Plano Começo R$ 147 — **6** entregas nominais geradas / meta 15).
+
+- **108 Registros Nominais na Coleção `entregas`:** Gerados de forma determinística na inicialização para corresponder **exatamente** às quantidades acima (`26 + 11 + 38 + 13 + 14 + 6 = 108`), com nomes brasileiros variados, telefones `(91) 98...` realistas, origens alternadas (`Vitrine Local` / `Mini-LP IA (Anúncio)`) e datas recentes.
+
+- **2 Registros Históricos de Cancelamento (Churn):**
+
+  1. *Salão Brilho Próprio* (`Beleza & Estética` — Motivo: `"Pouco fechamento de serviço"`).
+
+  2. *Manicure Express Belém* (`Beleza & Estética` — Motivo: `"Preço / Orçamento"`).
+
+  *(Garante que o Radar de Turnover no Dashboard exiba 50% de churn no nicho Beleza & Estética — 2 cancelados de 4 totais — destacando a métrica para análise gerencial).*
+
+- **3 Profissionais Interessados no Funil:**
+
+  1. *Borracharia 24h do Zé* (`Mecânica & Auto` — Coqueiro, Ananindeua — Plano Começo R$ 147).
+
+  2. *GelAr Climatização* (`Refrigeração & Elétrica` — Guamá, Belém — Plano Agenda Cheia R$ 267).
+
+  3. *Pinturas & Texturas Silva* (`Reformas & Reparos` — Icoaraci, Belém — Plano Começo R$ 147).
 
 ````
 
@@ -300,31 +698,31 @@ Inicializar com 6 assinantes ativos na Grande Belém, 2 cancelados (alimentando 
 
 
 
-### 4.2. Correções e Refinamentos Aplicados Após os Testes Práticos
+### 4.2. Correções e Evoluções Aplicadas Após os Testes Práticos
 
 
 
-Durante os testes reais da aplicação como cliente, consumidor final e administrador, identificamos e corrigimos 9 melhorias essenciais para deixar o MVP redondo para prospecção real:
+Após gerar a primeira versão a partir do Super Prompt acima, realizamos testes reais ponta a ponta na aplicação publicada em [**https://fabiocabmed.github.io/clientenozap/**](https://fabiocabmed.github.io/clientenozap/) (simulando o profissional autônomo, o consumidor final e o administrador) e aplicamos **9 melhorias estruturais**:
 
 
 
-1. **Assinatura de Função no Motor de IA:** Correção do parâmetro `cidade` na função `buildSubheadline` da categoria *Refrigeração & Elétrica*, eliminando erro de inicialização.
+1. **Correção de Assinatura no Motor de IA:** Ajuste do parâmetro `cidade` na função `buildSubheadline` da categoria *Refrigeração & Elétrica*, eliminando erro de inicialização.
 
-2. **Usabilidade de Fechamento na Mini-LP:** Adição de botão **"Fechar"** em destaque no canto superior direito da página exclusiva do profissional, além de suporte à tecla `ESC`.
+2. **Usabilidade de Fechamento na Mini-LP:** Adição de botão **"Fechar"** em destaque no canto superior direito da página exclusiva do profissional, além de suporte ao atalho pela tecla `ESC`.
 
-3. **Separação de Campos no Cadastro & Ofício Livre ("Outros"):** Separação entre **Seu Nome (Profissional)** e **Nome do Negócio / Serviço**, além de exibição condicional de campo livre quando o profissional escolhe *"Outros"* (ex: Diarista, Chaveiro, Eletricista) e remoção de campos duplicados.
+3. **Separação de Campos no Cadastro & Ofício Livre ("Outros"):** Separação entre **Seu Nome (Profissional)** e **Nome do Negócio / Serviço**, além de exibição condicional de campo livre quando o profissional escolhe *"Outros"* (ex: Diarista, Chaveiro, Eletricista, Fretes) e remoção de campos duplicados.
 
-4. **Roteamento Oficial do WhatsApp Comercial:** Configuração do número oficial da operação (`5591980789170`) como destino padrão dos novos cadastros, deixando explícito no modal de confirmação o número do consultor que receberá o pedido.
+4. **Roteamento Oficial do WhatsApp Comercial:** Atualização do número padrão do gestor para o WhatsApp oficial da operação (`5591980789170`), deixando explícito no modal de confirmação o número do consultor que receberá o pedido.
 
-5. **Ampliação Semântica da IA para 13+ Segmentos & Galeria:** Expansão da função `resolveSegmentTheme` com detecção por palavras-chave para 13+ nichos específicos e adição de seletor visual de imagens no modal de edição do assinante.
+5. **Ampliação Semântica da IA para 13+ Segmentos & Galeria:** Evolução do motor de temas com detecção por palavras-chave para 13+ nichos específicos (*Barbearia, Diarista, Fretes, Jardinagem, Confeitaria, Pet, Informática, Chaveiro, Encanador*, etc.) e adição de seletor visual de imagens no modal de edição do assinante.
 
-6. **Controle de Permissões na Mini-LP:** Ocultação dos controles administrativos (*Página Gerada por IA* e *Alternar Tema IA*) para visitantes/consumidores não logados, mantendo o botão **Compartilhar Página** sempre acessível.
+6. **Controle de Permissões na Mini-LP:** Ocultação dos controles administrativos (*Página Gerada por IA* e *Alternar Tema IA*) para visitantes e consumidores não logados, mantendo o botão **Compartilhar Página** sempre acessível.
 
 7. **Fluxo Completo de Renovação & Upsell (`Confirmar Renovação`):** Criação do modal de baixa de renovação ao lado do botão *Renovar Zap*, permitindo manter o plano ou fazer upsell para um pacote superior, iniciando um novo ciclo (`Ciclo #N`, barra zerada) sem apagar o histórico auditável de clientes já entregues.
 
-8. **UX da Vitrine Local:** Simplificação do botão do card para **"Ver Página"** e habilitação de clique direto na imagem de capa do profissional para abrir sua Mini-Landing Page.
+8. **UX da Vitrine Local:** Simplificação do botão secundário do card para **"Ver Página"** e habilitação de clique direto na imagem de capa do profissional para abrir sua Mini-Landing Page.
 
-9. **Prova Social Interativa (`Depoimentos`) & Gatilho Pós-Renovação:** Criação da seção de depoimentos na página inicial com modal **"Deixe seu Depoimento"** (nota em estrelas, foto/avatar e região) e exibição inteligente do botão **"Pedir Depoimento"** no painel administrativo após o check-in semanal ou confirmação de renovação.
+9. **Prova Social Interativa (`Depoimentos`) & Gatilho Pós-Check-in:** Criação da seção de depoimentos na página inicial com modal **"Deixe seu Depoimento"** (nota em estrelas, foto/avatar e região) e exibição inteligente do botão **"Pedir Depoimento"** no painel administrativo após o check-in semanal ou confirmação de renovação.
 
 
 
@@ -460,13 +858,13 @@ Com a tese validada no MVP Concierge, os próximos passos técnicos planejados p
 
 
 
-- [x] Aplicação publicada e acessível publicamente via GitHub Pages (`https://fabiocabmed.github.io/clientenozap/`).
+- [x] Aplicação publicada e acessível publicamente via GitHub Pages ([`https://fabiocabmed.github.io/clientenozap/`](https://fabiocabmed.github.io/clientenozap/)).
 
 - [x] Nome do repositório legível, em minúsculas e sem acento (`clientenozap`).
 
 - [x] Nenhuma chave privada, token ou credencial sensível versionada no código-fonte público.
 
-- [x] Todos os requisitos de negócio documentados: dor, TAM/SAM/SOM, Business Model Canvas, tese do MVP, etapas manuais de propósito, Super Prompt v4.0 e correções pós-teste.
+- [x] Todos os requisitos de negócio documentados: dor, TAM/SAM/SOM, Business Model Canvas, tese do MVP, etapas manuais de propósito, Super Prompt v4.0 na íntegra e correções pós-teste.
 
 
 
