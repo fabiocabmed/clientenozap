@@ -1,0 +1,3353 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ClienteNoZap — Clientes do seu bairro direto no seu WhatsApp</title>
+  <meta name="description" content="Plataforma de geração e entrega de demanda hiperlocalizada via WhatsApp para autônomos, profissionais liberais e MEIs da Grande Belém." />
+  
+  <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            display: ['Plus Jakarta Sans', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              emerald: '#10B981',
+              emeraldDark: '#059669',
+              emeraldLight: '#ECFDF5',
+              slate: '#0F172A',
+              slateMid: '#1E293B',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #F8FAFC;
+      color: #0F172A;
+      overflow-x: hidden;
+    }
+    h1, h2, h3, h4, .font-display {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in {
+      animation: fadeIn 0.25s ease-out forwards;
+    }
+    @keyframes pulseSubtle {
+      0%, 100% { transform: scale(1); box-shadow: 0 10px 25px -5px rgba(16, 185, 129, 0.4); }
+      50% { transform: scale(1.02); box-shadow: 0 15px 30px -5px rgba(16, 185, 129, 0.6); }
+    }
+    .btn-pulse-zap {
+      animation: pulseSubtle 2.4s infinite ease-in-out;
+    }
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #F1F5F9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #CBD5E1;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #94A3B8;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-emerald-100 selection:text-emerald-900">
+
+  <!-- ===================================================================== -->
+  <!-- BARRA DE NAVEGAÇÃO SUPERIOR FIXA (HEADER)                             -->
+  <!-- ===================================================================== -->
+  <header id="main-header" class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 transition-all">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16 sm:h-20">
+        
+        <!-- Logo -->
+        <button onclick="navigateTo('landing')" class="flex items-center gap-2.5 text-left group focus:outline-none">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-emerald-600 flex items-center justify-center text-white shadow-md shadow-emerald-500/20 group-hover:scale-105 transition-transform">
+            <i data-lucide="zap" class="w-5 h-5 fill-current"></i>
+          </div>
+          <div>
+            <span class="font-display font-extrabold text-xl tracking-tight text-slate-900 block leading-none">
+              Cliente<span class="text-emerald-600">NoZap</span>
+            </span>
+            <span class="text-[11px] font-medium text-slate-500 tracking-wide">Grande Belém • Demanda Local</span>
+          </div>
+        </button>
+
+        <!-- Links Centrais (Desktop) -->
+        <nav class="hidden md:flex items-center gap-1 lg:gap-2">
+          <button onclick="goToSection('como-funciona')" id="nav-como-funciona" class="px-3.5 py-2 rounded-lg text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors">
+            Como Funciona
+          </button>
+          <button onclick="goToSection('depoimentos')" id="nav-depoimentos" class="px-3.5 py-2 rounded-lg text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors">
+            Depoimentos
+          </button>
+          <button onclick="goToSection('planos')" id="nav-planos" class="px-3.5 py-2 rounded-lg text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors">
+            Planos
+          </button>
+          <button onclick="navigateTo('vitrine')" id="nav-vitrine" class="px-3.5 py-2 rounded-lg text-sm font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors flex items-center gap-1.5">
+            <i data-lucide="store" class="w-4 h-4 text-emerald-600"></i>
+            Vitrine de Profissionais
+          </button>
+        </nav>
+
+        <!-- Ações Direita (Auth / Admin) -->
+        <div class="flex items-center gap-2 sm:gap-3">
+          <div id="auth-controls" class="flex items-center gap-2">
+            <!-- Preenchido via JS conforme estado de login -->
+          </div>
+          
+          <!-- Botão Menu Mobile -->
+          <button onclick="toggleMobileMenu()" aria-label="Abrir Menu" class="md:hidden p-2.5 rounded-xl text-slate-600 hover:bg-slate-100 focus:outline-none">
+            <i data-lucide="menu" id="mobile-menu-icon" class="w-6 h-6"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Menu Mobile Expandido -->
+    <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-slate-200 px-4 pt-2 pb-4 space-y-1.5 shadow-lg">
+      <button onclick="goToSection('como-funciona'); toggleMobileMenu()" class="w-full text-left px-4 py-3 rounded-xl text-sm font-medium text-slate-700 hover:bg-slate-50 flex items-center gap-2.5">
+        <i data-lucide="help-circle" class="w-4 h-4 text-slate-400"></i> Como Funciona
+      </button>
+      <button onclick="goToSection('depoimentos'); toggleMobileMenu()" class="w-full text-left px-4 py-3 rounded-xl text-sm font-medium text-slate-700 hover:bg-slate-50 flex items-center gap-2.5">
+        <i data-lucide="star" class="w-4 h-4 text-amber-500"></i> Depoimentos
+      </button>
+      <button onclick="goToSection('planos'); toggleMobileMenu()" class="w-full text-left px-4 py-3 rounded-xl text-sm font-medium text-slate-700 hover:bg-slate-50 flex items-center gap-2.5">
+        <i data-lucide="tag" class="w-4 h-4 text-slate-400"></i> Planos e Pacotes
+      </button>
+      <button onclick="navigateTo('vitrine'); toggleMobileMenu()" class="w-full text-left px-4 py-3 rounded-xl text-sm font-medium text-emerald-700 bg-emerald-50/70 hover:bg-emerald-50 flex items-center gap-2.5">
+        <i data-lucide="store" class="w-4 h-4 text-emerald-600"></i> Vitrine de Profissionais
+      </button>
+    </div>
+  </header>
+
+  <!-- ===================================================================== -->
+  <!-- CONTEÚDO PRINCIPAL (VIEWS DINÂMICAS)                                  -->
+  <!-- ===================================================================== -->
+  <main class="flex-1">
+
+    <!-- =================================================================== -->
+    <!-- TELA 1: PÁGINA DE VENDA (PORTA DE ENTRADA PRINCIPAL)                -->
+    <!-- =================================================================== -->
+    <section id="view-landing" class="animate-fade-in">
+      
+      <!-- HERO SECTION -->
+      <div class="relative overflow-hidden bg-slate-900 text-white pt-12 pb-16 sm:pt-20 sm:pb-24">
+        <div class="absolute inset-0 opacity-20 pointer-events-none" style="background-image: radial-gradient(#10B981 1px, transparent 1px); background-size: 28px 28px;"></div>
+        <div class="absolute -top-24 -right-24 w-96 h-96 bg-emerald-500/20 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-24 -left-24 w-96 h-96 bg-emerald-600/10 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="max-w-3xl mx-auto text-center">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/15 border border-emerald-400/30 text-emerald-300 text-xs sm:text-sm font-semibold mb-6">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+              Exclusivo para Autônomos e MEIs — Belém, Ananindeua, Marituba e Benevides
+            </div>
+
+            <h1 class="font-display font-extrabold text-3xl sm:text-5xl lg:text-[52px] tracking-tight leading-[1.15] text-white mb-6">
+              Você foca no seu serviço, a gente coloca <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-300">clientes do seu bairro</span> chamando no seu WhatsApp.
+            </h1>
+
+            <p class="text-base sm:text-xl text-slate-300 leading-relaxed mb-8 sm:mb-10 max-w-2xl mx-auto">
+              Feito para mecânicos, manicures, técnicos de refrigeração, eletricistas e prestadores locais. Sem precisar entender de anúncios ou criar site: nossa IA monta sua página profissional e enviamos pedidos de orçamento direto no seu Zap.
+            </p>
+
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-3.5 sm:gap-4 mb-10">
+              <button onclick="goToSection('planos')" class="w-full sm:w-auto px-7 py-4 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-display font-bold text-base sm:text-lg shadow-xl shadow-emerald-500/25 transition-all flex items-center justify-center gap-2.5 btn-pulse-zap">
+                <span>Escolher Meu Pacote / Fazer Cadastro</span>
+                <i data-lucide="arrow-right" class="w-5 h-5"></i>
+              </button>
+              <button onclick="navigateTo('vitrine')" class="w-full sm:w-auto px-6 py-4 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-100 border border-slate-700 font-semibold text-base transition-all flex items-center justify-center gap-2">
+                <i data-lucide="store" class="w-5 h-5 text-emerald-400"></i>
+                <span>Ver Profissionais Parceiros</span>
+              </button>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-6 pt-8 border-t border-slate-800/80 text-sm text-slate-300">
+              <div class="flex items-center justify-center gap-2">
+                <i data-lucide="check-circle-2" class="w-5 h-5 text-emerald-400 shrink-0"></i>
+                <span><strong class="text-white">+450 orçamentos</strong> entregues na Grande Belém</span>
+              </div>
+              <div class="flex items-center justify-center gap-2">
+                <i data-lucide="sparkles" class="w-5 h-5 text-emerald-400 shrink-0"></i>
+                <span><strong class="text-white">Página exclusiva</strong> criada por IA</span>
+              </div>
+              <div class="flex items-center justify-center gap-2">
+                <i data-lucide="shield-check" class="w-5 h-5 text-emerald-400 shrink-0"></i>
+                <span><strong class="text-white">Sem fidelidade</strong> anual ou multa</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SEÇÃO COMO FUNCIONA (3 ETAPAS CLARAS) -->
+      <div id="como-funciona" class="py-16 sm:py-24 bg-white border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
+            <span class="text-xs font-bold uppercase tracking-wider text-emerald-600 bg-emerald-50 px-3 py-1 rounded-full">Simples e direto ao ponto</span>
+            <h2 class="font-display font-extrabold text-2xl sm:text-4xl text-slate-900 mt-3 mb-4">
+              Como o ClienteNoZap enche a sua agenda
+            </h2>
+            <p class="text-slate-600 text-base sm:text-lg">
+              Você não precisa gravar dancinha nem mexer em painel complicado. Nós cuidamos da vitrine e da divulgação na sua região.
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+            <div class="relative p-7 rounded-2xl bg-slate-50 border border-slate-200/80 hover:border-emerald-300 transition-all">
+              <div class="w-12 h-12 rounded-2xl bg-slate-900 text-white font-display font-extrabold text-lg flex items-center justify-center mb-5 shadow-md">
+                1
+              </div>
+              <h3 class="font-display font-bold text-xl text-slate-900 mb-2.5">
+                Escolha seu ofício, bairro e pacote
+              </h3>
+              <p class="text-slate-600 text-sm sm:text-base leading-relaxed">
+                Selecione quantos clientes interessados você quer receber por mês e informe o bairro ou cidade onde você atende na Grande Belém.
+              </p>
+            </div>
+
+            <div class="relative p-7 rounded-2xl bg-slate-50 border border-slate-200/80 hover:border-emerald-300 transition-all">
+              <div class="w-12 h-12 rounded-2xl bg-emerald-600 text-white font-display font-extrabold text-lg flex items-center justify-center mb-5 shadow-md shadow-emerald-600/20">
+                2
+              </div>
+              <h3 class="font-display font-bold text-xl text-slate-900 mb-2.5">
+                Nossa IA cria sua página e divulgamos na região
+              </h3>
+              <p class="text-slate-600 text-sm sm:text-base leading-relaxed">
+                Ativamos sua Mini-Landing Page personalizada com visual do seu ramo e rodamos anúncios hiperlocalizados para quem procura seu serviço.
+              </p>
+            </div>
+
+            <div class="relative p-7 rounded-2xl bg-slate-50 border border-slate-200/80 hover:border-emerald-300 transition-all">
+              <div class="w-12 h-12 rounded-2xl bg-slate-900 text-white font-display font-extrabold text-lg flex items-center justify-center mb-5 shadow-md">
+                3
+              </div>
+              <h3 class="font-display font-bold text-xl text-slate-900 mb-2.5">
+                Atenda e feche direto no seu WhatsApp
+              </h3>
+              <p class="text-slate-600 text-sm sm:text-base leading-relaxed">
+                O morador interessado clica para pedir orçamento e cai direto no seu WhatsApp. Você passa o preço, combina o horário e fecha o serviço.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SEÇÃO DE DEPOIMENTOS (PROVA SOCIAL REAL & INTERATIVA) -->
+      <div id="depoimentos" class="py-16 sm:py-24 bg-slate-50 border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 sm:mb-14">
+            <div class="max-w-2xl">
+              <span class="text-xs font-bold uppercase tracking-wider text-emerald-700 bg-emerald-100 px-3 py-1 rounded-full inline-flex items-center gap-1.5">
+                <i data-lucide="star" class="w-3.5 h-3.5 fill-current"></i>
+                Quem usa na Grande Belém aprova
+              </span>
+              <h2 class="font-display font-extrabold text-2xl sm:text-4xl text-slate-900 mt-3 mb-3">
+                Profissionais que já estão fechando serviços pelo Zap
+              </h2>
+              <p class="text-slate-600 text-base sm:text-lg">
+                Veja o que autônomos e donos de pequenos negócios da nossa região estão achando da experiência com o ClienteNoZap.
+              </p>
+            </div>
+
+            <div class="shrink-0">
+              <button onclick="openDepoimentoModal()" class="w-full sm:w-auto px-5 py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-display font-bold text-sm shadow-md transition-all flex items-center justify-center gap-2">
+                <i data-lucide="message-square-plus" class="w-4 h-4 text-emerald-400"></i>
+                <span>Deixe seu Depoimento</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Grid Dinâmico de Depoimentos -->
+          <div id="depoimentos-grid" class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+            <!-- Renderizado via JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- SEÇÃO DE PLANOS & CONFIGURADOR INTERATIVO DE CADASTRO -->
+      <div id="planos" class="py-16 sm:py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          
+          <div class="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
+            <span class="text-xs font-bold uppercase tracking-wider text-emerald-700 bg-emerald-100 px-3 py-1 rounded-full">Pacotes Mensais Transparentes</span>
+            <h2 class="font-display font-extrabold text-2xl sm:text-4xl text-slate-900 mt-3 mb-4">
+              Escolha o ritmo de clientes ideal para você
+            </h2>
+            <p class="text-slate-600 text-base sm:text-lg">
+              Investimento em tráfego local e sua página profissional já inclusos. Com apenas 1 ou 2 serviços fechados, o plano já se paga.
+            </p>
+          </div>
+
+          <!-- GRID DE 3 CARDS DE PLANOS -->
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8 mb-14 items-stretch">
+            
+            <!-- PLANO COMEÇO -->
+            <div id="card-plano-comeco" onclick="selectPlan('comeco')" class="cursor-pointer rounded-2xl bg-white border-2 border-slate-200 p-7 flex flex-col justify-between transition-all hover:shadow-lg">
+              <div>
+                <div class="flex items-center justify-between mb-3">
+                  <span class="text-sm font-bold uppercase tracking-wider text-slate-500">Plano Começo</span>
+                  <span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-slate-100 text-slate-700">Para começar</span>
+                </div>
+                <div class="flex items-baseline gap-1 mb-2">
+                  <span class="text-sm font-semibold text-slate-500">R$</span>
+                  <span class="font-display font-extrabold text-4xl text-slate-900">147</span>
+                  <span class="text-sm text-slate-500">/mês</span>
+                </div>
+                <p class="text-sm font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-xl px-3.5 py-2 mb-6 inline-flex items-center gap-2 w-full">
+                  <i data-lucide="users" class="w-4 h-4 shrink-0"></i>
+                  <span>12 a 15 clientes interessados/mês no Zap</span>
+                </p>
+                <ul class="space-y-3 text-sm text-slate-600 mb-8">
+                  <li class="flex items-start gap-2.5">
+                    <i data-lucide="check" class="w-4 h-4 text-emerald-600 shrink-0 mt-0.5"></i>
+                    <span>Divulgação direcionada no seu bairro</span>
+                  </li>
+                  <li class="flex items-start gap-2.5">
+                    <i data-lucide="check" class="w-4 h-4 text-emerald-600 shrink-0 mt-0.5"></i>
+                    <span>Mini-Landing Page exclusiva criada por IA</span>
+                  </li>
+                  <li class="flex items-start gap-2.5">
+                    <i data-lucide="check" class="w-4 h-4 text-emerald-600 shrink-0 mt-0.5"></i>
+                    <span>Perfil ativo na Vitrine ClienteNoZap</span>
+                  </li>
+                  <li class="flex items-start gap-2.5">
+                    <i data-lucide="check" class="w-4 h-4 text-emerald-600 shrink-0 mt-0.5"></i>
+                    <span>Rastreio nominal de contatos entregues</span>
+                  </li>
+                </ul>
+              </div>
+              <button type="button" onclick="selectPlan('comeco', true)" class="w-full py-3.5 px-4 rounded-xl font-bold text-sm border-2 border-slate-900 text-slate-900 hover:bg-slate-900 hover:text-white transition-colors">
+                Selecionar Plano Começo
+              </button>
+            </div>
+
+            <!-- PLANO AGENDA CHEIA -->
+            <div id="card-plano-agenda_cheia" onclick="selectPlan('agenda_cheia')" class="cursor-pointer relative rounded-2xl bg-white border-2 border-emerald-500 p-7 flex flex-col justify-between shadow-xl shadow-emerald-900/5 transition-all">
+              <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-emerald-600 text-white text-xs font-extrabold uppercase tracking-wider px-4 py-1 rounded-full shadow-md">
+                Mais Escolhido
+              </div>
+              <div>
+                <div class="flex items-center justify-between mb-3">
+                  <span class="text-sm font-bold uppercase tracking-wider text-emerald-700">Plano Agenda Cheia</span>
+                  <span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800">Melhor Custo-Benefício</span>
+                </div>
+                <div class="flex items-baseline gap-1 mb-2">
+                  <span class="text-sm font-semibold text-slate-500">R$</span>
+                  <span class="font-display font-extrabold text-4xl text-slate-900">267</span>
+                  <span class="text-sm text-slate-500">/mês</span>
+                </div>
+                <p class="text-sm font-semibold text-emerald-800 bg-emerald-100/80 border border-emerald-300 rounded-xl px-3.5 py-2 mb-6 inline-flex items-center gap-2 w-full">
+                  <i data-lucide="flame" class="w-4 h-4 shrink-0 text-emerald-600"></i>
+                  <span>25 a 30 clientes interessados/mês no Zap</span>
+                </p>
+                <ul class="space-y-3 text-sm text-slate-700 mb-8">
+                  <li class="flex items-start gap-2.5">
+                    <i data-lucide="check" class="w-4 h-4 text-emerald-600 shrink-0 mt-0.5"></i>
+                    <span><strong>Divulgação no bairro + regiões vizinhas</strong></span>
+                  </li>
+                  <li class="flex items-start gap-2.5">
+                    <i data-lucide="check" class="w-4 h-4 text-emerald-600 shrink-0 mt-0.5"></i>
+                    <span>Mini-Landing Page exclusiva criada por IA</span>
+                  </li>
+                  <li class="flex items-start gap-2.5">
+                    <i data-lucide="check" class="w-4 h-4 text-emerald-600 shrink-0 mt-0.5"></i>
+                    <span>Destaque prioritário na Vitrine Local</span>
+                  </li>
+                  <li class="flex items-start gap-2.5">
+                    <i data-lucide="check" class="w-4 h-4 text-emerald-600 shrink-0 mt-0.5"></i>
+                    <span>Acompanhamento semanal de qualidade</span>
+                  </li>
+                </ul>
+              </div>
+              <button type="button" onclick="selectPlan('agenda_cheia', true)" class="w-full py-3.5 px-4 rounded-xl font-bold text-sm bg-emerald-600 hover:bg-emerald-700 text-white shadow-md shadow-emerald-600/20 transition-colors">
+                Selecionar Agenda Cheia
+              </button>
+            </div>
+
+            <!-- PLANO MÁXIMO -->
+            <div id="card-plano-maximo" onclick="selectPlan('maximo')" class="cursor-pointer rounded-2xl bg-white border-2 border-slate-200 p-7 flex flex-col justify-between transition-all hover:shadow-lg">
+              <div>
+                <div class="flex items-center justify-between mb-3">
+                  <span class="text-sm font-bold uppercase tracking-wider text-slate-500">Plano Máximo</span>
+                  <span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-slate-100 text-slate-700">Alta Demanda</span>
+                </div>
+                <div class="flex items-baseline gap-1 mb-2">
+                  <span class="text-sm font-semibold text-slate-500">R$</span>
+                  <span class="font-display font-extrabold text-4xl text-slate-900">447</span>
+                  <span class="text-sm text-slate-500">/mês</span>
+                </div>
+                <p class="text-sm font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 rounded-xl px-3.5 py-2 mb-6 inline-flex items-center gap-2 w-full">
+                  <i data-lucide="zap" class="w-4 h-4 shrink-0"></i>
+                  <span>45 a 55 clientes interessados/mês no Zap</span>
+                </p>
+                <ul class="space-y-3 text-sm text-slate-600 mb-8">
+                  <li class="flex items-start gap-2.5">
+                    <i data-lucide="check" class="w-4 h-4 text-emerald-600 shrink-0 mt-0.5"></i>
+                    <span><strong>Cobertura ampla em toda a cidade</strong></span>
+                  </li>
+                  <li class="flex items-start gap-2.5">
+                    <i data-lucide="check" class="w-4 h-4 text-emerald-600 shrink-0 mt-0.5"></i>
+                    <span>Mini-Landing Page exclusiva criada por IA</span>
+                  </li>
+                  <li class="flex items-start gap-2.5">
+                    <i data-lucide="check" class="w-4 h-4 text-emerald-600 shrink-0 mt-0.5"></i>
+                    <span>Topo da Vitrine + Prioridade nas campanhas</span>
+                  </li>
+                  <li class="flex items-start gap-2.5">
+                    <i data-lucide="check" class="w-4 h-4 text-emerald-600 shrink-0 mt-0.5"></i>
+                    <span>Suporte VIP dedicado via WhatsApp</span>
+                  </li>
+                </ul>
+              </div>
+              <button type="button" onclick="selectPlan('maximo', true)" class="w-full py-3.5 px-4 rounded-xl font-bold text-sm border-2 border-slate-900 text-slate-900 hover:bg-slate-900 hover:text-white transition-colors">
+                Selecionar Plano Máximo
+              </button>
+            </div>
+
+          </div>
+
+          <!-- FORMULÁRIO CONFIGURADOR DE CADASTRO DO PROFISSIONAL -->
+          <div id="formulario-cadastro" class="max-w-3xl mx-auto bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden">
+            <div class="bg-slate-900 px-6 py-6 sm:px-10 sm:py-8 text-white">
+              <div class="flex items-center gap-2 text-emerald-400 text-xs font-bold uppercase tracking-wider mb-1">
+                <i data-lucide="sparkles" class="w-4 h-4"></i>
+                Ativação Rápida • Sem Burocracia
+              </div>
+              <h3 class="font-display font-extrabold text-xl sm:text-2xl">
+                Preencha seus dados para ativar seu pacote
+              </h3>
+              <p class="text-slate-300 text-sm mt-1">
+                Assim que enviar, você já fala com nosso consultor no WhatsApp para colocar sua página no ar hoje mesmo.
+              </p>
+            </div>
+
+            <form id="lead-profissional-form" onsubmit="handleProfissionalSubmit(event)" class="p-6 sm:p-10 space-y-5">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <div>
+                  <label for="prof-responsavel" class="block text-sm font-semibold text-slate-700 mb-1.5">Seu Nome (Profissional) *</label>
+                  <input type="text" id="prof-responsavel" required placeholder="Ex: João Silva ou Ana Paula" class="w-full px-4 py-3 rounded-xl border border-slate-300 text-slate-900 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all text-sm" />
+                </div>
+
+                <div>
+                  <label for="prof-negocio" class="block text-sm font-semibold text-slate-700 mb-1.5">Nome do Negócio / Serviço</label>
+                  <input type="text" id="prof-negocio" placeholder="Ex: Oficina J&M, Studio Ana, Eletricista..." class="w-full px-4 py-3 rounded-xl border border-slate-300 text-slate-900 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all text-sm" />
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <div>
+                  <label for="prof-whatsapp" class="block text-sm font-semibold text-slate-700 mb-1.5">Seu WhatsApp (para receber clientes) *</label>
+                  <input type="tel" id="prof-whatsapp" required oninput="maskPhone(this)" maxlength="15" placeholder="(91) 98888-7777" class="w-full px-4 py-3 rounded-xl border border-slate-300 text-slate-900 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all text-sm" />
+                  <p class="text-[11px] text-slate-500 mt-1">Número onde os clientes da sua região vão te chamar.</p>
+                </div>
+
+                <div>
+                  <label for="prof-oficio" class="block text-sm font-semibold text-slate-700 mb-1.5">Qual é o seu ofício? *</label>
+                  <select id="prof-oficio" required onchange="toggleCustomOficio(this.value)" class="w-full px-4 py-3 rounded-xl border border-slate-300 text-slate-900 bg-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all text-sm">
+                    <option value="Mecânica & Auto">Mecânica & Auto</option>
+                    <option value="Beleza & Estética">Beleza & Estética</option>
+                    <option value="Refrigeração & Elétrica">Refrigeração & Elétrica</option>
+                    <option value="Reformas & Reparos">Reformas & Reparos</option>
+                    <option value="Outros">Outros (Digitar meu ofício)</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Campo Condicional para "Outros" Ofícios -->
+              <div id="custom-oficio-wrapper" class="hidden animate-fade-in bg-emerald-50/70 border border-emerald-200 rounded-2xl p-4">
+                <label for="prof-oficio-custom" class="block text-sm font-semibold text-emerald-950 mb-1.5">Qual é a sua profissão ou serviço? *</label>
+                <input type="text" id="prof-oficio-custom" placeholder="Ex: Diarista, Chaveiro, Eletricista Residencial, Fretes..." class="w-full px-4 py-3 rounded-xl border border-emerald-300 bg-white text-slate-900 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all text-sm" />
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <div>
+                  <label for="prof-cidade" class="block text-sm font-semibold text-slate-700 mb-1.5">Cidade de atuação *</label>
+                  <select id="prof-cidade" required class="w-full px-4 py-3 rounded-xl border border-slate-300 text-slate-900 bg-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all text-sm">
+                    <option value="Belém">Belém</option>
+                    <option value="Ananindeua">Ananindeua</option>
+                    <option value="Marituba">Marituba</option>
+                    <option value="Benevides">Benevides</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label for="prof-bairro" class="block text-sm font-semibold text-slate-700 mb-1.5">Bairro principal *</label>
+                  <input type="text" id="prof-bairro" required placeholder="Ex: Cidade Nova, Marco, Pedreira..." class="w-full px-4 py-3 rounded-xl border border-slate-300 text-slate-900 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all text-sm" />
+                </div>
+              </div>
+
+              <div>
+                <label for="prof-plano" class="block text-sm font-semibold text-slate-700 mb-1.5">Pacote Escolhido *</label>
+                <select id="prof-plano" onchange="syncPlanCardFromSelect(this.value)" class="w-full px-4 py-3.5 rounded-xl border-2 border-emerald-500 bg-emerald-50/40 font-semibold text-slate-900 focus:ring-2 focus:ring-emerald-500 outline-none transition-all text-sm">
+                  <option value="comeco">Plano Começo — R$ 147/mês (12 a 15 clientes no Zap)</option>
+                  <option value="agenda_cheia" selected>Plano Agenda Cheia — R$ 267/mês (25 a 30 clientes no Zap) ★ Mais Escolhido</option>
+                  <option value="maximo">Plano Máximo — R$ 447/mês (45 a 55 clientes no Zap)</option>
+                </select>
+              </div>
+
+              <button type="submit" class="w-full py-4 px-6 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-display font-bold text-base sm:text-lg shadow-lg shadow-emerald-600/25 transition-all flex items-center justify-center gap-2.5">
+                <i data-lucide="message-circle" class="w-5 h-5"></i>
+                <span>Quero Receber Clientes no Meu WhatsApp</span>
+              </button>
+
+              <p class="text-xs text-center text-slate-500">
+                Ao continuar, seu pré-cadastro fica reservado e você será direcionado ao WhatsApp comercial para ativar sua página.
+              </p>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- TELA 2: VITRINE LOCAL DE PROFISSIONAIS                              -->
+    <!-- =================================================================== -->
+    <section id="view-vitrine" class="hidden animate-fade-in py-10 sm:py-14">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="bg-slate-900 rounded-3xl p-6 sm:p-10 text-white mb-8 relative overflow-hidden">
+          <div class="absolute right-0 top-0 w-72 h-72 bg-emerald-500/15 rounded-full blur-3xl pointer-events-none"></div>
+          <div class="relative flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+            <div>
+              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-bold mb-3">
+                <i data-lucide="shield-check" class="w-4 h-4"></i>
+                Diretório Oficial Grande Belém
+              </div>
+              <h1 class="font-display font-extrabold text-2xl sm:text-4xl mb-2">
+                Encontre profissionais verificados perto de você
+              </h1>
+              <p class="text-slate-300 text-sm sm:text-base max-w-2xl">
+                Escolha o especialista no seu bairro, conheça a página profissional criada pela nossa IA e peça seu orçamento direto no WhatsApp.
+              </p>
+            </div>
+            <div class="shrink-0">
+              <button onclick="navigateTo('landing'); setTimeout(() => goToSection('planos'), 100)" class="w-full sm:w-auto px-5 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-sm transition-colors flex items-center justify-center gap-2">
+                <i data-lucide="plus-circle" class="w-4 h-4"></i>
+                <span>Sou Profissional • Quero Anunciar</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200 shadow-sm mb-8">
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="relative">
+              <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+              <input type="text" id="filter-search" oninput="renderVitrine()" placeholder="Buscar por nome ou bairro (ex: Marco, Cidade Nova)..." class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-emerald-500 outline-none" />
+            </div>
+            <div>
+              <select id="filter-oficio" onchange="renderVitrine()" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm bg-white focus:ring-2 focus:ring-emerald-500 outline-none">
+                <option value="Todos">Todos os Ofícios / Categorias</option>
+                <option value="Mecânica & Auto">Mecânica & Auto</option>
+                <option value="Beleza & Estética">Beleza & Estética</option>
+                <option value="Refrigeração & Elétrica">Refrigeração & Elétrica</option>
+                <option value="Reformas & Reparos">Reformas & Reparos</option>
+                <option value="Outros">Outros Serviços</option>
+              </select>
+            </div>
+            <div>
+              <select id="filter-cidade" onchange="renderVitrine()" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm bg-white focus:ring-2 focus:ring-emerald-500 outline-none">
+                <option value="Todas">Todas as Cidades (Grande Belém)</option>
+                <option value="Belém">Belém</option>
+                <option value="Ananindeua">Ananindeua</option>
+                <option value="Marituba">Marituba</option>
+                <option value="Benevides">Benevides</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div id="vitrine-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Renderizado via JS -->
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- TELA 4: PAINEL ADMINISTRATIVO & INTELIGÊNCIA COMERCIAL              -->
+    <!-- =================================================================== -->
+    <section id="view-admin" class="hidden animate-fade-in py-8 sm:py-10">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+          <div>
+            <div class="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-emerald-700 mb-1">
+              <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+              Centro de Comando Comercial
+            </div>
+            <h1 class="font-display font-extrabold text-2xl sm:text-3xl text-slate-900">
+              Painel Executivo ClienteNoZap
+            </h1>
+          </div>
+          <div class="flex flex-wrap items-center gap-2">
+            <button onclick="navigateTo('vitrine')" class="px-4 py-2.5 rounded-xl bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 text-xs sm:text-sm font-semibold flex items-center gap-2">
+              <i data-lucide="external-link" class="w-4 h-4 text-emerald-600"></i>
+              Ver Vitrine Pública
+            </button>
+          </div>
+        </div>
+
+        <!-- Navegação por 4 Abas -->
+        <div class="flex overflow-x-auto gap-2 pb-2 mb-6 border-b border-slate-200 no-scrollbar">
+          <button onclick="switchAdminTab('dashboard')" id="tab-btn-dashboard" class="admin-tab-btn px-4 py-2.5 rounded-xl text-sm font-bold whitespace-nowrap flex items-center gap-2 transition-all bg-slate-900 text-white">
+            <i data-lucide="bar-chart-3" class="w-4 h-4"></i>
+            Dashboard & Relatórios
+          </button>
+          <button onclick="switchAdminTab('interessados')" id="tab-btn-interessados" class="admin-tab-btn px-4 py-2.5 rounded-xl text-sm font-bold whitespace-nowrap flex items-center gap-2 transition-all bg-white text-slate-600 border border-slate-200 hover:bg-slate-50">
+            <i data-lucide="user-plus" class="w-4 h-4"></i>
+            Funil de Interessados
+            <span id="badge-count-interessados" class="px-2 py-0.5 text-xs rounded-full bg-emerald-100 text-emerald-800">0</span>
+          </button>
+          <button onclick="switchAdminTab('assinantes')" id="tab-btn-assinantes" class="admin-tab-btn px-4 py-2.5 rounded-xl text-sm font-bold whitespace-nowrap flex items-center gap-2 transition-all bg-white text-slate-600 border border-slate-200 hover:bg-slate-50">
+            <i data-lucide="users" class="w-4 h-4"></i>
+            Assinantes & Entregas
+            <span id="badge-count-assinantes" class="px-2 py-0.5 text-xs rounded-full bg-slate-200 text-slate-800">0</span>
+          </button>
+          <button onclick="switchAdminTab('integracoes')" id="tab-btn-integracoes" class="admin-tab-btn px-4 py-2.5 rounded-xl text-sm font-bold whitespace-nowrap flex items-center gap-2 transition-all bg-white text-slate-600 border border-slate-200 hover:bg-slate-50">
+            <i data-lucide="settings" class="w-4 h-4"></i>
+            Integrações & Config
+          </button>
+        </div>
+
+        <!-- ABA 1: DASHBOARD EXECUTIVO & RELATÓRIOS -->
+        <div id="admin-tab-dashboard" class="space-y-6 animate-fade-in">
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5" id="dashboard-kpis">
+            <!-- Preenchido via JS -->
+          </div>
+
+          <div class="bg-slate-900 rounded-2xl p-5 sm:p-6 text-white shadow-sm" id="dashboard-unit-economics">
+            <!-- Preenchido via JS -->
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+              <div class="flex items-center justify-between mb-5">
+                <div>
+                  <h3 class="font-display font-bold text-lg text-slate-900">Nichos que Mais Assinam</h3>
+                  <p class="text-xs text-slate-500">Distribuição da carteira ativa e receita recorrente por ofício</p>
+                </div>
+                <div class="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                  <i data-lucide="trending-up" class="w-5 h-5"></i>
+                </div>
+              </div>
+              <div id="chart-nichos-ativos" class="space-y-4">
+                <!-- Preenchido via JS -->
+              </div>
+            </div>
+
+            <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+              <div class="flex items-center justify-between mb-5">
+                <div>
+                  <h3 class="font-display font-bold text-lg text-slate-900">Radar de Turnover (Churn por Ofício)</h3>
+                  <p class="text-xs text-slate-500">Taxa de cancelamento por categoria e motivos registrados</p>
+                </div>
+                <div class="w-9 h-9 rounded-xl bg-red-50 text-red-600 flex items-center justify-center">
+                  <i data-lucide="alert-triangle" class="w-5 h-5"></i>
+                </div>
+              </div>
+              <div id="chart-radar-turnover" class="space-y-4">
+                <!-- Preenchido via JS -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ABA 2: FUNIL DE INTERESSADOS (NOVOS CADASTROS) -->
+        <div id="admin-tab-interessados" class="hidden space-y-5 animate-fade-in">
+          <div class="bg-white rounded-2xl border border-slate-200 p-5 sm:p-6 shadow-sm">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
+              <div>
+                <h3 class="font-display font-bold text-lg text-slate-900">Profissionais Aguardando Fechamento</h3>
+                <p class="text-sm text-slate-500">Autônomos e MEIs que simularam pacote na Página de Venda. Feche no WhatsApp e ative a página IA com 1 clique.</p>
+              </div>
+            </div>
+            <div id="lista-interessados" class="space-y-4">
+              <!-- Preenchido via JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- ABA 3: ASSINANTES ATIVOS, ENTREGAS & LEMBRETES -->
+        <div id="admin-tab-assinantes" class="hidden space-y-6 animate-fade-in">
+          <div id="central-lembretes" class="bg-amber-50 border border-amber-200 rounded-2xl p-5">
+            <!-- Preenchido via JS -->
+          </div>
+
+          <div id="lista-assinantes-ativos" class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+            <!-- Preenchido via JS -->
+          </div>
+        </div>
+
+        <!-- ABA 4: INTEGRAÇÕES & CONFIGURAÇÕES -->
+        <div id="admin-tab-integracoes" class="hidden space-y-6 animate-fade-in">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            
+            <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+              <div class="flex items-center gap-3 mb-4">
+                <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center">
+                  <i data-lucide="smartphone" class="w-5 h-5"></i>
+                </div>
+                <div>
+                  <h3 class="font-display font-bold text-lg text-slate-900">WhatsApp Comercial do Gestor</h3>
+                  <p class="text-xs text-slate-500">Número que recebe os novos cadastros da Página de Venda</p>
+                </div>
+              </div>
+              <div class="space-y-4">
+                <div>
+                  <label class="block text-sm font-semibold text-slate-700 mb-1">Número com DDI + DDD (somente números)</label>
+                  <input type="text" id="cfg-gestor-whatsapp" placeholder="5591980789170" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-emerald-500 outline-none" />
+                </div>
+                <div>
+                  <label class="block text-sm font-semibold text-slate-700 mb-1">Nome do Consultor / Operação</label>
+                  <input type="text" id="cfg-gestor-nome" placeholder="Fábio Medeiros — Consultor ClienteNoZap" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-emerald-500 outline-none" />
+                </div>
+                <button onclick="saveOperationalConfig()" class="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-sm transition-colors">
+                  Salvar Configuração Ativa
+                </button>
+              </div>
+            </div>
+
+            <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm space-y-5">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-xl bg-slate-100 text-slate-800 flex items-center justify-center">
+                    <i data-lucide="database" class="w-5 h-5"></i>
+                  </div>
+                  <div>
+                    <h3 class="font-display font-bold text-lg text-slate-900">Infraestrutura Fase 2 (Opcional)</h3>
+                    <p class="text-xs text-slate-500">Salvo apenas localmente no navegador (zero chaves no GitHub)</p>
+                  </div>
+                </div>
+                <span class="text-[11px] font-bold px-2.5 py-1 rounded-full bg-slate-100 text-slate-600">Seguro</span>
+              </div>
+
+              <div class="space-y-3 pt-2 border-t border-slate-100">
+                <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Conector Supabase (Banco Externo)</p>
+                <input type="text" id="cfg-supabase-url" placeholder="https://seu-projeto.supabase.co" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-slate-900 outline-none" />
+                <input type="password" id="cfg-supabase-key" placeholder="Supabase Anon Public Key (salva apenas no localStorage)" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-slate-900 outline-none" />
+              </div>
+
+              <div class="space-y-3 pt-2 border-t border-slate-100">
+                <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Alertas por E-mail (Resend)</p>
+                <div class="flex flex-col sm:flex-row gap-2">
+                  <input type="email" id="cfg-resend-email" placeholder="seu-email@dominio.com.br" class="flex-1 px-3.5 py-2 rounded-xl border border-slate-300 text-xs focus:ring-2 focus:ring-slate-900 outline-none" />
+                  <button type="button" onclick="simulateResendAlert()" class="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold whitespace-nowrap">
+                    Simular Envio de Alerta
+                  </button>
+                </div>
+              </div>
+
+              <div class="pt-2 flex flex-wrap items-center justify-between gap-3 border-t border-slate-100">
+                <button onclick="saveInfraConfig()" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-900 text-white text-xs font-bold">
+                  Guardar Credenciais Locais
+                </button>
+                <button onclick="openResetConfirmModal()" class="px-4 py-2 rounded-xl border border-red-200 bg-red-50 hover:bg-red-100 text-red-700 text-xs font-bold flex items-center gap-1.5">
+                  <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+                  Restaurar Dados de Demonstração
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===================================================================== -->
+  <!-- OVERLAY FULL-VIEW: MINI-LANDING PAGE PERSONALIZADA POR IA             -->
+  <!-- ===================================================================== -->
+  <div id="mini-lp-overlay" class="hidden fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-sm overflow-y-auto animate-fade-in">
+    <div class="sticky top-0 z-20 bg-slate-900/95 border-b border-slate-800 px-4 py-3">
+      <div class="max-w-5xl mx-auto flex flex-wrap items-center justify-between gap-3">
+        <button onclick="closeMiniLP()" class="px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-white text-xs sm:text-sm font-semibold flex items-center gap-2 transition-colors">
+          <i data-lucide="arrow-left" class="w-4 h-4"></i>
+          <span>Voltar</span>
+        </button>
+
+        <div class="flex flex-wrap items-center gap-2">
+          <!-- Controles de edição visíveis apenas quando logado como Administrador -->
+          <div id="mini-lp-admin-controls" class="hidden flex-wrap items-center gap-2">
+            <span class="hidden md:inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-full">
+              <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+              Página Gerada por IA
+            </span>
+            <button onclick="cycleMiniLPTheme()" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-semibold flex items-center gap-1.5 transition-colors">
+              <i data-lucide="palette" class="w-4 h-4 text-amber-400"></i>
+              <span>Alternar Tema IA</span>
+            </button>
+          </div>
+
+          <!-- Botão Compartilhar sempre visível (visitantes, profissionais e admin) -->
+          <button onclick="copyCampaignLink()" class="px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center gap-1.5 transition-colors">
+            <i data-lucide="share-2" class="w-4 h-4"></i>
+            <span class="hidden sm:inline">Compartilhar Página</span>
+            <span class="sm:hidden">Compartilhar</span>
+          </button>
+
+          <button onclick="closeMiniLP()" title="Fechar Página" aria-label="Fechar Página" class="px-3 py-2 rounded-xl bg-red-600/90 hover:bg-red-600 text-white text-xs font-bold flex items-center gap-1.5 shadow-sm transition-colors">
+            <i data-lucide="x" class="w-4 h-4"></i>
+            <span>Fechar</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="mini-lp-content" class="max-w-4xl mx-auto my-6 sm:my-10 px-4">
+      <!-- Renderizado dinamicamente pelo Motor de IA -->
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- MODAL 1: PONTE RASTREADA (CAPTURA DE CONSUMIDOR FINAL)                -->
+  <!-- ===================================================================== -->
+  <div id="modal-ponte" class="hidden fixed inset-0 z-50 bg-slate-900/75 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full overflow-hidden shadow-2xl border border-slate-200 animate-fade-in">
+      <div class="bg-slate-900 px-6 py-5 text-white flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-emerald-500 flex items-center justify-center">
+            <i data-lucide="message-circle" class="w-5 h-5 text-white"></i>
+          </div>
+          <div>
+            <h3 class="font-display font-bold text-base leading-tight">Falar no WhatsApp</h3>
+            <p id="ponte-prof-nome" class="text-xs text-emerald-400 font-medium">Profissional Verificado</p>
+          </div>
+        </div>
+        <button onclick="closeModal('modal-ponte')" class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <form id="form-ponte-rastreada" onsubmit="handlePonteSubmit(event)" class="p-6 space-y-4">
+        <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+          Informe seu nome e WhatsApp para iniciarmos seu atendimento direto com <strong id="ponte-prof-nome-inline" class="text-slate-900">o profissional</strong>:
+        </p>
+        <div>
+          <label for="ponte-consumidor-nome" class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">Seu Nome *</label>
+          <input type="text" id="ponte-consumidor-nome" required placeholder="Ex: Carlos Eduardo" class="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-emerald-500 outline-none" />
+        </div>
+        <div>
+          <label for="ponte-consumidor-zap" class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">Seu WhatsApp com DDD *</label>
+          <input type="tel" id="ponte-consumidor-zap" required oninput="maskPhone(this)" maxlength="15" placeholder="(91) 98888-0000" class="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-emerald-500 outline-none" />
+        </div>
+        <button type="submit" class="w-full py-3.5 px-5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-display font-bold text-sm shadow-lg shadow-emerald-600/20 flex items-center justify-center gap-2 transition-all">
+          <i data-lucide="send" class="w-4 h-4"></i>
+          <span>Continuar para o WhatsApp</span>
+        </button>
+      </form>
+
+      <div id="ponte-sucesso" class="hidden p-6 text-center space-y-4">
+        <div class="w-14 h-14 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto">
+          <i data-lucide="check-circle-2" class="w-8 h-8"></i>
+        </div>
+        <div>
+          <h4 class="font-display font-extrabold text-lg text-slate-900">Contato Liberado!</h4>
+          <p class="text-xs sm:text-sm text-slate-600 mt-1">
+            Clique no botão abaixo para abrir a conversa no WhatsApp com a mensagem já pronta.
+          </p>
+        </div>
+        <a id="ponte-wa-link" href="#" target="_blank" rel="noopener noreferrer" onclick="closeModal('modal-ponte')" class="w-full py-3.5 px-5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-display font-bold text-sm shadow-lg shadow-emerald-600/25 flex items-center justify-center gap-2 transition-all">
+          <i data-lucide="message-circle" class="w-5 h-5"></i>
+          <span>Abrir WhatsApp Agora</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- MODAL 2: CONFIRMAÇÃO DE CADASTRO DO PROFISSIONAL (PÁGINA DE VENDA)    -->
+  <!-- ===================================================================== -->
+  <div id="modal-cadastro-sucesso" class="hidden fixed inset-0 z-50 bg-slate-900/75 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 text-center shadow-2xl border border-slate-200 animate-fade-in space-y-5">
+      <div class="w-16 h-16 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto">
+        <i data-lucide="party-popper" class="w-8 h-8"></i>
+      </div>
+      <div>
+        <span class="text-xs font-bold uppercase tracking-wider text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full">Pré-Cadastro Reservado</span>
+        <h3 class="font-display font-extrabold text-2xl text-slate-900 mt-3">Falta só 1 passo para ativar!</h3>
+        <p class="text-sm text-slate-600 mt-2 leading-relaxed">
+          Seus dados já entraram na nossa fila prioritária. Clique no botão verde abaixo para enviar seu pacote ao nosso consultor no WhatsApp e colocar sua página no ar.
+        </p>
+      </div>
+      <div id="resumo-cadastro-modal" class="bg-slate-50 rounded-2xl p-4 text-left text-xs text-slate-700 space-y-1.5 border border-slate-200">
+        <!-- Preenchido via JS -->
+      </div>
+      <a id="btn-finalizar-zap-gestor" href="#" target="_blank" rel="noopener noreferrer" onclick="closeModal('modal-cadastro-sucesso')" class="w-full py-4 px-6 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-display font-bold text-base shadow-lg shadow-emerald-600/25 flex items-center justify-center gap-2 transition-all">
+        <i data-lucide="message-circle" class="w-5 h-5"></i>
+        <span>Finalizar Ativação no WhatsApp</span>
+      </a>
+      <button onclick="closeModal('modal-cadastro-sucesso')" class="text-xs font-semibold text-slate-400 hover:text-slate-600">
+        Fechar janela
+      </button>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- MODAL 3: LOGIN ADMINISTRATIVO                                         -->
+  <!-- ===================================================================== -->
+  <div id="modal-login" class="hidden fixed inset-0 z-50 bg-slate-900/75 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-sm w-full overflow-hidden shadow-2xl border border-slate-200 animate-fade-in">
+      <div class="bg-slate-900 px-6 py-6 text-white flex items-center justify-between">
+        <div>
+          <h3 class="font-display font-extrabold text-lg">Acesso Administrativo</h3>
+          <p class="text-xs text-slate-400">Painel Executivo ClienteNoZap</p>
+        </div>
+        <button onclick="closeModal('modal-login')" class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <form onsubmit="handleAdminLogin(event)" class="p-6 space-y-4">
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">E-mail do Gestor</label>
+          <input type="email" id="login-email" value="admin@clientenozap.com.br" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-slate-900 outline-none" />
+        </div>
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1">Senha</label>
+          <input type="password" id="login-senha" value="123456" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-slate-900 outline-none" />
+        </div>
+        <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-3 text-xs text-emerald-800">
+          <strong>Modo Demonstração:</strong> Credenciais já preenchidas para facilitar avaliação e testes.
+        </div>
+        <button type="submit" class="w-full py-3.5 px-5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-display font-bold text-sm shadow-md transition-colors flex items-center justify-center gap-2">
+          <i data-lucide="lock" class="w-4 h-4 text-emerald-400"></i>
+          <span>Entrar no Painel de Gestão</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- MODAL 4: AUDITORIA DE ENTREGAS NOMINAIS DO ASSINANTE                  -->
+  <!-- ===================================================================== -->
+  <div id="modal-auditoria" class="hidden fixed inset-0 z-50 bg-slate-900/75 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-2xl w-full max-h-[88vh] flex flex-col overflow-hidden shadow-2xl border border-slate-200 animate-fade-in">
+      <div class="bg-slate-900 px-6 py-5 text-white flex items-center justify-between shrink-0">
+        <div>
+          <h3 id="auditoria-titulo" class="font-display font-bold text-lg">Clientes Enviados</h3>
+          <p id="auditoria-subtitulo" class="text-xs text-slate-300">Registro nominal auditável pela Ponte Rastreada</p>
+        </div>
+        <button onclick="closeModal('modal-auditoria')" class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      
+      <div class="p-4 sm:p-6 overflow-y-auto flex-1 space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-3 bg-slate-50 p-3.5 rounded-2xl border border-slate-200">
+          <div class="text-xs text-slate-600">
+            Use esta lista no WhatsApp para confirmar com o profissional quantos orçamentos ele fechou na semana.
+          </div>
+          <button id="btn-simular-entrega-extra" onclick="simulateManualLeadForAssinante()" class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center gap-1.5 shrink-0">
+            <i data-lucide="plus" class="w-3.5 h-3.5"></i>
+            Simular Entrega Manual (+1)
+          </button>
+        </div>
+
+        <div class="overflow-x-auto border border-slate-200 rounded-2xl">
+          <table class="w-full text-left border-collapse text-xs sm:text-sm">
+            <thead>
+              <tr class="bg-slate-100 text-slate-600 border-b border-slate-200">
+                <th class="py-3 px-4 font-bold">Consumidor</th>
+                <th class="py-3 px-4 font-bold">WhatsApp</th>
+                <th class="py-3 px-4 font-bold">Origem</th>
+                <th class="py-3 px-4 font-bold">Data/Hora</th>
+              </tr>
+            </thead>
+            <tbody id="auditoria-tbody" class="divide-y divide-slate-100">
+              <!-- Preenchido via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- MODAL 5: EDITAR PERFIL / MINI-LP DO ASSINANTE                         -->
+  <!-- ===================================================================== -->
+  <div id="modal-editar-assinante" class="hidden fixed inset-0 z-50 bg-slate-900/75 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl border border-slate-200 animate-fade-in">
+      <div class="bg-slate-900 px-6 py-5 text-white flex items-center justify-between">
+        <div>
+          <h3 class="font-display font-bold text-lg">Editar Perfil & Mini-LP IA</h3>
+          <p class="text-xs text-slate-400">Personalize os dados exibidos na vitrine e na página exclusiva</p>
+        </div>
+        <button onclick="closeModal('modal-editar-assinante')" class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <form onsubmit="handleSaveEditAssinante(event)" class="p-6 space-y-4 max-h-[80vh] overflow-y-auto">
+        <input type="hidden" id="edit-ass-id" />
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">Nome do Profissional (Responsável)</label>
+            <input type="text" id="edit-ass-responsavel" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm outline-none focus:ring-2 focus:ring-emerald-500" />
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">Nome do Negócio / Serviço</label>
+            <input type="text" id="edit-ass-nome" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm outline-none focus:ring-2 focus:ring-emerald-500" />
+          </div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">WhatsApp</label>
+            <input type="text" id="edit-ass-whatsapp" required oninput="maskPhone(this)" maxlength="15" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm outline-none focus:ring-2 focus:ring-emerald-500" />
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">Cidade</label>
+            <select id="edit-ass-cidade" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm bg-white outline-none focus:ring-2 focus:ring-emerald-500">
+              <option value="Belém">Belém</option>
+              <option value="Ananindeua">Ananindeua</option>
+              <option value="Marituba">Marituba</option>
+              <option value="Benevides">Benevides</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-600 mb-1">Bairro Principal</label>
+            <input type="text" id="edit-ass-bairro" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm outline-none focus:ring-2 focus:ring-emerald-500" />
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-600 mb-1">Headline Principal da Mini-LP (IA)</label>
+          <textarea id="edit-ass-headline" rows="2" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm outline-none focus:ring-2 focus:ring-emerald-500"></textarea>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-600 mb-1">Diferenciais (separados por vírgula)</label>
+          <input type="text" id="edit-ass-diferenciais" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm outline-none focus:ring-2 focus:ring-emerald-500" />
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-slate-600 mb-1.5">Galeria de Imagens IA do Segmento (clique para escolher)</label>
+          <div id="edit-ass-gallery" class="grid grid-cols-4 gap-2 mb-2.5">
+            <!-- Miniaturas do segmento preenchidas via JS -->
+          </div>
+          <label class="block text-xs font-bold text-slate-600 mb-1">Ou cole uma URL de Imagem Personalizada</label>
+          <input type="url" id="edit-ass-banner-url" placeholder="https://..." class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs outline-none focus:ring-2 focus:ring-emerald-500" />
+        </div>
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" onclick="closeModal('modal-editar-assinante')" class="px-4 py-2.5 rounded-xl border border-slate-300 text-slate-700 text-sm font-semibold">Cancelar</button>
+          <button type="submit" class="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold">Salvar Alterações</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- MODAL 6: REGISTRAR CANCELAMENTO (CHURN / TURNOVER)                    -->
+  <!-- ===================================================================== -->
+  <div id="modal-churn" class="hidden fixed inset-0 z-50 bg-slate-900/75 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full overflow-hidden shadow-2xl border border-slate-200 animate-fade-in">
+      <div class="bg-red-950 px-6 py-5 text-white flex items-center justify-between">
+        <div>
+          <h3 class="font-display font-bold text-lg">Registrar Cancelamento (Churn)</h3>
+          <p id="churn-prof-nome" class="text-xs text-red-300">Profissional</p>
+        </div>
+        <button onclick="closeModal('modal-churn')" class="p-1.5 rounded-lg text-red-300 hover:text-white hover:bg-red-900">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <form onsubmit="handleConfirmChurn(event)" class="p-6 space-y-4">
+        <input type="hidden" id="churn-ass-id" />
+        <p class="text-xs sm:text-sm text-slate-600">
+          Selecione o motivo principal do encerramento para alimentar o <strong>Radar de Turnover por Ofício</strong> no Dashboard:
+        </p>
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Motivo do Cancelamento *</label>
+          <select id="churn-motivo" required class="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm bg-white focus:ring-2 focus:ring-red-500 outline-none">
+            <option value="Preço / Orçamento">Preço / Orçamento</option>
+            <option value="Pouco fechamento de serviço">Pouco fechamento de serviço</option>
+            <option value="Agenda lotada / Pausa temporária">Agenda lotada / Pausa temporária</option>
+            <option value="Mudança de ramo / Outros">Mudança de ramo / Outros</option>
+          </select>
+        </div>
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" onclick="closeModal('modal-churn')" class="px-4 py-2.5 rounded-xl border border-slate-300 text-slate-700 text-sm font-semibold">Voltar</button>
+          <button type="submit" class="px-5 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white text-sm font-bold">Confirmar Cancelamento</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- MODAL 6B: CONFIRMAR RENOVAÇÃO DE ASSINATURA (NOVO CICLO / UPSELL)     -->
+  <!-- ===================================================================== -->
+  <div id="modal-renovar" class="hidden fixed inset-0 z-50 bg-slate-900/75 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full overflow-hidden shadow-2xl border border-slate-200 animate-fade-in">
+      <div class="bg-emerald-950 px-6 py-5 text-white flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-emerald-500 text-white flex items-center justify-center">
+            <i data-lucide="badge-check" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="font-display font-bold text-lg leading-tight">Confirmar Renovação</h3>
+            <p id="renovar-prof-nome" class="text-xs text-emerald-300">Profissional</p>
+          </div>
+        </div>
+        <button onclick="closeModal('modal-renovar')" class="p-1.5 rounded-lg text-emerald-300 hover:text-white hover:bg-emerald-900">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <form onsubmit="handleConfirmRenovacao(event)" class="p-6 space-y-4">
+        <input type="hidden" id="renovar-ass-id" />
+        <div id="renovar-resumo-ciclo" class="bg-slate-50 border border-slate-200 rounded-2xl p-3.5 text-xs text-slate-700 space-y-1">
+          <!-- Preenchido via JS -->
+        </div>
+        <div>
+          <label for="renovar-plano-select" class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Plano para o Novo Ciclo (Manter ou Upsell) *</label>
+          <select id="renovar-plano-select" required class="w-full px-4 py-3 rounded-xl border-2 border-emerald-500 bg-emerald-50/30 text-sm font-semibold text-slate-900 focus:ring-2 focus:ring-emerald-500 outline-none">
+            <option value="comeco">Plano Começo — R$ 147/mês (15 clientes)</option>
+            <option value="agenda_cheia">Plano Agenda Cheia — R$ 267/mês (30 clientes)</option>
+            <option value="maximo">Plano Máximo — R$ 447/mês (55 clientes)</option>
+          </select>
+        </div>
+        <p class="text-[11px] text-slate-500 leading-relaxed">
+          Ao confirmar, a barra mensal será iniciada em <strong>0</strong> para o novo ciclo, preservando todo o histórico anterior na auditoria.
+        </p>
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" onclick="closeModal('modal-renovar')" class="px-4 py-2.5 rounded-xl border border-slate-300 text-slate-700 text-sm font-semibold">Cancelar</button>
+          <button type="submit" class="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold flex items-center gap-1.5 shadow-sm">
+            <i data-lucide="check" class="w-4 h-4"></i>
+            <span>Iniciar Novo Ciclo</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- MODAL 7: CONFIRMAR RESTAURAÇÃO DE DADOS DE DEMONSTRAÇÃO               -->
+  <!-- ===================================================================== -->
+  <div id="modal-reset-confirm" class="hidden fixed inset-0 z-50 bg-slate-900/75 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-sm w-full p-6 text-center shadow-2xl border border-slate-200 animate-fade-in space-y-4">
+      <div class="w-12 h-12 rounded-2xl bg-amber-100 text-amber-600 flex items-center justify-center mx-auto">
+        <i data-lucide="rotate-ccw" class="w-6 h-6"></i>
+      </div>
+      <h3 class="font-display font-bold text-lg text-slate-900">Restaurar Base Inicial?</h3>
+      <p class="text-xs sm:text-sm text-slate-600">
+        Isso recarregará os 6 assinantes ativos, 108 entregas nominais e os indicadores originais da Grande Belém.
+      </p>
+      <div class="flex items-center justify-center gap-2 pt-2">
+        <button onclick="closeModal('modal-reset-confirm')" class="px-4 py-2.5 rounded-xl border border-slate-300 text-slate-700 text-xs sm:text-sm font-semibold">Cancelar</button>
+        <button onclick="executeResetDemoData()" class="px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs sm:text-sm font-bold">Sim, Restaurar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- MODAL 8: DEIXE SEU DEPOIMENTO (AVALIAÇÃO DO PROFISSIONAL)            -->
+  <!-- ===================================================================== -->
+  <div id="modal-depoimento" class="hidden fixed inset-0 z-50 bg-slate-900/75 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl border border-slate-200 animate-fade-in">
+      <div class="bg-slate-900 px-6 py-5 text-white flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <div class="w-9 h-9 rounded-xl bg-emerald-500 text-white flex items-center justify-center">
+            <i data-lucide="star" class="w-5 h-5 fill-current"></i>
+          </div>
+          <div>
+            <h3 class="font-display font-bold text-lg leading-tight">Deixe seu Depoimento</h3>
+            <p class="text-xs text-slate-300">Conte como está sendo receber clientes no WhatsApp</p>
+          </div>
+        </div>
+        <button onclick="closeModal('modal-depoimento')" class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <form onsubmit="handleDepoimentoSubmit(event)" class="p-6 space-y-4 max-h-[82vh] overflow-y-auto">
+        <input type="hidden" id="dep-estrelas" value="5" />
+        <input type="hidden" id="dep-foto-selected" value="" />
+
+        <!-- Seletor de Estrelas -->
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Sua Nota de Satisfação *</label>
+          <div id="dep-star-buttons" class="flex items-center gap-1.5">
+            <!-- Preenchido via JS -->
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label for="dep-nome" class="block text-xs font-bold text-slate-700 mb-1">Seu Nome *</label>
+            <input type="text" id="dep-nome" required placeholder="Ex: João Mendes" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm outline-none focus:ring-2 focus:ring-emerald-500" />
+          </div>
+          <div>
+            <label for="dep-negocio" class="block text-xs font-bold text-slate-700 mb-1">Negócio / Profissão *</label>
+            <input type="text" id="dep-negocio" required placeholder="Ex: Oficina J&M • Mecânico" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm outline-none focus:ring-2 focus:ring-emerald-500" />
+          </div>
+        </div>
+
+        <div>
+          <label for="dep-regiao" class="block text-xs font-bold text-slate-700 mb-1">Bairro e Cidade *</label>
+          <input type="text" id="dep-regiao" required placeholder="Ex: Cidade Nova, Ananindeua (PA)" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm outline-none focus:ring-2 focus:ring-emerald-500" />
+        </div>
+
+        <!-- Escolha de Foto / Avatar -->
+        <div>
+          <label class="block text-xs font-bold text-slate-700 mb-1.5">Sua Foto (escolha um avatar ou cole o link da sua foto)</label>
+          <div id="dep-avatar-presets" class="flex items-center gap-2.5 mb-2">
+            <!-- Avatares sugeridos via JS -->
+          </div>
+          <input type="url" id="dep-foto-url" oninput="document.getElementById('dep-foto-selected').value = this.value" placeholder="Opcional: cole aqui o link da sua foto (https://...)" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs outline-none focus:ring-2 focus:ring-emerald-500" />
+        </div>
+
+        <div>
+          <label for="dep-texto" class="block text-xs font-bold text-slate-700 mb-1">Como está sendo sua experiência? *</label>
+          <textarea id="dep-texto" rows="3" required placeholder="Ex: Na primeira semana já recebi vários contatos no WhatsApp e fechei serviços no meu bairro..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm outline-none focus:ring-2 focus:ring-emerald-500"></textarea>
+        </div>
+
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" onclick="closeModal('modal-depoimento')" class="px-4 py-2.5 rounded-xl border border-slate-300 text-slate-700 text-sm font-semibold">Cancelar</button>
+          <button type="submit" class="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold flex items-center gap-1.5 shadow-sm">
+            <i data-lucide="send" class="w-4 h-4"></i>
+            <span>Publicar Depoimento</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- TOAST NOTIFICATION CONTAINER                                          -->
+  <!-- ===================================================================== -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- ===================================================================== -->
+  <!-- RODAPÉ                                                                -->
+  <!-- ===================================================================== -->
+  <footer class="bg-slate-950 text-slate-400 border-t border-slate-900 py-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs sm:text-sm">
+      <div class="flex items-center gap-2">
+        <div class="w-7 h-7 rounded-lg bg-emerald-600 text-white flex items-center justify-center">
+          <i data-lucide="zap" class="w-4 h-4 fill-current"></i>
+        </div>
+        <span class="font-display font-bold text-white">ClienteNoZap</span>
+        <span class="text-slate-600">•</span>
+        <span>Região Metropolitana de Belém (PA)</span>
+      </div>
+      <div class="text-slate-500 text-center sm:text-right">
+        MVP v4.0 • Demanda Hiperlocalizada & Vitrine Inteligente para Autônomos e MEIs
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===================================================================== -->
+  <!-- LÓGICA DA APLICAÇÃO (JAVASCRIPT MODULAR ES6+)                         -->
+  <!-- ===================================================================== -->
+  <script>
+    // =========================================================================
+    // 1. CONSTANTES DE CONFIGURAÇÃO, PLANOS E MOTOR DE TEMAS DE IA
+    // =========================================================================
+    const STORAGE_KEY = 'clientenozap_db_v1';
+    const AUTH_SESSION_KEY = 'clientenozap_admin_session';
+
+    const PLANS = {
+      comeco: {
+        id: 'comeco',
+        nome: 'Plano Começo',
+        valor: 147,
+        metaLeads: 15,
+        faixaTexto: '12 a 15 clientes/mês'
+      },
+      agenda_cheia: {
+        id: 'agenda_cheia',
+        nome: 'Plano Agenda Cheia',
+        valor: 267,
+        metaLeads: 30,
+        faixaTexto: '25 a 30 clientes/mês'
+      },
+      maximo: {
+        id: 'maximo',
+        nome: 'Plano Máximo',
+        valor: 447,
+        metaLeads: 55,
+        faixaTexto: '45 a 55 clientes/mês'
+      }
+    };
+
+    // Motor de Identidade Visual & Copywriting por Segmento (Detecção Semântica IA)
+    const NICHE_THEMES = {
+      'Mecânica & Auto': {
+        accentHex: '#F59E0B',
+        badgeBg: 'bg-amber-500/20 text-amber-300 border-amber-400/30',
+        pillBg: 'bg-amber-100 text-amber-800',
+        fallbackGradient: 'from-slate-900 via-amber-950 to-slate-900',
+        banners: [
+          'https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&w=1200&q=80',
+          'https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&w=1200&q=80',
+          'https://images.unsplash.com/photo-1530046339160-ce3e530c7d2f?auto=format&fit=crop&w=1200&q=80',
+          'https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=1200&q=80'
+        ],
+        diferenciais: ['Diagnóstico Transparente', 'Peças de Qualidade', 'Atendimento Rápido na Região'],
+        buildHeadline: (nome, bairro, cidade, oficioLabel) => `Precisando de ${oficioLabel || 'Mecânica & Auto'} em ${bairro} (${cidade})? A ${nome} resolve com agilidade e garantia!`,
+        buildSubheadline: (nome) => `Manutenção preventiva, revisão completa e socorro especializado com atendimento direto pelo WhatsApp da ${nome}.`
+      },
+      'Beleza & Estética': {
+        accentHex: '#EC4899',
+        badgeBg: 'bg-pink-500/20 text-pink-300 border-pink-400/30',
+        pillBg: 'bg-pink-100 text-pink-800',
+        fallbackGradient: 'from-slate-900 via-pink-950 to-slate-900',
+        banners: [
+          'https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=1200&q=80',
+          'https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&w=1200&q=80',
+          'https://images.unsplash.com/photo-1522337660859-02fbefca4702?auto=format&fit=crop&w=1200&q=80',
+          'https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?auto=format&fit=crop&w=1200&q=80'
+        ],
+        diferenciais: ['Materiais 100% Esterilizados', 'Atendimento Personalizado', 'Horários Flexíveis no Bairro'],
+        buildHeadline: (nome, bairro, cidade) => `Realce sua beleza em ${bairro} (${cidade})! Agende seu horário agora com ${nome}.`,
+        buildSubheadline: (nome) => `Cuidado, estilo e produtos de primeira linha perto de você. Chame ${nome} no WhatsApp e garanta sua vaga.`
+      },
+      'Barbearia': {
+        accentHex: '#D97706',
+        badgeBg: 'bg-amber-500/20 text-amber-300 border-amber-400/30',
+        pillBg: 'bg-amber-100 text-amber-800',
+        fallbackGradient: 'from-slate-950 via-amber-950 to-slate-900',
+        banners: [
+          'https://images.unsplash.com/photo-1503951914875-452162b0f3f1?auto=format&fit=crop&w=1200&q=80',
+          'https://images.unsplash.com/photo-1585747860715-2ba37e788b70?auto=format&fit=crop&w=1200&q=80',
+          'https://images.unsplash.com/photo-1621605815971-fbc98d665033?auto=format&fit=crop&w=1200&q=80'
+        ],
+        diferenciais: ['Corte & Barba de Precisão', 'Ambiente Climatizado', 'Agendamento Rápido no Zap'],
+        buildHeadline: (nome, bairro, cidade) => `Corte na régua e barba alinhada em ${bairro} (${cidade})! Garanta seu horário na ${nome}.`,
+        buildSubheadline: (nome) => `Estilo clássico ou degradê moderno sem fila de espera. Chame ${nome} no WhatsApp e agende agora.`
+      },
+      'Refrigeração & Elétrica': {
+        accentHex: '#06B6D4',
+        badgeBg: 'bg-cyan-500/20 text-cyan-300 border-cyan-400/30',
+        pillBg: 'bg-cyan-100 text-cyan-800',
+        fallbackGradient: 'from-slate-900 via-cyan-950 to-slate-900',
+        banners: [
+          'https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=1200&q=80',
+          'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=1200&q=80',
+          'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&w=1200&q=80',
+          'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=1200&q=80'
+        ],
+        diferenciais: ['Visita Técnica Ágil', 'Garantia no Serviço', 'Solução Segura e Limpa'],
+        buildHeadline: (nome, bairro, cidade, oficioLabel) => `Instalação, manutenção ou ${oficioLabel || 'climatização e elétrica'} em ${bairro} (${cidade})? Chame a ${nome}!`,
+        buildSubheadline: (nome, cidade) => `Atendimento técnico especializado para residências e comércios em ${cidade} com orçamento rápido no WhatsApp.`
+      },
+      'Reformas & Reparos': {
+        accentHex: '#10B981',
+        badgeBg: 'bg-emerald-500/20 text-emerald-300 border-emerald-400/30',
+        pillBg: 'bg-emerald-100 text-emerald-800',
+        fallbackGradient: 'from-slate-900 via-emerald-950 to-slate-900',
+        banners: [
+          'https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1200&q=80',
+          'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?auto=format&fit=crop&w=1200&q=80',
+          'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80',
+          'https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1200&q=80'
+        ],
+        diferenciais: ['Orçamento Sem Compromisso', 'Acabamento Profissional', 'Cumprimento de Prazo'],
+        buildHeadline: (nome, bairro, cidade, oficioLabel) => `${oficioLabel || 'Reforma, pintura ou reparo rápido'} em ${bairro} (${cidade})? Fale com ${nome}!`,
+        buildSubheadline: (nome) => `Obra limpa, mão de obra qualificada e compromisso com o prazo combinado na sua região.`
+      },
+      'Limpeza & Diarista': {
+        accentHex: '#0EA5E9',
+        badgeBg: 'bg-sky-500/20 text-sky-300 border-sky-400/30',
+        pillBg: 'bg-sky-100 text-sky-800',
+        fallbackGradient: 'from-slate-900 via-sky-950 to-slate-900',
+        banners: [
+          'https://images.unsplash.com/photo-1527515637462-cff94eecc1ac?auto=format&fit=crop&w=1200&q=80',
+          'https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1200&q=80',
+          'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80'
+        ],
+        diferenciais: ['Limpeza Pesada e Detalhada', 'Pontualidade e Confiança', 'Residencial e Comercial'],
+        buildHeadline: (nome, bairro, cidade) => `Casa limpa, organizada e cheirosa em ${bairro} (${cidade})! Agende sua diária com ${nome}.`,
+        buildSubheadline: (nome) => `Faxina residencial, pós-obra ou comercial com capricho e responsabilidade. Chame ${nome} no WhatsApp.`
+      },
+      'Fretes & Mudanças': {
+        accentHex: '#F97316',
+        badgeBg: 'bg-orange-500/20 text-orange-300 border-orange-400/30',
+        pillBg: 'bg-orange-100 text-orange-800',
+        fallbackGradient: 'from-slate-900 via-orange-950 to-slate-900',
+        banners: [
+          'https://images.unsplash.com/photo-1600518464441-9154a4dea21b?auto=format&fit=crop&w=1200&q=80',
+          'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200&q=80',
+          'https://images.unsplash.com/photo-1519003722824-194d4455a60c?auto=format&fit=crop&w=1200&q=80'
+        ],
+        diferenciais: ['Cuidado Total com seus Bens', 'Pontualidade na Coleta', 'Preço Justo por Trajeto'],
+        buildHeadline: (nome, bairro, cidade) => `Precisando de Frete, Carreto ou Mudança em ${bairro} (${cidade})? Chame ${nome}!`,
+        buildSubheadline: (nome) => `Transporte seguro e ágil na Grande Belém. Envie o endereço de origem e destino no WhatsApp e receba o valor na hora.`
+      },
+      'Jardinagem & Paisagismo': {
+        accentHex: '#22C55E',
+        badgeBg: 'bg-green-500/20 text-green-300 border-green-400/30',
+        pillBg: 'bg-green-100 text-green-800',
+        fallbackGradient: 'from-slate-900 via-green-950 to-slate-900',
+        banners: [
+          'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?auto=format&fit=crop&w=1200&q=80',
+          'https://images.unsplash.com/photo-1558904541-efa843a96f01?auto=format&fit=crop&w=1200&q=80',
+          'https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?auto=format&fit=crop&w=1200&q=80'
+        ],
+        diferenciais: ['Poda e Corte de Grama', 'Limpeza de Quintais e Jardins', 'Manutenção Periódica'],
+        buildHeadline: (nome, bairro, cidade) => `Seu jardim bem cuidado e valorizado em ${bairro} (${cidade}) com ${nome}!`,
+        buildSubheadline: (nome) => `Poda, roçagem, paisagismo e limpeza de áreas verdes com equipamento próprio e orçamento rápido no Zap.`
+      },
+      'Confeitaria & Gastronomia': {
+        accentHex: '#F43F5E',
+        badgeBg: 'bg-rose-500/20 text-rose-300 border-rose-400/30',
+        pillBg: 'bg-rose-100 text-rose-800',
+        fallbackGradient: 'from-slate-900 via-rose-950 to-slate-900',
+        banners: [
+          'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=1200&q=80',
+          'https://images.unsplash.com/photo-1486427944299-d1955d23e34d?auto=format&fit=crop&w=1200&q=80',
+          'https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=1200&q=80'
+        ],
+        diferenciais: ['Ingredientes Frescos e Selecionados', 'Encomendas Personalizadas', 'Entrega Pontual na Região'],
+        buildHeadline: (nome, bairro, cidade) => `Bolos, doces e encomendas especiais em ${bairro} (${cidade}) feitos por ${nome}!`,
+        buildSubheadline: (nome) => `Sabor artesanal para festas, aniversários e eventos. Peça o cardápio e faça sua encomenda direto no WhatsApp.`
+      },
+      'Pet & Banho e Tosa': {
+        accentHex: '#FB923C',
+        badgeBg: 'bg-orange-500/20 text-orange-300 border-orange-400/30',
+        pillBg: 'bg-orange-100 text-orange-800',
+        fallbackGradient: 'from-slate-900 via-amber-950 to-slate-900',
+        banners: [
+          'https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?auto=format&fit=crop&w=1200&q=80',
+          'https://images.unsplash.com/photo-1548199973-03cce0bbc87b?auto=format&fit=crop&w=1200&q=80',
+          'https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?auto=format&fit=crop&w=1200&q=80'
+        ],
+        diferenciais: ['Carinho e Cuidado com seu Pet', 'Produtos Hipoalergênicos', 'Horário Marcado Sem Estresse'],
+        buildHeadline: (nome, bairro, cidade) => `Banho, tosa e cuidado especial para seu pet em ${bairro} (${cidade}) com ${nome}!`,
+        buildSubheadline: (nome) => `Seu melhor amigo limpo, cheiroso e bem tratado. Agende o horário pelo WhatsApp com ${nome}.`
+      },
+      'Informática & Celulares': {
+        accentHex: '#3B82F6',
+        badgeBg: 'bg-blue-500/20 text-blue-300 border-blue-400/30',
+        pillBg: 'bg-blue-100 text-blue-800',
+        fallbackGradient: 'from-slate-900 via-blue-950 to-slate-900',
+        banners: [
+          'https://images.unsplash.com/photo-1597872200969-2b65d56bd16b?auto=format&fit=crop&w=1200&q=80',
+          'https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80',
+          'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=1200&q=80'
+        ],
+        diferenciais: ['Orçamento Rápido e Honesto', 'Peças de Alta Qualidade', 'Garantia no Conserto'],
+        buildHeadline: (nome, bairro, cidade) => `Conserto de celular, notebook ou PC em ${bairro} (${cidade})? Fale com ${nome}!`,
+        buildSubheadline: (nome) => `Troca de tela, bateria, formatação e manutenção técnica ágil. Consulte valores direto no WhatsApp.`
+      },
+      'Chaveiro & Segurança': {
+        accentHex: '#EAB308',
+        badgeBg: 'bg-yellow-500/20 text-yellow-300 border-yellow-400/30',
+        pillBg: 'bg-yellow-100 text-yellow-800',
+        fallbackGradient: 'from-slate-900 via-yellow-950 to-slate-900',
+        banners: [
+          'https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&w=1200&q=80',
+          'https://images.unsplash.com/photo-1582139329536-e7284fece509?auto=format&fit=crop&w=1200&q=80',
+          'https://images.unsplash.com/photo-1509822929063-6b6cfc9b42f2?auto=format&fit=crop&w=1200&q=80'
+        ],
+        diferenciais: ['Socorro Rápido no Local', 'Abertura Residencial e Auto', 'Cópias e Fechaduras'],
+        buildHeadline: (nome, bairro, cidade) => `Precisando de Chaveiro urgente em ${bairro} (${cidade})? A ${nome} chega rápido!`,
+        buildSubheadline: (nome) => `Abertura de portas, carros, troca de segredo e instalação de fechaduras com atendimento imediato no WhatsApp.`
+      },
+      'Encanador & Hidráulica': {
+        accentHex: '#0284C7',
+        badgeBg: 'bg-sky-500/20 text-sky-300 border-sky-400/30',
+        pillBg: 'bg-sky-100 text-sky-800',
+        fallbackGradient: 'from-slate-900 via-sky-950 to-slate-900',
+        banners: [
+          'https://images.unsplash.com/photo-1585704032915-c3400ca199e7?auto=format&fit=crop&w=1200&q=80',
+          'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&w=1200&q=80',
+          'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=1200&q=80'
+        ],
+        diferenciais: ['Reparo de Vazamentos Ágil', 'Limpeza de Caixa d’Água', 'Serviço Limpo e Garantido'],
+        buildHeadline: (nome, bairro, cidade) => `Vazamento, torneira ou hidráulica em ${bairro} (${cidade})? Chame ${nome}!`,
+        buildSubheadline: (nome) => `Solução rápida para vazamentos, encanamentos e instalações hidráulicas na sua região via WhatsApp.`
+      },
+      'Outros': {
+        accentHex: '#6366F1',
+        badgeBg: 'bg-indigo-500/20 text-indigo-300 border-indigo-400/30',
+        pillBg: 'bg-indigo-100 text-indigo-800',
+        fallbackGradient: 'from-slate-900 via-indigo-950 to-slate-900',
+        banners: [
+          'https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=1200&q=80',
+          'https://images.unsplash.com/photo-1556740738-b6a63e27c4df?auto=format&fit=crop&w=1200&q=80',
+          'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1200&q=80'
+        ],
+        diferenciais: ['Atendimento Direto no Bairro', 'Orçamento Rápido no Zap', 'Profissional Verificado'],
+        buildHeadline: (nome, bairro, cidade, oficioLabel) => `Precisando de ${oficioLabel || 'serviço especializado'} em ${bairro} (${cidade})? Fale com ${nome}!`,
+        buildSubheadline: (nome) => `Serviço profissional com agilidade e confiança na Grande Belém. Peça seu orçamento direto no WhatsApp.`
+      }
+    };
+
+    // Detecta o tema visual exato combinando categoria + palavras-chave do ofício/negócio
+    function resolveSegmentTheme(oficio, oficioLabel = '', nome = '') {
+      const text = `${oficioLabel} ${oficio} ${nome}`.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+
+      if (/(diarist|faxin|limpez|passadeir|domestica|higieniz)/.test(text)) return NICHE_THEMES['Limpeza & Diarista'];
+      if (/(barbear|barbeir|corte|bigode)/.test(text)) return NICHE_THEMES['Barbearia'];
+      if (/(frete|carret|mudanc|transport|entrega|motoboy)/.test(text)) return NICHE_THEMES['Fretes & Mudanças'];
+      if (/(jardin|paisag|grama|poda|rocag)/.test(text)) return NICHE_THEMES['Jardinagem & Paisagismo'];
+      if (/(bolo|confeit|doce|salgad|buffet|marmit|gastronom|lanche)/.test(text)) return NICHE_THEMES['Confeitaria & Gastronomia'];
+      if (/(pet|banho|tosa|cachorr|cao|gato|veterinar)/.test(text)) return NICHE_THEMES['Pet & Banho e Tosa'];
+      if (/(celular|smartphone|informatica|computador|notebook|pc|tecnico de ti|tela)/.test(text)) return NICHE_THEMES['Informática & Celulares'];
+      if (/(chaveir|fechadur|tranca|cadead)/.test(text)) return NICHE_THEMES['Chaveiro & Segurança'];
+      if (/(encanad|hidraulic|vazament|torneira|cano|esgot)/.test(text)) return NICHE_THEMES['Encanador & Hidráulica'];
+      if (/(mecanic|auto|carro|moto|borrach|funilar|oficina|oleo|freio)/.test(text)) return NICHE_THEMES['Mecânica & Auto'];
+      if (/(belez|estetic|manicur|pedicur|unha|cabel|salao|sobrancelh|maquiag|depilac)/.test(text)) return NICHE_THEMES['Beleza & Estética'];
+      if (/(refriger|ar condicionado|split|climatiz|eletric|geladeir|freezer)/.test(text)) return NICHE_THEMES['Refrigeração & Elétrica'];
+      if (/(reform|repar|pintor|pintur|pedreir|marcen|gess|obra|solda)/.test(text)) return NICHE_THEMES['Reformas & Reparos'];
+
+      return NICHE_THEMES[oficio] || NICHE_THEMES['Outros'];
+    }
+
+    function generateAIProfile(nome, oficio, cidade, bairro, bannerIndex = 0, oficioLabel = null) {
+      const theme = resolveSegmentTheme(oficio, oficioLabel || '', nome);
+      const safeIndex = bannerIndex % theme.banners.length;
+      return {
+        headline: theme.buildHeadline(nome, bairro, cidade, oficioLabel || oficio),
+        subheadline: theme.buildSubheadline(nome, cidade),
+        diferenciais: [...theme.diferenciais],
+        bannerIndex: safeIndex,
+        bannerUrl: theme.banners[safeIndex],
+        corDestaque: theme.accentHex,
+        checkinRealizado: false
+      };
+    }
+
+    // =========================================================================
+    // 2. SEED DATA MATEMATICAMENTE CONSISTENTE (108 ENTREGAS NOMINAIS)
+    // =========================================================================
+    function buildSeedDatabase() {
+      const assinantesSeed = [
+        {
+          id: 'ASS-001',
+          responsavelNome: 'João Mendes',
+          nome: 'Oficina Mecânica J&M',
+          whatsapp: '(91) 98412-3310',
+          oficio: 'Mecânica & Auto',
+          oficioExibicao: 'Mecânica & Auto',
+          cidade: 'Ananindeua',
+          bairro: 'Cidade Nova',
+          planoId: 'agenda_cheia',
+          planoNome: 'Plano Agenda Cheia',
+          valorMensal: 267,
+          metaLeads: 30,
+          status: 'ativo',
+          dataAtivacao: '02/11/2026',
+          dataCancelamento: null,
+          motivoCancelamento: null,
+          targetEntregas: 26,
+          iaProfile: { ...generateAIProfile('Oficina Mecânica J&M', 'Mecânica & Auto', 'Ananindeua', 'Cidade Nova', 0), checkinRealizado: false }
+        },
+        {
+          id: 'ASS-002',
+          responsavelNome: 'Camila Freitas',
+          nome: 'Studio Camila Nails & Design',
+          whatsapp: '(91) 98190-4421',
+          oficio: 'Beleza & Estética',
+          oficioExibicao: 'Beleza & Estética',
+          cidade: 'Belém',
+          bairro: 'Marco',
+          planoId: 'comeco',
+          planoNome: 'Plano Começo',
+          valorMensal: 147,
+          metaLeads: 15,
+          status: 'ativo',
+          dataAtivacao: '05/11/2026',
+          dataCancelamento: null,
+          motivoCancelamento: null,
+          targetEntregas: 11,
+          iaProfile: { ...generateAIProfile('Studio Camila Nails & Design', 'Beleza & Estética', 'Belém', 'Marco', 1), checkinRealizado: true }
+        },
+        {
+          id: 'ASS-003',
+          responsavelNome: 'Ricardo Azevedo',
+          nome: 'ClimaFrio Refrigeração',
+          whatsapp: '(91) 98845-7719',
+          oficio: 'Refrigeração & Elétrica',
+          oficioExibicao: 'Refrigeração & Elétrica',
+          cidade: 'Belém',
+          bairro: 'Pedreira',
+          planoId: 'maximo',
+          planoNome: 'Plano Máximo',
+          valorMensal: 447,
+          metaLeads: 55,
+          status: 'ativo',
+          dataAtivacao: '01/11/2026',
+          dataCancelamento: null,
+          motivoCancelamento: null,
+          targetEntregas: 38,
+          iaProfile: { ...generateAIProfile('ClimaFrio Refrigeração', 'Refrigeração & Elétrica', 'Belém', 'Pedreira', 0), checkinRealizado: true }
+        },
+        {
+          id: 'ASS-004',
+          responsavelNome: 'Raimundo Nonato',
+          nome: 'Auto Elétrica Paraense',
+          whatsapp: '(91) 98233-1904',
+          oficio: 'Mecânica & Auto',
+          oficioExibicao: 'Mecânica & Auto',
+          cidade: 'Marituba',
+          bairro: 'Centro',
+          planoId: 'comeco',
+          planoNome: 'Plano Começo',
+          valorMensal: 147,
+          metaLeads: 15,
+          status: 'ativo',
+          dataAtivacao: '03/11/2026',
+          dataCancelamento: null,
+          motivoCancelamento: null,
+          targetEntregas: 13,
+          iaProfile: { ...generateAIProfile('Auto Elétrica Paraense', 'Mecânica & Auto', 'Marituba', 'Centro', 1), checkinRealizado: false }
+        },
+        {
+          id: 'ASS-005',
+          responsavelNome: 'Carlos Alberto',
+          nome: 'Mestre Carlos Reformas',
+          whatsapp: '(91) 98711-6092',
+          oficio: 'Reformas & Reparos',
+          oficioExibicao: 'Reformas & Reparos',
+          cidade: 'Belém',
+          bairro: 'Umarizal',
+          planoId: 'agenda_cheia',
+          planoNome: 'Plano Agenda Cheia',
+          valorMensal: 267,
+          metaLeads: 30,
+          status: 'ativo',
+          dataAtivacao: '06/11/2026',
+          dataCancelamento: null,
+          motivoCancelamento: null,
+          targetEntregas: 14,
+          iaProfile: { ...generateAIProfile('Mestre Carlos Reformas', 'Reformas & Reparos', 'Belém', 'Umarizal', 0), checkinRealizado: true }
+        },
+        {
+          id: 'ASS-006',
+          responsavelNome: 'Isabela Monteiro',
+          nome: 'Espaço Bella Hair',
+          whatsapp: '(91) 98305-8812',
+          oficio: 'Beleza & Estética',
+          oficioExibicao: 'Beleza & Estética',
+          cidade: 'Benevides',
+          bairro: 'Centro',
+          planoId: 'comeco',
+          planoNome: 'Plano Começo',
+          valorMensal: 147,
+          metaLeads: 15,
+          status: 'ativo',
+          dataAtivacao: '10/11/2026',
+          dataCancelamento: null,
+          motivoCancelamento: null,
+          targetEntregas: 6,
+          iaProfile: { ...generateAIProfile('Espaço Bella Hair', 'Beleza & Estética', 'Benevides', 'Centro', 0), checkinRealizado: false }
+        },
+        {
+          id: 'ASS-007',
+          responsavelNome: 'Luciana Paiva',
+          nome: 'Salão Brilho Próprio',
+          whatsapp: '(91) 98122-9011',
+          oficio: 'Beleza & Estética',
+          oficioExibicao: 'Beleza & Estética',
+          cidade: 'Belém',
+          bairro: 'Guamá',
+          planoId: 'comeco',
+          planoNome: 'Plano Começo',
+          valorMensal: 147,
+          metaLeads: 15,
+          status: 'cancelado',
+          dataAtivacao: '10/10/2026',
+          dataCancelamento: '09/11/2026',
+          motivoCancelamento: 'Pouco fechamento de serviço',
+          targetEntregas: 0,
+          iaProfile: generateAIProfile('Salão Brilho Próprio', 'Beleza & Estética', 'Belém', 'Guamá', 2)
+        },
+        {
+          id: 'ASS-008',
+          responsavelNome: 'Fernanda Dias',
+          nome: 'Manicure Express Belém',
+          whatsapp: '(91) 98944-3100',
+          oficio: 'Beleza & Estética',
+          oficioExibicao: 'Beleza & Estética',
+          cidade: 'Ananindeua',
+          bairro: 'Coqueiro',
+          planoId: 'comeco',
+          planoNome: 'Plano Começo',
+          valorMensal: 147,
+          metaLeads: 15,
+          status: 'cancelado',
+          dataAtivacao: '12/10/2026',
+          dataCancelamento: '11/11/2026',
+          motivoCancelamento: 'Preço / Orçamento',
+          targetEntregas: 0,
+          iaProfile: generateAIProfile('Manicure Express Belém', 'Beleza & Estética', 'Ananindeua', 'Coqueiro', 1)
+        }
+      ];
+
+      const primeirosNomes = [
+        'Rafael', 'Mariana', 'Lucas', 'Fernanda', 'Thiago', 'Juliana', 'Bruno', 'Camila',
+        'Rodrigo', 'Patrícia', 'Diego', 'Aline', 'Gabriel', 'Larissa', 'Marcelo', 'Beatriz',
+        'André', 'Renata', 'Felipe', 'Vanessa', 'Eduardo', 'Tatiane', 'Gustavo', 'Priscila'
+      ];
+      const sobrenomes = [
+        'Silva', 'Santos', 'Oliveira', 'Souza', 'Pereira', 'Costa', 'Rodrigues', 'Almeida',
+        'Nascimento', 'Lima', 'Araújo', 'Fernandes', 'Carvalho', 'Gomes', 'Martins', 'Rocha'
+      ];
+
+      const entregasSeed = [];
+      let leadCounter = 1;
+
+      assinantesSeed.forEach((ass) => {
+        for (let i = 0; i < ass.targetEntregas; i++) {
+          const pNome = primeirosNomes[(leadCounter + i * 3) % primeirosNomes.length];
+          const sNome = sobrenomes[(leadCounter * 2 + i) % sobrenomes.length];
+          const prefixo = 98100 + ((leadCounter * 73) % 899);
+          const sufixo = 1000 + ((leadCounter * 137) % 8999);
+          const dia = String(1 + ((leadCounter + i) % 15)).padStart(2, '0');
+          const hora = String(8 + ((leadCounter + i) % 11)).padStart(2, '0');
+          const min = String((leadCounter * 7) % 60).padStart(2, '0');
+
+          entregasSeed.push({
+            id: `LED-${String(leadCounter).padStart(3, '0')}`,
+            assinanteId: ass.id,
+            assinanteNome: ass.nome,
+            consumidorNome: `${pNome} ${sNome}`,
+            consumidorWhatsapp: `(91) ${prefixo}-${sufixo}`,
+            origem: i % 2 === 0 ? 'Mini-LP IA (Anúncio)' : 'Vitrine Local',
+            dataHora: `${dia}/11/2026 às ${hora}:${min}`
+          });
+          leadCounter++;
+        }
+        delete ass.targetEntregas;
+      });
+
+      const interessadosSeed = [
+        {
+          id: 'INT-001',
+          responsavelNome: 'José Ribamar',
+          nome: 'Borracharia 24h do Zé',
+          whatsapp: '(91) 98512-4098',
+          oficio: 'Mecânica & Auto',
+          oficioExibicao: 'Mecânica & Auto',
+          cidade: 'Ananindeua',
+          bairro: 'Coqueiro',
+          planoId: 'comeco',
+          planoNome: 'Plano Começo',
+          valorMensal: 147,
+          metaLeads: 15,
+          dataCadastro: '16/11/2026 às 09:42',
+          status: 'novo'
+        },
+        {
+          id: 'INT-002',
+          responsavelNome: 'Paulo Sérgio',
+          nome: 'GelAr Climatização',
+          whatsapp: '(91) 98765-2211',
+          oficio: 'Refrigeração & Elétrica',
+          oficioExibicao: 'Refrigeração & Elétrica',
+          cidade: 'Belém',
+          bairro: 'Guamá',
+          planoId: 'agenda_cheia',
+          planoNome: 'Plano Agenda Cheia',
+          valorMensal: 267,
+          metaLeads: 30,
+          dataCadastro: '16/11/2026 às 14:15',
+          status: 'novo'
+        },
+        {
+          id: 'INT-003',
+          responsavelNome: 'Antônio Silva',
+          nome: 'Pinturas & Texturas Silva',
+          whatsapp: '(91) 98201-7743',
+          oficio: 'Reformas & Reparos',
+          oficioExibicao: 'Reformas & Reparos',
+          cidade: 'Belém',
+          bairro: 'Icoaraci',
+          planoId: 'comeco',
+          planoNome: 'Plano Começo',
+          valorMensal: 147,
+          metaLeads: 15,
+          dataCadastro: '16/11/2026 às 17:30',
+          status: 'novo'
+        }
+      ];
+
+      return {
+        config: {
+          gestorWhatsapp: '5591980789170',
+          gestorNome: 'Fábio Medeiros — Consultor ClienteNoZap',
+          supabaseUrl: '',
+          supabaseAnonKey: '',
+          resendEmailAlert: ''
+        },
+        interessados: interessadosSeed,
+        assinantes: assinantesSeed,
+        entregas: entregasSeed,
+        depoimentos: [
+          {
+            id: 'DEP-001',
+            nome: 'João Mendes',
+            negocio: 'Oficina Mecânica J&M • Mecânica & Auto',
+            regiao: 'Cidade Nova, Ananindeua (PA)',
+            estrelas: 5,
+            fotoUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80',
+            texto: 'Na primeira semana já chegaram 8 orçamentos direto no meu WhatsApp. Fechei 3 revisões completas que pagaram o pacote com sobra. Não preciso perder tempo mexendo com anúncio.',
+            data: '12/11/2026'
+          },
+          {
+            id: 'DEP-002',
+            nome: 'Camila Freitas',
+            negocio: 'Studio Camila Nails & Design • Beleza',
+            regiao: 'Marco, Belém (PA)',
+            estrelas: 5,
+            fotoUrl: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&q=80',
+            texto: 'Antes eu dependia só de indicação e tinha dias vazios na semana. Com a página profissional que a IA montou e os contatos chegando no Zap, lotei meus horários de sexta e sábado.',
+            data: '14/11/2026'
+          },
+          {
+            id: 'DEP-003',
+            nome: 'Ricardo Azevedo',
+            negocio: 'ClimaFrio Refrigeração • Climatização',
+            regiao: 'Pedreira, Belém (PA)',
+            estrelas: 5,
+            fotoUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80',
+            texto: 'O melhor é que o cliente já chama no WhatsApp pedindo orçamento de instalação ou limpeza de split aqui perto. Atendimento direto, transparente e retorno muito rápido.',
+            data: '15/11/2026'
+          }
+        ]
+      };
+    }
+
+    // =========================================================================
+    // 3. GERENCIAMENTO DE ESTADO & PERSISTÊNCIA LOCALSTORAGE
+    // =========================================================================
+    let db = null;
+    let currentView = 'landing';
+    let currentAdminTab = 'dashboard';
+    let currentMiniLPAssinanteId = null;
+    let currentPonteAssinanteId = null;
+    let currentPonteOrigem = 'Vitrine Local';
+    let currentAuditoriaAssinanteId = null;
+
+    function loadDatabase() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) {
+          db = buildSeedDatabase();
+          saveDatabase();
+        } else {
+          db = JSON.parse(raw);
+          if (!db.config || !db.interessados || !db.assinantes || !db.entregas) {
+            db = buildSeedDatabase();
+            saveDatabase();
+          } else {
+            let updated = false;
+            if (db.config.gestorWhatsapp === '5591988880000') {
+              db.config.gestorWhatsapp = '5591980789170';
+              updated = true;
+            }
+            if (!db.depoimentos) {
+              db.depoimentos = buildSeedDatabase().depoimentos;
+              updated = true;
+            }
+            if (updated) saveDatabase();
+          }
+        }
+      } catch (err) {
+        console.error('Erro ao ler localStorage, carregando seed:', err);
+        db = buildSeedDatabase();
+      }
+    }
+
+    function saveDatabase() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(db));
+      } catch (err) {
+        console.error('Erro ao salvar no localStorage:', err);
+      }
+    }
+
+    function isAdminLoggedIn() {
+      return sessionStorage.getItem(AUTH_SESSION_KEY) === 'true';
+    }
+
+    // =========================================================================
+    // 4. UTILITÁRIOS DE UI, MÁSCARAS, TOASTS E MODAIS
+    // =========================================================================
+    function formatCurrency(val) {
+      return val.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
+    }
+
+    function sanitizePhone(phone) {
+      const digits = (phone || '').replace(/\D/g, '');
+      if (digits.startsWith('55') && digits.length >= 12) return digits;
+      return `55${digits}`;
+    }
+
+    function maskPhone(input) {
+      let v = input.value.replace(/\D/g, '');
+      if (v.length > 11) v = v.slice(0, 11);
+      if (v.length > 6) {
+        input.value = `(${v.slice(0, 2)}) ${v.slice(2, 7)}-${v.slice(7)}`;
+      } else if (v.length > 2) {
+        input.value = `(${v.slice(0, 2)}) ${v.slice(2)}`;
+      } else if (v.length > 0) {
+        input.value = `(${v}`;
+      }
+    }
+
+    function getNowFormatted() {
+      const now = new Date();
+      const d = String(now.getDate()).padStart(2, '0');
+      const m = String(now.getMonth() + 1).padStart(2, '0');
+      const y = now.getFullYear();
+      const h = String(now.getHours()).padStart(2, '0');
+      const min = String(now.getMinutes()).padStart(2, '0');
+      return `${d}/${m}/${y} às ${h}:${min}`;
+    }
+
+    function showToast(message, type = 'success') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      const colors = type === 'success'
+        ? 'bg-slate-900 text-white border-emerald-500'
+        : type === 'warning'
+        ? 'bg-amber-900 text-white border-amber-400'
+        : 'bg-red-900 text-white border-red-400';
+
+      toast.className = `pointer-events-auto flex items-center gap-2.5 px-4 py-3 rounded-xl border-l-4 shadow-xl text-xs sm:text-sm font-medium animate-fade-in ${colors}`;
+      toast.innerHTML = `
+        <i data-lucide="${type === 'success' ? 'check-circle-2' : 'info'}" class="w-4 h-4 text-emerald-400 shrink-0"></i>
+        <span>${message}</span>
+      `;
+      container.appendChild(toast);
+      lucide.createIcons();
+
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(8px)';
+        toast.style.transition = 'all 0.25s ease';
+        setTimeout(() => toast.remove(), 250);
+      }, 3200);
+    }
+
+    function openModal(id) {
+      document.getElementById(id).classList.remove('hidden');
+      lucide.createIcons();
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.add('hidden');
+    }
+
+    function toggleMobileMenu() {
+      const menu = document.getElementById('mobile-menu');
+      menu.classList.toggle('hidden');
+    }
+
+    // =========================================================================
+    // 5. NAVEGAÇÃO ENTRE TELAS E AUTENTICAÇÃO
+    // =========================================================================
+    function renderAuthControls() {
+      const container = document.getElementById('auth-controls');
+      if (isAdminLoggedIn()) {
+        container.innerHTML = `
+          <button onclick="navigateTo('admin')" class="px-3.5 py-2 rounded-xl ${currentView === 'admin' ? 'bg-emerald-600 text-white' : 'bg-slate-900 text-white hover:bg-slate-800'} text-xs sm:text-sm font-bold flex items-center gap-1.5 shadow-sm transition-colors">
+            <i data-lucide="layout-dashboard" class="w-4 h-4 text-emerald-400"></i>
+            <span>Painel Admin</span>
+          </button>
+          <button onclick="handleAdminLogout()" title="Sair do Painel" class="px-3 py-2 rounded-xl border border-slate-200 hover:bg-slate-100 text-slate-600 text-xs font-semibold transition-colors">
+            Sair
+          </button>
+        `;
+      } else {
+        container.innerHTML = `
+          <button onclick="openModal('modal-login')" class="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs sm:text-sm font-bold flex items-center gap-2 shadow-sm transition-colors">
+            <i data-lucide="lock" class="w-3.5 h-3.5 text-emerald-400"></i>
+            <span>Entrar</span>
+          </button>
+        `;
+      }
+      lucide.createIcons();
+    }
+
+    function navigateTo(view) {
+      if (view === 'admin' && !isAdminLoggedIn()) {
+        openModal('modal-login');
+        return;
+      }
+      currentView = view;
+      document.getElementById('view-landing').classList.add('hidden');
+      document.getElementById('view-vitrine').classList.add('hidden');
+      document.getElementById('view-admin').classList.add('hidden');
+
+      document.getElementById(`view-${view}`).classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      const vitrineBtn = document.getElementById('nav-vitrine');
+      if (vitrineBtn) {
+        if (view === 'vitrine') {
+          vitrineBtn.classList.add('bg-emerald-50', 'text-emerald-700');
+        } else {
+          vitrineBtn.classList.remove('bg-emerald-50', 'text-emerald-700');
+        }
+      }
+
+      renderAuthControls();
+
+      if (view === 'landing') renderDepoimentos();
+      if (view === 'vitrine') renderVitrine();
+      if (view === 'admin') renderAdminAll();
+      lucide.createIcons();
+    }
+
+    function goToSection(sectionId) {
+      if (currentView !== 'landing') {
+        navigateTo('landing');
+        setTimeout(() => {
+          const el = document.getElementById(sectionId);
+          if (el) el.scrollIntoView({ behavior: 'smooth' });
+        }, 80);
+      } else {
+        const el = document.getElementById(sectionId);
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    function handleAdminLogin(e) {
+      e.preventDefault();
+      sessionStorage.setItem(AUTH_SESSION_KEY, 'true');
+      closeModal('modal-login');
+      renderDepoimentos();
+      showToast('Bem-vindo ao Painel Executivo ClienteNoZap!');
+      navigateTo('admin');
+    }
+
+    function handleAdminLogout() {
+      sessionStorage.removeItem(AUTH_SESSION_KEY);
+      renderDepoimentos();
+      showToast('Sessão administrativa encerrada.');
+      navigateTo('landing');
+    }
+
+    // =========================================================================
+    // 5B. SEÇÃO DE DEPOIMENTOS (PROVA SOCIAL & ENVIO PELO CLIENTE)
+    // =========================================================================
+    const DEPOIMENTO_AVATAR_PRESETS = [
+      'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=300&q=80',
+      'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=300&q=80',
+      'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=300&q=80',
+      'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=300&q=80'
+    ];
+
+    function getInitials(name) {
+      return (name || 'CN')
+        .split(' ')
+        .filter(Boolean)
+        .slice(0, 2)
+        .map((n) => n[0].toUpperCase())
+        .join('');
+    }
+
+    function renderDepoimentos() {
+      const grid = document.getElementById('depoimentos-grid');
+      if (!grid || !db || !db.depoimentos) return;
+
+      const isAdmin = isAdminLoggedIn();
+
+      grid.innerHTML = db.depoimentos.map((dep) => {
+        const starsCount = Math.min(5, Math.max(1, Number(dep.estrelas) || 5));
+        const starsHtml = Array.from({ length: 5 }, (_, idx) => {
+          const filled = idx < starsCount;
+          return `<i data-lucide="star" class="w-4 h-4 ${filled ? 'text-amber-400 fill-amber-400' : 'text-slate-300'}"></i>`;
+        }).join('');
+
+        const initials = getInitials(dep.nome);
+        const avatarHtml = dep.fotoUrl
+          ? `<img src="${dep.fotoUrl}" alt="${dep.nome}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" class="w-12 h-12 rounded-full object-cover border-2 border-emerald-500/30 shrink-0" />
+             <div style="display:none" class="w-12 h-12 rounded-full bg-emerald-100 text-emerald-800 font-display font-extrabold text-sm items-center justify-center shrink-0">${initials}</div>`
+          : `<div class="w-12 h-12 rounded-full bg-emerald-100 text-emerald-800 font-display font-extrabold text-sm flex items-center justify-center shrink-0">${initials}</div>`;
+
+        return `
+          <div class="bg-white rounded-3xl border border-slate-200/90 p-7 shadow-sm hover:shadow-lg transition-all flex flex-col justify-between relative">
+            ${isAdmin ? `
+              <button onclick="deleteDepoimento('${dep.id}')" title="Remover depoimento (Admin)" class="absolute top-4 right-4 p-1.5 rounded-lg text-slate-400 hover:text-red-600 hover:bg-red-50 transition-colors">
+                <i data-lucide="trash-2" class="w-4 h-4"></i>
+              </button>
+            ` : ''}
+
+            <div>
+              <div class="flex items-center justify-between gap-2 mb-4 pr-6">
+                <div class="flex items-center gap-1">${starsHtml}</div>
+                <span class="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full">
+                  <i data-lucide="badge-check" class="w-3.5 h-3.5"></i>
+                  Assinante Verificado
+                </span>
+              </div>
+
+              <p class="text-slate-700 text-sm sm:text-base leading-relaxed italic mb-6">
+                “${dep.texto}”
+              </p>
+            </div>
+
+            <div class="flex items-center gap-3.5 pt-4 border-t border-slate-100">
+              ${avatarHtml}
+              <div class="min-w-0">
+                <h4 class="font-display font-bold text-sm text-slate-900 truncate">${dep.nome}</h4>
+                <p class="text-xs font-medium text-emerald-700 truncate">${dep.negocio}</p>
+                <p class="text-[11px] text-slate-500 flex items-center gap-1 mt-0.5 truncate">
+                  <i data-lucide="map-pin" class="w-3 h-3 text-slate-400 shrink-0"></i>
+                  <span>${dep.regiao}</span>
+                </p>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      lucide.createIcons();
+    }
+
+    function openDepoimentoModal() {
+      document.getElementById('dep-nome').value = '';
+      document.getElementById('dep-negocio').value = '';
+      document.getElementById('dep-regiao').value = '';
+      document.getElementById('dep-texto').value = '';
+      document.getElementById('dep-foto-url').value = '';
+      document.getElementById('dep-foto-selected').value = '';
+      setDepoimentoRating(5);
+
+      const presetsContainer = document.getElementById('dep-avatar-presets');
+      presetsContainer.innerHTML = DEPOIMENTO_AVATAR_PRESETS.map((url, idx) => `
+        <button type="button" onclick="selectDepoimentoAvatar('${url}', ${idx})" class="dep-preset-btn w-11 h-11 rounded-full overflow-hidden border-2 border-slate-200 hover:border-emerald-500 transition-all focus:outline-none">
+          <img src="${url}" alt="Avatar ${idx + 1}" class="w-full h-full object-cover" />
+        </button>
+      `).join('');
+
+      openModal('modal-depoimento');
+    }
+
+    function setDepoimentoRating(stars) {
+      document.getElementById('dep-estrelas').value = stars;
+      const container = document.getElementById('dep-star-buttons');
+      container.innerHTML = Array.from({ length: 5 }, (_, idx) => {
+        const active = idx < stars;
+        return `
+          <button type="button" onclick="setDepoimentoRating(${idx + 1})" class="p-1.5 rounded-lg hover:bg-amber-50 transition-colors focus:outline-none">
+            <i data-lucide="star" class="w-6 h-6 ${active ? 'text-amber-400 fill-amber-400' : 'text-slate-300'}"></i>
+          </button>
+        `;
+      }).join('');
+      lucide.createIcons();
+    }
+
+    function selectDepoimentoAvatar(url, idx) {
+      document.getElementById('dep-foto-selected').value = url;
+      document.getElementById('dep-foto-url').value = url;
+      document.querySelectorAll('.dep-preset-btn').forEach((btn, i) => {
+        if (i === idx) {
+          btn.classList.add('border-emerald-500', 'ring-2', 'ring-emerald-500/30');
+          btn.classList.remove('border-slate-200');
+        } else {
+          btn.classList.remove('border-emerald-500', 'ring-2', 'ring-emerald-500/30');
+          btn.classList.add('border-slate-200');
+        }
+      });
+    }
+
+    function handleDepoimentoSubmit(e) {
+      e.preventDefault();
+      const nome = document.getElementById('dep-nome').value.trim();
+      const negocio = document.getElementById('dep-negocio').value.trim();
+      const regiao = document.getElementById('dep-regiao').value.trim();
+      const texto = document.getElementById('dep-texto').value.trim();
+      const estrelas = Number(document.getElementById('dep-estrelas').value) || 5;
+      const fotoUrl = document.getElementById('dep-foto-url').value.trim() || document.getElementById('dep-foto-selected').value.trim();
+
+      const novoDepoimento = {
+        id: `DEP-${Date.now().toString().slice(-4)}`,
+        nome,
+        negocio,
+        regiao,
+        estrelas,
+        fotoUrl,
+        texto,
+        data: getNowFormatted()
+      };
+
+      db.depoimentos.unshift(novoDepoimento);
+      saveDatabase();
+      closeModal('modal-depoimento');
+      renderDepoimentos();
+      showToast('Obrigado! Seu depoimento foi publicado na página principal.');
+    }
+
+    function deleteDepoimento(id) {
+      db.depoimentos = db.depoimentos.filter((d) => d.id !== id);
+      saveDatabase();
+      renderDepoimentos();
+      showToast('Depoimento removido.', 'warning');
+    }
+
+    // =========================================================================
+    // 6. TELA 1: CONFIGURADOR DE PLANOS & CADASTRO DE PROFISSIONAL
+    // =========================================================================
+    function selectPlan(planId, scrollToForm = false) {
+      ['comeco', 'agenda_cheia', 'maximo'].forEach((id) => {
+        const card = document.getElementById(`card-plano-${id}`);
+        if (!card) return;
+        if (id === planId) {
+          card.classList.remove('border-slate-200');
+          card.classList.add('border-emerald-500', 'ring-4', 'ring-emerald-500/10');
+        } else {
+          card.classList.remove('border-emerald-500', 'ring-4', 'ring-emerald-500/10');
+          card.classList.add('border-slate-200');
+        }
+      });
+
+      const selectEl = document.getElementById('prof-plano');
+      if (selectEl) selectEl.value = planId;
+
+      if (scrollToForm) {
+        const formEl = document.getElementById('formulario-cadastro');
+        if (formEl) formEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+
+    function syncPlanCardFromSelect(planId) {
+      selectPlan(planId, false);
+    }
+
+    function toggleCustomOficio(val) {
+      const wrapper = document.getElementById('custom-oficio-wrapper');
+      const customInput = document.getElementById('prof-oficio-custom');
+      if (val === 'Outros') {
+        wrapper.classList.remove('hidden');
+        customInput.required = true;
+        customInput.focus();
+      } else {
+        wrapper.classList.add('hidden');
+        customInput.required = false;
+        customInput.value = '';
+      }
+    }
+
+    function formatDisplayPhoneFromDigits(digits) {
+      const clean = (digits || '').replace(/\D/g, '');
+      if (clean.length === 13 && clean.startsWith('55')) {
+        return `+55 (${clean.slice(2, 4)}) ${clean.slice(4, 9)}-${clean.slice(9)}`;
+      }
+      if (clean.length === 12 && clean.startsWith('55')) {
+        return `+55 (${clean.slice(2, 4)}) ${clean.slice(4, 8)}-${clean.slice(8)}`;
+      }
+      return digits;
+    }
+
+    function handleProfissionalSubmit(e) {
+      e.preventDefault();
+      const responsavelNome = document.getElementById('prof-responsavel').value.trim();
+      const negocioNome = document.getElementById('prof-negocio').value.trim();
+      const nomeExibicao = negocioNome || responsavelNome;
+      const whatsapp = document.getElementById('prof-whatsapp').value.trim();
+      const oficio = document.getElementById('prof-oficio').value;
+      const customOficio = document.getElementById('prof-oficio-custom').value.trim();
+      const oficioExibicao = oficio === 'Outros' && customOficio ? customOficio : oficio;
+      const cidade = document.getElementById('prof-cidade').value;
+      const bairro = document.getElementById('prof-bairro').value.trim();
+      const planoId = document.getElementById('prof-plano').value;
+      const planObj = PLANS[planoId] || PLANS.agenda_cheia;
+
+      const novoInteressado = {
+        id: `INT-${Date.now().toString().slice(-4)}`,
+        responsavelNome,
+        nome: nomeExibicao,
+        whatsapp,
+        oficio,
+        oficioExibicao,
+        cidade,
+        bairro,
+        planoId: planObj.id,
+        planoNome: planObj.nome,
+        valorMensal: planObj.valor,
+        metaLeads: planObj.metaLeads,
+        dataCadastro: getNowFormatted(),
+        status: 'novo'
+      };
+
+      db.interessados.unshift(novoInteressado);
+      saveDatabase();
+
+      const gestorPhone = sanitizePhone(db.config.gestorWhatsapp);
+      const gestorPhoneFormatted = formatDisplayPhoneFromDigits(gestorPhone);
+
+      document.getElementById('resumo-cadastro-modal').innerHTML = `
+        <div><strong>Profissional:</strong> ${responsavelNome}</div>
+        ${negocioNome ? `<div><strong>Negócio / Serviço:</strong> ${negocioNome}</div>` : ''}
+        <div><strong>Seu WhatsApp (para receber clientes):</strong> ${whatsapp}</div>
+        <div><strong>Ofício:</strong> ${oficioExibicao}</div>
+        <div><strong>Região:</strong> ${bairro} — ${cidade}</div>
+        <div><strong>Pacote:</strong> ${planObj.nome} (${formatCurrency(planObj.valor)}/mês • ${planObj.faixaTexto})</div>
+        <div class="pt-2 mt-2 border-t border-slate-200 text-emerald-800 font-semibold flex items-center gap-1.5">
+          <i data-lucide="arrow-up-right" class="w-3.5 h-3.5 shrink-0"></i>
+          <span>Destino: WhatsApp Consultor (${gestorPhoneFormatted})</span>
+        </div>
+      `;
+
+      const msg = `Olá! Acabei de fazer meu cadastro no *ClienteNoZap*.%0A%0A*Profissional:* ${encodeURIComponent(responsavelNome)}%0A*Negócio/Serviço:* ${encodeURIComponent(nomeExibicao)}%0A*WhatsApp p/ clientes:* ${encodeURIComponent(whatsapp)}%0A*Ofício:* ${encodeURIComponent(oficioExibicao)}%0A*Região:* ${encodeURIComponent(bairro + ' - ' + cidade)}%0A*Plano:* ${encodeURIComponent(planObj.nome)} (${encodeURIComponent(formatCurrency(planObj.valor) + '/mês')})%0A%0AQuero ativar minha página e começar a receber clientes!`;
+      document.getElementById('btn-finalizar-zap-gestor').href = `https://wa.me/${gestorPhone}?text=${msg}`;
+
+      e.target.reset();
+      toggleCustomOficio('');
+      selectPlan('agenda_cheia', false);
+      openModal('modal-cadastro-sucesso');
+      showToast('Pré-cadastro salvo! Clique para enviar ao WhatsApp do consultor.');
+    }
+
+    // =========================================================================
+    // 7. TELA 2: VITRINE LOCAL, MOTOR DE MINI-LP IA & PONTE RASTREADA
+    // =========================================================================
+    function getEntregasCountByAssinante(assinanteId) {
+      const ass = db.assinantes.find((a) => a.id === assinanteId);
+      const cicloAtual = ass ? (ass.cicloAtual || 1) : 1;
+      return db.entregas.filter((e) => e.assinanteId === assinanteId && (e.ciclo || 1) === cicloAtual).length;
+    }
+
+    function getTotalEntregasHistoricoByAssinante(assinanteId) {
+      return db.entregas.filter((e) => e.assinanteId === assinanteId).length;
+    }
+
+    function renderVitrine() {
+      const grid = document.getElementById('vitrine-grid');
+      if (!grid) return;
+
+      const search = (document.getElementById('filter-search')?.value || '').toLowerCase().trim();
+      const oficioFilter = document.getElementById('filter-oficio')?.value || 'Todos';
+      const cidadeFilter = document.getElementById('filter-cidade')?.value || 'Todas';
+
+      const ativos = db.assinantes.filter((ass) => {
+        if (ass.status !== 'ativo') return false;
+        const matchOficio = oficioFilter === 'Todos' || ass.oficio === oficioFilter;
+        const matchCidade = cidadeFilter === 'Todas' || ass.cidade === cidadeFilter;
+        const matchSearch =
+          !search ||
+          ass.nome.toLowerCase().includes(search) ||
+          ass.bairro.toLowerCase().includes(search) ||
+          (ass.oficioExibicao || ass.oficio).toLowerCase().includes(search);
+        return matchOficio && matchCidade && matchSearch;
+      });
+
+      if (ativos.length === 0) {
+        grid.innerHTML = `
+          <div class="col-span-full bg-white rounded-3xl border border-slate-200 p-10 text-center">
+            <div class="w-12 h-12 rounded-2xl bg-slate-100 text-slate-500 flex items-center justify-center mx-auto mb-3">
+              <i data-lucide="search-x" class="w-6 h-6"></i>
+            </div>
+            <h3 class="font-display font-bold text-lg text-slate-900">Nenhum profissional encontrado com esse filtro</h3>
+            <p class="text-sm text-slate-500 mt-1">Tente limpar a busca ou selecionar outra cidade da Grande Belém.</p>
+          </div>
+        `;
+        lucide.createIcons();
+        return;
+      }
+
+      grid.innerHTML = ativos.map((ass) => {
+        const theme = resolveSegmentTheme(ass.oficio, ass.oficioExibicao || '', ass.nome);
+        const oficioLabel = ass.oficioExibicao || ass.oficio;
+
+        return `
+          <div class="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-xl transition-all flex flex-col justify-between group">
+            <div>
+              <div onclick="openMiniLP('${ass.id}')" title="Clique para ver a página de ${ass.nome}" class="cursor-pointer relative h-44 bg-gradient-to-br ${theme.fallbackGradient} overflow-hidden">
+                <img src="${ass.iaProfile.bannerUrl}" alt="${ass.nome}" onerror="this.style.display='none'" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/35 to-transparent"></div>
+                <div class="absolute top-3.5 left-3.5 right-3.5 flex items-center justify-between gap-2">
+                  <span class="text-[11px] font-bold px-2.5 py-1 rounded-full ${theme.pillBg} shadow-sm">
+                    ${oficioLabel}
+                  </span>
+                  <span class="inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-1 rounded-full bg-emerald-500/95 text-white shadow-sm">
+                    <i data-lucide="badge-check" class="w-3.5 h-3.5"></i>
+                    Verificado
+                  </span>
+                </div>
+                <div class="absolute bottom-3.5 left-4 right-4 text-white">
+                  <h3 class="font-display font-extrabold text-lg leading-snug">${ass.nome}</h3>
+                  <p class="text-xs text-slate-200 flex items-center gap-1 mt-0.5">
+                    <i data-lucide="map-pin" class="w-3.5 h-3.5 text-emerald-400 shrink-0"></i>
+                    <span>${ass.bairro} • ${ass.cidade} (PA)</span>
+                  </p>
+                </div>
+              </div>
+
+              <div class="p-5">
+                <p class="text-xs sm:text-sm text-slate-600 line-clamp-2 leading-relaxed mb-4">
+                  ${ass.iaProfile.subheadline}
+                </p>
+                <div class="flex flex-wrap gap-1.5">
+                  ${ass.iaProfile.diferenciais.slice(0, 2).map((dif) => `
+                    <span class="text-[11px] font-medium px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 flex items-center gap-1">
+                      <i data-lucide="check" class="w-3 h-3 text-emerald-600"></i>
+                      ${dif}
+                    </span>
+                  `).join('')}
+                </div>
+              </div>
+            </div>
+
+            <div class="px-5 pb-5 pt-2 flex flex-col gap-2">
+              <button onclick="openPonteModal('${ass.id}', 'Vitrine Local')" class="w-full py-3 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-display font-bold text-xs sm:text-sm shadow-md shadow-emerald-600/20 flex items-center justify-center gap-2 transition-colors">
+                <i data-lucide="message-circle" class="w-4 h-4"></i>
+                <span>Pedir Orçamento no Zap</span>
+              </button>
+              <button onclick="openMiniLP('${ass.id}')" class="w-full py-2.5 px-4 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 font-semibold text-xs flex items-center justify-center gap-1.5 transition-colors">
+                <i data-lucide="sparkles" class="w-3.5 h-3.5 text-emerald-600"></i>
+                <span>Ver Página</span>
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      lucide.createIcons();
+    }
+
+    function openMiniLP(assinanteId) {
+      const ass = db.assinantes.find((a) => a.id === assinanteId);
+      if (!ass) return;
+      currentMiniLPAssinanteId = assinanteId;
+
+      const adminControls = document.getElementById('mini-lp-admin-controls');
+      if (adminControls) {
+        if (isAdminLoggedIn()) {
+          adminControls.classList.remove('hidden');
+          adminControls.classList.add('flex');
+        } else {
+          adminControls.classList.add('hidden');
+          adminControls.classList.remove('flex');
+        }
+      }
+
+      renderMiniLPContent();
+      document.getElementById('mini-lp-overlay').classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+      lucide.createIcons();
+    }
+
+    function closeMiniLP() {
+      const overlay = document.getElementById('mini-lp-overlay');
+      if (overlay) overlay.classList.add('hidden');
+      currentMiniLPAssinanteId = null;
+      document.body.style.overflow = '';
+    }
+
+    function cycleMiniLPTheme() {
+      if (!currentMiniLPAssinanteId) return;
+      const ass = db.assinantes.find((a) => a.id === currentMiniLPAssinanteId);
+      if (!ass) return;
+
+      const theme = resolveSegmentTheme(ass.oficio, ass.oficioExibicao || '', ass.nome);
+      const nextIndex = ((ass.iaProfile.bannerIndex || 0) + 1) % theme.banners.length;
+      ass.iaProfile.bannerIndex = nextIndex;
+      ass.iaProfile.bannerUrl = theme.banners[nextIndex];
+      ass.iaProfile.corDestaque = theme.accentHex;
+
+      saveDatabase();
+      renderMiniLPContent();
+      if (currentView === 'vitrine') renderVitrine();
+      lucide.createIcons();
+      showToast(`Tema visual IA atualizado (Variação ${nextIndex + 1}/${theme.banners.length})!`);
+    }
+
+    function copyCampaignLink() {
+      if (!currentMiniLPAssinanteId) return;
+      const ass = db.assinantes.find((a) => a.id === currentMiniLPAssinanteId);
+      if (!ass) return;
+
+      const slug = ass.nome.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, '-');
+      const isAdmin = isAdminLoggedIn();
+      const shareUrl = isAdmin
+        ? `${window.location.origin}${window.location.pathname}?prof=${ass.id}&nicho=${slug}&utm_source=meta_ads_local`
+        : `${window.location.origin}${window.location.pathname}?prof=${ass.id}&nicho=${slug}`;
+
+      const tempInput = document.createElement('textarea');
+      tempInput.value = shareUrl;
+      document.body.appendChild(tempInput);
+      tempInput.select();
+      document.execCommand('copy');
+      document.body.removeChild(tempInput);
+
+      showToast(
+        isAdmin
+          ? 'Link de campanha copiado! Pronto para colar no Meta/Google Ads.'
+          : 'Link da página copiado! Pronto para compartilhar no WhatsApp.'
+      );
+    }
+
+    function renderMiniLPContent() {
+      const container = document.getElementById('mini-lp-content');
+      if (!container || !currentMiniLPAssinanteId) return;
+
+      const ass = db.assinantes.find((a) => a.id === currentMiniLPAssinanteId);
+      if (!ass) return;
+
+      const theme = resolveSegmentTheme(ass.oficio, ass.oficioExibicao || '', ass.nome);
+      const oficioLabel = ass.oficioExibicao || ass.oficio;
+
+      container.innerHTML = `
+        <div class="bg-white rounded-3xl overflow-hidden shadow-2xl border border-slate-800">
+          <!-- Hero Temático Gerado por IA -->
+          <div class="relative min-h-[340px] sm:min-h-[400px] bg-gradient-to-br ${theme.fallbackGradient} flex items-end p-6 sm:p-12 overflow-hidden">
+            <img src="${ass.iaProfile.bannerUrl}" alt="${ass.nome}" onerror="this.style.display='none'" class="absolute inset-0 w-full h-full object-cover" />
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/75 to-slate-950/30"></div>
+
+            <div class="relative z-10 max-w-2xl text-white space-y-4">
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="text-xs font-bold px-3 py-1 rounded-full border ${theme.badgeBg}">
+                  ${oficioLabel}
+                </span>
+                <span class="inline-flex items-center gap-1.5 text-xs font-bold px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-400/30">
+                  <i data-lucide="shield-check" class="w-3.5 h-3.5"></i>
+                  Atendimento Verificado • ${ass.bairro} (${ass.cidade})
+                </span>
+              </div>
+
+              <p class="text-xs sm:text-sm font-bold uppercase tracking-widest text-slate-300">
+                ${ass.nome}
+              </p>
+
+              <h1 class="font-display font-extrabold text-2xl sm:text-4xl leading-tight text-white">
+                ${ass.iaProfile.headline}
+              </h1>
+
+              <p class="text-sm sm:text-base text-slate-200 leading-relaxed">
+                ${ass.iaProfile.subheadline}
+              </p>
+
+              <div class="pt-2">
+                <button onclick="openPonteModal('${ass.id}', 'Mini-LP IA (Anúncio)')" class="w-full sm:w-auto px-7 py-4 rounded-2xl bg-emerald-500 hover:bg-emerald-600 text-white font-display font-extrabold text-base sm:text-lg shadow-xl shadow-emerald-500/30 flex items-center justify-center gap-2.5 btn-pulse-zap transition-all">
+                  <i data-lucide="message-circle" class="w-5 h-5"></i>
+                  <span>Solicitar Orçamento no WhatsApp Agora</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Diferenciais & Cobertura Regional -->
+          <div class="p-6 sm:p-10 space-y-8 bg-white">
+            <div>
+              <h2 class="font-display font-extrabold text-xl sm:text-2xl text-slate-900 mb-4">
+                Por que chamar ${ass.nome}?
+              </h2>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                ${ass.iaProfile.diferenciais.map((dif) => `
+                  <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-start gap-3">
+                    <div class="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 text-white" style="background-color: ${ass.iaProfile.corDestaque || theme.accentHex}">
+                      <i data-lucide="check-circle-2" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                      <h3 class="font-display font-bold text-sm sm:text-base text-slate-900">${dif}</h3>
+                      <p class="text-xs text-slate-500 mt-1">Atendimento direto com ${ass.responsavelNome || ass.nome}.</p>
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+
+            <div class="rounded-2xl bg-slate-900 text-white p-6 sm:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+              <div class="space-y-1.5">
+                <div class="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-400 uppercase tracking-wider">
+                  <i data-lucide="map-pin" class="w-4 h-4"></i>
+                  Região de Atendimento
+                </div>
+                <h3 class="font-display font-bold text-lg sm:text-xl">
+                  ${ass.bairro} e arredores • ${ass.cidade} (PA)
+                </h3>
+                <p class="text-xs sm:text-sm text-slate-300">
+                  Resposta rápida direto pelo WhatsApp para tirar dúvidas e passar seu orçamento.
+                </p>
+              </div>
+              <button onclick="openPonteModal('${ass.id}', 'Mini-LP IA (Anúncio)')" class="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-display font-bold text-sm shadow-lg shadow-emerald-500/20 flex items-center justify-center gap-2 shrink-0 transition-colors">
+                <i data-lucide="message-circle" class="w-4 h-4"></i>
+                <span>Chamar no WhatsApp</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // =========================================================================
+    // 8. PONTE RASTREADA (CAPTURA NOMINAL DE LEAD DO CONSUMIDOR FINAL)
+    // =========================================================================
+    function openPonteModal(assinanteId, origem = 'Vitrine Local') {
+      const ass = db.assinantes.find((a) => a.id === assinanteId);
+      if (!ass) return;
+
+      currentPonteAssinanteId = assinanteId;
+      currentPonteOrigem = origem;
+
+      document.getElementById('ponte-prof-nome').textContent = `${ass.nome} • ${ass.bairro}`;
+      document.getElementById('ponte-prof-nome-inline').textContent = ass.nome;
+
+      const form = document.getElementById('form-ponte-rastreada');
+      const sucesso = document.getElementById('ponte-sucesso');
+      form.reset();
+      form.classList.remove('hidden');
+      sucesso.classList.add('hidden');
+
+      openModal('modal-ponte');
+    }
+
+    function handlePonteSubmit(e) {
+      e.preventDefault();
+      if (!currentPonteAssinanteId) return;
+
+      const ass = db.assinantes.find((a) => a.id === currentPonteAssinanteId);
+      if (!ass) return;
+
+      const consumidorNome = document.getElementById('ponte-consumidor-nome').value.trim();
+      const consumidorZap = document.getElementById('ponte-consumidor-zap').value.trim();
+
+      db.entregas.unshift({
+        id: `LED-${Date.now().toString().slice(-5)}`,
+        assinanteId: ass.id,
+        assinanteNome: ass.nome,
+        consumidorNome,
+        consumidorWhatsapp: consumidorZap,
+        origem: currentPonteOrigem,
+        ciclo: ass.cicloAtual || 1,
+        dataHora: getNowFormatted()
+      });
+
+      saveDatabase();
+
+      const profPhone = sanitizePhone(ass.whatsapp);
+      const waText = `Olá ${encodeURIComponent(ass.nome)}, vi seu perfil no *ClienteNoZap* (${encodeURIComponent(ass.bairro)})! Meu nome é ${encodeURIComponent(consumidorNome)} e gostaria de pedir um orçamento.`;
+      document.getElementById('ponte-wa-link').href = `https://wa.me/${profPhone}?text=${waText}`;
+
+      document.getElementById('form-ponte-rastreada').classList.add('hidden');
+      document.getElementById('ponte-sucesso').classList.remove('hidden');
+
+      if (currentView === 'admin') renderAdminAll();
+      lucide.createIcons();
+      showToast('Contato registrado na Ponte Rastreada!');
+    }
+
+    // =========================================================================
+    // 9. TELA 4: PAINEL ADMINISTRATIVO EXECUTIVO (4 ABAS)
+    // =========================================================================
+    function renderAdminAll() {
+      if (!db) return;
+
+      const ativos = db.assinantes.filter((a) => a.status === 'ativo');
+      const badgeInt = document.getElementById('badge-count-interessados');
+      const badgeAss = document.getElementById('badge-count-assinantes');
+      if (badgeInt) badgeInt.textContent = db.interessados.length;
+      if (badgeAss) badgeAss.textContent = ativos.length;
+
+      renderDashboard();
+      renderInteressados();
+      renderAssinantes();
+      renderIntegracoes();
+      lucide.createIcons();
+    }
+
+    function switchAdminTab(tab) {
+      currentAdminTab = tab;
+
+      document.querySelectorAll('.admin-tab-btn').forEach((btn) => {
+        btn.classList.remove('bg-slate-900', 'text-white');
+        btn.classList.add('bg-white', 'text-slate-600', 'border', 'border-slate-200');
+      });
+
+      const activeBtn = document.getElementById(`tab-btn-${tab}`);
+      if (activeBtn) {
+        activeBtn.classList.remove('bg-white', 'text-slate-600', 'border', 'border-slate-200');
+        activeBtn.classList.add('bg-slate-900', 'text-white');
+      }
+
+      ['dashboard', 'interessados', 'assinantes', 'integracoes'].forEach((t) => {
+        const panel = document.getElementById(`admin-tab-${t}`);
+        if (panel) {
+          if (t === tab) panel.classList.remove('hidden');
+          else panel.classList.add('hidden');
+        }
+      });
+
+      renderAdminAll();
+    }
+
+    function renderDashboard() {
+      const kpisEl = document.getElementById('dashboard-kpis');
+      const unitEl = document.getElementById('dashboard-unit-economics');
+      const nichosEl = document.getElementById('chart-nichos-ativos');
+      const turnoverEl = document.getElementById('chart-radar-turnover');
+      if (!kpisEl || !unitEl || !nichosEl || !turnoverEl) return;
+
+      const ativos = db.assinantes.filter((a) => a.status === 'ativo');
+      const cancelados = db.assinantes.filter((a) => a.status === 'cancelado');
+      const mrr = ativos.reduce((acc, a) => acc + Number(a.valorMensal || 0), 0);
+      const totalEntregas = db.entregas.length;
+      const totalBase = ativos.length + cancelados.length;
+      const churnRate = totalBase > 0 ? ((cancelados.length / totalBase) * 100).toFixed(1) : '0.0';
+
+      kpisEl.innerHTML = `
+        <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Receita Mensal (MRR)</span>
+            <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
+              <i data-lucide="dollar-sign" class="w-4 h-4"></i>
+            </div>
+          </div>
+          <div class="font-display font-extrabold text-2xl sm:text-3xl text-slate-900">${formatCurrency(mrr)}</div>
+          <p class="text-xs text-emerald-700 font-medium mt-1">Ticket médio: ${ativos.length ? formatCurrency(Math.round(mrr / ativos.length)) : 'R$ 0'}/mês</p>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Assinantes Ativos</span>
+            <div class="w-8 h-8 rounded-lg bg-slate-100 text-slate-800 flex items-center justify-center">
+              <i data-lucide="users" class="w-4 h-4"></i>
+            </div>
+          </div>
+          <div class="font-display font-extrabold text-2xl sm:text-3xl text-slate-900">${ativos.length}</div>
+          <p class="text-xs text-slate-500 mt-1">+${db.interessados.length} aguardando no funil</p>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Clientes Entregues</span>
+            <div class="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center">
+              <i data-lucide="message-circle" class="w-4 h-4"></i>
+            </div>
+          </div>
+          <div class="font-display font-extrabold text-2xl sm:text-3xl text-slate-900">${totalEntregas}</div>
+          <p class="text-xs text-slate-500 mt-1">Auditáveis na Ponte Rastreada</p>
+        </div>
+
+        <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Taxa de Churn Geral</span>
+            <div class="w-8 h-8 rounded-lg bg-red-50 text-red-600 flex items-center justify-center">
+              <i data-lucide="user-minus" class="w-4 h-4"></i>
+            </div>
+          </div>
+          <div class="font-display font-extrabold text-2xl sm:text-3xl text-slate-900">${churnRate}%</div>
+          <p class="text-xs text-slate-500 mt-1">${cancelados.length} cancelamento(s) no histórico</p>
+        </div>
+      `;
+
+      const verbaTrafego = Math.round(mrr * 0.48);
+      const margemLiquida = mrr - verbaTrafego;
+
+      unitEl.innerHTML = `
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+          <div>
+            <span class="text-[11px] font-bold uppercase tracking-wider text-emerald-400">Saúde Financeira da Operação (Unit Economics)</span>
+            <h3 class="font-display font-bold text-base sm:text-lg text-white mt-0.5">Projeção de Tráfego Pago vs. Margem Operacional</h3>
+          </div>
+          <div class="grid grid-cols-3 gap-3 sm:gap-6 bg-slate-800/80 border border-slate-700 rounded-2xl px-4 py-3 text-xs sm:text-sm">
+            <div>
+              <span class="text-slate-400 block text-[11px]">MRR Bruto</span>
+              <strong class="font-display font-extrabold text-white text-sm sm:text-base">${formatCurrency(mrr)}</strong>
+            </div>
+            <div>
+              <span class="text-slate-400 block text-[11px]">Verba Tráfego (~48%)</span>
+              <strong class="font-display font-extrabold text-amber-400 text-sm sm:text-base">${formatCurrency(verbaTrafego)}</strong>
+            </div>
+            <div>
+              <span class="text-slate-400 block text-[11px]">Margem Líquida (~52%)</span>
+              <strong class="font-display font-extrabold text-emerald-400 text-sm sm:text-base">${formatCurrency(margemLiquida)}</strong>
+            </div>
+          </div>
+        </div>
+      `;
+
+      // Ranking de Nichos Ativos
+      const nichoMap = {};
+      ativos.forEach((a) => {
+        const key = a.oficio || 'Outros';
+        if (!nichoMap[key]) nichoMap[key] = { oficio: key, count: 0, mrr: 0 };
+        nichoMap[key].count += 1;
+        nichoMap[key].mrr += Number(a.valorMensal || 0);
+      });
+      const ranking = Object.values(nichoMap).sort((a, b) => b.mrr - a.mrr);
+
+      if (ranking.length === 0) {
+        nichosEl.innerHTML = `<p class="text-sm text-slate-500">Nenhum assinante ativo no momento.</p>`;
+      } else {
+        nichosEl.innerHTML = ranking.map((item) => {
+          const pct = mrr > 0 ? Math.round((item.mrr / mrr) * 100) : 0;
+          return `
+            <div>
+              <div class="flex items-center justify-between text-xs sm:text-sm mb-1.5">
+                <span class="font-bold text-slate-800">${item.oficio} <span class="text-slate-400 font-normal">(${item.count} ativo${item.count > 1 ? 's' : ''})</span></span>
+                <span class="font-bold text-emerald-700">${formatCurrency(item.mrr)}/mês (${pct}%)</span>
+              </div>
+              <div class="w-full h-2.5 rounded-full bg-slate-100 overflow-hidden">
+                <div class="h-full rounded-full bg-emerald-500" style="width: ${pct}%"></div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      // Radar de Turnover por Ofício
+      const allNichos = {};
+      db.assinantes.forEach((a) => {
+        const key = a.oficio || 'Outros';
+        if (!allNichos[key]) allNichos[key] = { oficio: key, total: 0, cancelados: 0, motivos: [] };
+        allNichos[key].total += 1;
+        if (a.status === 'cancelado') {
+          allNichos[key].cancelados += 1;
+          if (a.motivoCancelamento) allNichos[key].motivos.push(a.motivoCancelamento);
+        }
+      });
+
+      const turnoverList = Object.values(allNichos)
+        .map((n) => ({
+          ...n,
+          rate: n.total > 0 ? Math.round((n.cancelados / n.total) * 100) : 0
+        }))
+        .sort((a, b) => b.rate - a.rate || b.cancelados - a.cancelados);
+
+      turnoverEl.innerHTML = turnoverList.map((n) => {
+        const isHigh = n.rate >= 40;
+        const barColor = n.cancelados === 0 ? 'bg-emerald-500' : isHigh ? 'bg-red-500' : 'bg-amber-500';
+        const textColor = n.cancelados === 0 ? 'text-emerald-700' : isHigh ? 'text-red-700' : 'text-amber-700';
+
+        return `
+          <div class="p-3 rounded-xl ${isHigh ? 'bg-red-50/70 border border-red-200' : 'bg-slate-50 border border-slate-100'}">
+            <div class="flex items-center justify-between text-xs sm:text-sm mb-1.5">
+              <span class="font-bold text-slate-800">${n.oficio}</span>
+              <span class="font-bold ${textColor}">${n.rate}% turnover (${n.cancelados}/${n.total})</span>
+            </div>
+            <div class="w-full h-2 rounded-full bg-slate-200/80 overflow-hidden">
+              <div class="h-full rounded-full ${barColor}" style="width: ${Math.max(n.rate, n.cancelados > 0 ? 12 : 4)}%"></div>
+            </div>
+            ${n.motivos.length > 0 ? `
+              <p class="text-[11px] text-red-700 mt-1.5">
+                <strong>Motivos:</strong> ${[...new Set(n.motivos)].join(' • ')}
+              </p>
+            ` : `
+              <p class="text-[11px] text-slate-500 mt-1">Retenção saudável sem cancelamentos.</p>
+            `}
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderInteressados() {
+      const listEl = document.getElementById('lista-interessados');
+      if (!listEl) return;
+
+      if (db.interessados.length === 0) {
+        listEl.innerHTML = `
+          <div class="text-center py-10 bg-slate-50 rounded-2xl border border-dashed border-slate-300">
+            <p class="font-display font-bold text-slate-700">Nenhum interessado pendente na fila</p>
+            <p class="text-xs text-slate-500 mt-1">Novos cadastros feitos na Página de Venda aparecerão aqui automaticamente.</p>
+          </div>
+        `;
+        return;
+      }
+
+      listEl.innerHTML = db.interessados.map((int) => {
+        const profPhone = sanitizePhone(int.whatsapp);
+        const oficioLabel = int.oficioExibicao || int.oficio;
+        const zapMsg = `Olá ${encodeURIComponent(int.responsavelNome || int.nome)}, tudo bem? Aqui é o Fábio do *ClienteNoZap*! Vi seu cadastro para *${encodeURIComponent(int.nome)}* (${encodeURIComponent(oficioLabel)} em ${encodeURIComponent(int.bairro + ' - ' + int.cidade)}) no *${encodeURIComponent(int.planoNome)}*. Vamos ativar sua página hoje?`;
+
+        return `
+          <div class="p-5 rounded-2xl border border-slate-200 bg-slate-50/60 hover:bg-white transition-all flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+            <div class="space-y-1">
+              <div class="flex flex-wrap items-center gap-2">
+                <span class="font-display font-extrabold text-base text-slate-900">${int.nome}</span>
+                <span class="text-xs font-bold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800">${int.planoNome} (${formatCurrency(int.valorMensal)})</span>
+                <span class="text-[11px] text-slate-400">• ${int.dataCadastro}</span>
+              </div>
+              <p class="text-xs sm:text-sm text-slate-600">
+                <strong>Responsável:</strong> ${int.responsavelNome || int.nome} • <strong>Ofício:</strong> ${oficioLabel} • <strong>Região:</strong> ${int.bairro} (${int.cidade}) • <strong>Zap:</strong> ${int.whatsapp}
+              </p>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-2 shrink-0">
+              <a href="https://wa.me/${profPhone}?text=${zapMsg}" target="_blank" rel="noopener noreferrer" class="px-4 py-2.5 rounded-xl border border-emerald-300 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 text-xs font-bold flex items-center gap-1.5 transition-colors">
+                <i data-lucide="message-circle" class="w-4 h-4"></i>
+                <span>Chamar no Zap</span>
+              </a>
+              <button onclick="activateInteressado('${int.id}')" class="px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-emerald-600 text-white text-xs font-bold flex items-center gap-1.5 shadow-sm transition-colors">
+                <i data-lucide="sparkles" class="w-4 h-4 text-emerald-400"></i>
+                <span>Ativar Assinatura (Gerar Página IA)</span>
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function activateInteressado(id) {
+      const idx = db.interessados.findIndex((i) => i.id === id);
+      if (idx === -1) return;
+
+      const int = db.interessados[idx];
+      const oficioLabel = int.oficioExibicao || int.oficio;
+
+      const novoAssinante = {
+        id: `ASS-${Date.now().toString().slice(-4)}`,
+        responsavelNome: int.responsavelNome || int.nome,
+        nome: int.nome,
+        whatsapp: int.whatsapp,
+        oficio: int.oficio,
+        oficioExibicao: oficioLabel,
+        cidade: int.cidade,
+        bairro: int.bairro,
+        planoId: int.planoId,
+        planoNome: int.planoNome,
+        valorMensal: int.valorMensal,
+        metaLeads: int.metaLeads,
+        cicloAtual: 1,
+        status: 'ativo',
+        dataAtivacao: getNowFormatted().split(' ')[0],
+        dataCancelamento: null,
+        motivoCancelamento: null,
+        iaProfile: generateAIProfile(int.nome, int.oficio, int.cidade, int.bairro, 0, oficioLabel)
+      };
+
+      db.assinantes.unshift(novoAssinante);
+      db.interessados.splice(idx, 1);
+      saveDatabase();
+
+      renderAdminAll();
+      showToast(`Assinatura ativada! Página IA de "${novoAssinante.nome}" publicada na Vitrine.`);
+    }
+
+    function renderAssinantes() {
+      const lembretesEl = document.getElementById('central-lembretes');
+      const listEl = document.getElementById('lista-assinantes-ativos');
+      if (!lembretesEl || !listEl) return;
+
+      const ativos = db.assinantes.filter((a) => a.status === 'ativo');
+
+      const paraRenovar = ativos.filter((a) => {
+        const count = getEntregasCountByAssinante(a.id);
+        return (count / a.metaLeads) >= 0.8;
+      });
+      const pendentesCheckin = ativos.filter((a) => !a.iaProfile.checkinRealizado);
+
+      lembretesEl.innerHTML = `
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+          <div class="flex items-start gap-3">
+            <div class="w-10 h-10 rounded-xl bg-amber-500 text-white flex items-center justify-center shrink-0">
+              <i data-lucide="bell-ring" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h3 class="font-display font-bold text-sm sm:text-base text-amber-950">Central de Lembretes Inteligentes</h3>
+              <p class="text-xs text-amber-800 mt-0.5">
+                <strong>${paraRenovar.length}</strong> pacote(s) atingiram ≥ 80% da meta (momento de renovação/upsell) •
+                <strong>${pendentesCheckin.length}</strong> assinante(s) aguardando check-in semanal de qualidade.
+              </p>
+            </div>
+          </div>
+          <div class="flex flex-wrap gap-1.5">
+            ${paraRenovar.map((a) => `
+              <span class="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-amber-200/80 text-amber-950">
+                ⚡ ${a.nome} (${getEntregasCountByAssinante(a.id)}/${a.metaLeads})
+              </span>
+            `).join('')}
+          </div>
+        </div>
+      `;
+
+      if (ativos.length === 0) {
+        listEl.innerHTML = `<div class="col-span-full text-center py-10 bg-white rounded-2xl border border-slate-200 text-slate-500">Nenhum assinante ativo no momento.</div>`;
+        return;
+      }
+
+      listEl.innerHTML = ativos.map((ass) => {
+        const entreguesCiclo = getEntregasCountByAssinante(ass.id);
+        const totalHistorico = getTotalEntregasHistoricoByAssinante(ass.id);
+        const pct = Math.min(100, Math.round((entreguesCiclo / ass.metaLeads) * 100));
+        const needsRenewal = pct >= 80;
+        const cicloAtual = ass.cicloAtual || 1;
+        const profPhone = sanitizePhone(ass.whatsapp);
+        const oficioLabel = ass.oficioExibicao || ass.oficio;
+
+        const renovarMsg = `Olá ${encodeURIComponent(ass.responsavelNome || ass.nome)}! Passando para avisar que o pacote da *${encodeURIComponent(ass.nome)}* no *ClienteNoZap* já bateu *${entreguesCiclo} de ${ass.metaLeads} clientes* (${pct}%). Vamos renovar seu próximo ciclo para os anúncios não pararem?`;
+        const depoimentoMsg = `Olá ${encodeURIComponent(ass.responsavelNome || ass.nome)}! Que bom que os clientes estão chegando no WhatsApp da *${encodeURIComponent(ass.nome)}*! Você poderia deixar um depoimento rápido de 2 linhas sobre sua experiência lá no site do *ClienteNoZap*? Isso ajuda muito outros profissionais da Grande Belém!`;
+
+        return `
+          <div class="bg-white rounded-2xl border-2 ${needsRenewal ? 'border-amber-400' : 'border-slate-200'} p-5 shadow-sm flex flex-col justify-between space-y-4">
+            <div>
+              <div class="flex items-start justify-between gap-2 mb-1.5">
+                <div class="flex flex-wrap items-center gap-2">
+                  <h4 class="font-display font-extrabold text-base sm:text-lg text-slate-900">${ass.nome}</h4>
+                  ${needsRenewal ? `<span class="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-md bg-amber-100 text-amber-800 border border-amber-300">Renovar</span>` : ''}
+                  ${cicloAtual > 1 ? `<span class="text-[10px] font-bold px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700 border border-emerald-200">Ciclo #${cicloAtual}</span>` : ''}
+                </div>
+                <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-slate-100 text-slate-800 shrink-0">
+                  ${ass.planoNome} (${formatCurrency(ass.valorMensal)})
+                </span>
+              </div>
+
+              <p class="text-xs text-slate-500">
+                ${oficioLabel} • ${ass.bairro} (${ass.cidade}) • ${ass.whatsapp}
+              </p>
+
+              <!-- Barra de Progresso do Ciclo -->
+              <div class="mt-4 bg-slate-50 border border-slate-200/80 rounded-xl p-3.5">
+                <div class="flex items-center justify-between text-xs font-bold mb-1.5">
+                  <span class="text-slate-600">Clientes enviados no ciclo</span>
+                  <span class="${needsRenewal ? 'text-amber-700' : 'text-emerald-700'}">${entreguesCiclo} / ${ass.metaLeads} (${pct}%)</span>
+                </div>
+                <div class="w-full h-2.5 rounded-full bg-slate-200 overflow-hidden">
+                  <div class="h-full rounded-full transition-all duration-500 ${needsRenewal ? 'bg-amber-500' : 'bg-emerald-500'}" style="width: ${pct}%"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="space-y-2.5 pt-1">
+              <div class="flex flex-wrap items-center gap-2">
+                <button onclick="openMiniLP('${ass.id}')" class="px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold flex items-center gap-1.5 transition-colors">
+                  <i data-lucide="sparkles" class="w-3.5 h-3.5 text-emerald-400"></i>
+                  <span>Mini-LP IA</span>
+                </button>
+                <button onclick="openAuditoriaModal('${ass.id}')" class="px-3 py-2 rounded-xl border border-slate-300 hover:bg-slate-50 text-slate-700 text-xs font-bold flex items-center gap-1.5 transition-colors">
+                  <i data-lucide="list-checks" class="w-3.5 h-3.5 text-slate-500"></i>
+                  <span>Auditar (${totalHistorico})</span>
+                </button>
+                <button onclick="openEditAssinanteModal('${ass.id}')" class="px-3 py-2 rounded-xl border border-slate-300 hover:bg-slate-50 text-slate-700 text-xs font-bold flex items-center gap-1.5 transition-colors">
+                  <i data-lucide="pencil" class="w-3.5 h-3.5 text-slate-500"></i>
+                  <span>Editar</span>
+                </button>
+                <button onclick="toggleCheckinSemanal('${ass.id}')" class="px-3 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-colors ${ass.iaProfile.checkinRealizado ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-slate-100 hover:bg-emerald-50 text-slate-700 border border-slate-200'}">
+                  <i data-lucide="${ass.iaProfile.checkinRealizado ? 'check-circle-2' : 'message-square'}" class="w-3.5 h-3.5"></i>
+                  <span>${ass.iaProfile.checkinRealizado ? 'Check-in OK' : 'Check-in Zap'}</span>
+                </button>
+              </div>
+
+              <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-100">
+                <div class="flex flex-wrap items-center gap-2">
+                  ${needsRenewal ? `
+                    <a href="https://wa.me/${profPhone}?text=${renovarMsg}" target="_blank" rel="noopener noreferrer" class="px-3 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold flex items-center gap-1.5 shadow-sm transition-colors">
+                      <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
+                      <span>Renovar Zap</span>
+                    </a>
+                    <button onclick="openRenovarModal('${ass.id}')" class="px-3 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold flex items-center gap-1.5 shadow-sm transition-colors">
+                      <i data-lucide="badge-check" class="w-3.5 h-3.5"></i>
+                      <span>Confirmar Renovação</span>
+                    </button>
+                  ` : ass.iaProfile.checkinRealizado ? `
+                    <a href="https://wa.me/${profPhone}?text=${depoimentoMsg}" target="_blank" rel="noopener noreferrer" class="px-3 py-2 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 text-xs font-bold flex items-center gap-1.5 transition-colors">
+                      <i data-lucide="star" class="w-3.5 h-3.5"></i>
+                      <span>Pedir Depoimento</span>
+                    </a>
+                  ` : `
+                    <span class="text-[11px] text-slate-400">Faça o check-in semanal para liberar o convite de depoimento.</span>
+                  `}
+                </div>
+
+                <button onclick="openChurnModal('${ass.id}')" class="px-2.5 py-1.5 rounded-lg text-red-600 hover:bg-red-50 text-xs font-bold flex items-center gap-1 transition-colors ml-auto">
+                  <i data-lucide="user-x" class="w-3.5 h-3.5"></i>
+                  <span>Churn</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function toggleCheckinSemanal(id) {
+      const ass = db.assinantes.find((a) => a.id === id);
+      if (!ass) return;
+
+      const wasDone = Boolean(ass.iaProfile.checkinRealizado);
+      ass.iaProfile.checkinRealizado = !wasDone;
+      saveDatabase();
+      renderAdminAll();
+
+      if (!wasDone) {
+        const profPhone = sanitizePhone(ass.whatsapp);
+        const msg = `Olá ${encodeURIComponent(ass.responsavelNome || ass.nome)}! Aqui é o Fábio do *ClienteNoZap*. Passando para fazer nosso acompanhamento semanal: como estão os orçamentos e serviços fechados aí na *${encodeURIComponent(ass.nome)}*?`;
+        window.open(`https://wa.me/${profPhone}?text=${msg}`, '_blank', 'noopener,noreferrer');
+        showToast('Check-in marcado como realizado e WhatsApp aberto!');
+      } else {
+        showToast('Check-in reaberto para novo acompanhamento.', 'warning');
+      }
+    }
+
+    function openRenovarModal(id) {
+      const ass = db.assinantes.find((a) => a.id === id);
+      if (!ass) return;
+
+      const entreguesCiclo = getEntregasCountByAssinante(ass.id);
+      const cicloAtual = ass.cicloAtual || 1;
+
+      document.getElementById('renovar-ass-id').value = ass.id;
+      document.getElementById('renovar-prof-nome').textContent = `${ass.nome} • ${ass.bairro} (${ass.cidade})`;
+      document.getElementById('renovar-resumo-ciclo').innerHTML = `
+        <div><strong>Ciclo Encerrando:</strong> Ciclo #${cicloAtual} (${entreguesCiclo}/${ass.metaLeads} clientes entregues)</div>
+        <div><strong>Plano Atual:</strong> ${ass.planoNome} (${formatCurrency(ass.valorMensal)}/mês)</div>
+      `;
+      document.getElementById('renovar-plano-select').value = ass.planoId || 'agenda_cheia';
+
+      openModal('modal-renovar');
+    }
+
+    function handleConfirmRenovacao(e) {
+      e.preventDefault();
+      const id = document.getElementById('renovar-ass-id').value;
+      const novoPlanoId = document.getElementById('renovar-plano-select').value;
+      const ass = db.assinantes.find((a) => a.id === id);
+      const planObj = PLANS[novoPlanoId];
+      if (!ass || !planObj) return;
+
+      const isUpsell = planObj.valor > ass.valorMensal;
+      ass.cicloAtual = (ass.cicloAtual || 1) + 1;
+      ass.planoId = planObj.id;
+      ass.planoNome = planObj.nome;
+      ass.valorMensal = planObj.valor;
+      ass.metaLeads = planObj.metaLeads;
+      ass.iaProfile.checkinRealizado = false;
+
+      saveDatabase();
+      closeModal('modal-renovar');
+      renderAdminAll();
+
+      showToast(
+        isUpsell
+          ? `Upsell confirmado! ${ass.nome} renovou para ${planObj.nome} (Ciclo #${ass.cicloAtual}).`
+          : `Renovação confirmada! Ciclo #${ass.cicloAtual} iniciado para ${ass.nome}.`
+      );
+    }
+
+    // =========================================================================
+    // 10. MODAIS DE AUDITORIA, EDIÇÃO DE ASSINANTE, CHURN E INTEGRAÇÕES
+    // =========================================================================
+    function openAuditoriaModal(id) {
+      const ass = db.assinantes.find((a) => a.id === id);
+      if (!ass) return;
+      currentAuditoriaAssinanteId = id;
+
+      const leads = db.entregas.filter((e) => e.assinanteId === id);
+      const entreguesCiclo = getEntregasCountByAssinante(id);
+      const cicloAtual = ass.cicloAtual || 1;
+      document.getElementById('auditoria-titulo').textContent = `Clientes Enviados — ${ass.nome}`;
+      document.getElementById('auditoria-subtitulo').textContent = `Ciclo #${cicloAtual}: ${entreguesCiclo}/${ass.metaLeads} • Histórico total: ${leads.length} contatos (${ass.planoNome})`;
+
+      const tbody = document.getElementById('auditoria-tbody');
+      if (leads.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="4" class="py-6 text-center text-slate-500">Nenhum contato registrado ainda para este profissional.</td></tr>`;
+      } else {
+        tbody.innerHTML = leads.map((l) => `
+          <tr class="hover:bg-slate-50">
+            <td class="py-2.5 px-4 font-semibold text-slate-900">${l.consumidorNome}</td>
+            <td class="py-2.5 px-4 text-emerald-700 font-medium">${l.consumidorWhatsapp}</td>
+            <td class="py-2.5 px-4 text-xs text-slate-600">${l.origem} <span class="text-slate-400">(Ciclo #${l.ciclo || 1})</span></td>
+            <td class="py-2.5 px-4 text-xs text-slate-500">${l.dataHora}</td>
+          </tr>
+        `).join('');
+      }
+
+      openModal('modal-auditoria');
+    }
+
+    function simulateManualLeadForAssinante() {
+      if (!currentAuditoriaAssinanteId) return;
+      const ass = db.assinantes.find((a) => a.id === currentAuditoriaAssinanteId);
+      if (!ass) return;
+
+      const sampleNames = ['Marcos Vinícius', 'Adriana Costa', 'Rodrigo Nogueira', 'Carla Almeida', 'Leandro Pinto'];
+      const randName = sampleNames[Math.floor(Math.random() * sampleNames.length)];
+      const randNum = Math.floor(1000 + Math.random() * 8999);
+
+      db.entregas.unshift({
+        id: `LED-${Date.now().toString().slice(-5)}`,
+        assinanteId: ass.id,
+        assinanteNome: ass.nome,
+        consumidorNome: `${randName} (Simulado)`,
+        consumidorWhatsapp: `(91) 98410-${randNum}`,
+        origem: 'Mini-LP IA (Anúncio)',
+        ciclo: ass.cicloAtual || 1,
+        dataHora: getNowFormatted()
+      });
+
+      saveDatabase();
+      openAuditoriaModal(ass.id);
+      renderAdminAll();
+      showToast('+1 entrega simulada adicionada!');
+    }
+
+    function openEditAssinanteModal(id) {
+      const ass = db.assinantes.find((a) => a.id === id);
+      if (!ass) return;
+
+      document.getElementById('edit-ass-id').value = ass.id;
+      document.getElementById('edit-ass-responsavel').value = ass.responsavelNome || ass.nome;
+      document.getElementById('edit-ass-nome').value = ass.nome;
+      document.getElementById('edit-ass-whatsapp').value = ass.whatsapp;
+      document.getElementById('edit-ass-cidade').value = ass.cidade;
+      document.getElementById('edit-ass-bairro').value = ass.bairro;
+      document.getElementById('edit-ass-headline').value = ass.iaProfile.headline;
+      document.getElementById('edit-ass-diferenciais').value = ass.iaProfile.diferenciais.join(', ');
+      document.getElementById('edit-ass-banner-url').value = ass.iaProfile.bannerUrl;
+
+      const theme = resolveSegmentTheme(ass.oficio, ass.oficioExibicao || '', ass.nome);
+      const gallery = document.getElementById('edit-ass-gallery');
+      gallery.innerHTML = theme.banners.map((url, idx) => `
+        <button type="button" onclick="selectEditBanner('${url}', ${idx})" class="relative h-14 rounded-xl overflow-hidden border-2 ${ass.iaProfile.bannerUrl === url ? 'border-emerald-500 ring-2 ring-emerald-500/30' : 'border-slate-200'} focus:outline-none">
+          <img src="${url}" alt="Opção ${idx + 1}" class="w-full h-full object-cover" />
+        </button>
+      `).join('');
+
+      openModal('modal-editar-assinante');
+    }
+
+    function selectEditBanner(url, idx) {
+      document.getElementById('edit-ass-banner-url').value = url;
+      const galleryBtns = document.querySelectorAll('#edit-ass-gallery button');
+      galleryBtns.forEach((btn, i) => {
+        if (i === idx) {
+          btn.classList.add('border-emerald-500', 'ring-2', 'ring-emerald-500/30');
+          btn.classList.remove('border-slate-200');
+        } else {
+          btn.classList.remove('border-emerald-500', 'ring-2', 'ring-emerald-500/30');
+          btn.classList.add('border-slate-200');
+        }
+      });
+    }
+
+    function handleSaveEditAssinante(e) {
+      e.preventDefault();
+      const id = document.getElementById('edit-ass-id').value;
+      const ass = db.assinantes.find((a) => a.id === id);
+      if (!ass) return;
+
+      ass.responsavelNome = document.getElementById('edit-ass-responsavel').value.trim();
+      ass.nome = document.getElementById('edit-ass-nome').value.trim();
+      ass.whatsapp = document.getElementById('edit-ass-whatsapp').value.trim();
+      ass.cidade = document.getElementById('edit-ass-cidade').value;
+      ass.bairro = document.getElementById('edit-ass-bairro').value.trim();
+      ass.iaProfile.headline = document.getElementById('edit-ass-headline').value.trim();
+
+      const difsRaw = document.getElementById('edit-ass-diferenciais').value;
+      const difsList = difsRaw.split(',').map((s) => s.trim()).filter(Boolean);
+      if (difsList.length > 0) ass.iaProfile.diferenciais = difsList;
+
+      const customBanner = document.getElementById('edit-ass-banner-url').value.trim();
+      if (customBanner) ass.iaProfile.bannerUrl = customBanner;
+
+      saveDatabase();
+      closeModal('modal-editar-assinante');
+      renderAdminAll();
+      if (currentView === 'vitrine') renderVitrine();
+      showToast('Perfil e Mini-LP atualizados com sucesso!');
+    }
+
+    function openChurnModal(id) {
+      const ass = db.assinantes.find((a) => a.id === id);
+      if (!ass) return;
+      document.getElementById('churn-ass-id').value = ass.id;
+      document.getElementById('churn-prof-nome').textContent = `${ass.nome} (${ass.oficioExibicao || ass.oficio})`;
+      openModal('modal-churn');
+    }
+
+    function handleConfirmChurn(e) {
+      e.preventDefault();
+      const id = document.getElementById('churn-ass-id').value;
+      const motivo = document.getElementById('churn-motivo').value;
+      const ass = db.assinantes.find((a) => a.id === id);
+      if (!ass) return;
+
+      ass.status = 'cancelado';
+      ass.dataCancelamento = getNowFormatted();
+      ass.motivoCancelamento = motivo;
+
+      saveDatabase();
+      closeModal('modal-churn');
+      renderAdminAll();
+      showToast(`Cancelamento registrado (${motivo}). Radar de Turnover atualizado.`, 'warning');
+    }
+
+    function renderIntegracoes() {
+      document.getElementById('cfg-gestor-whatsapp').value = db.config.gestorWhatsapp || '5591980789170';
+      document.getElementById('cfg-gestor-nome').value = db.config.gestorNome || '';
+      document.getElementById('cfg-supabase-url').value = db.config.supabaseUrl || '';
+      document.getElementById('cfg-supabase-key').value = db.config.supabaseAnonKey || '';
+      document.getElementById('cfg-resend-email').value = db.config.resendEmailAlert || '';
+    }
+
+    function saveOperationalConfig() {
+      const zap = document.getElementById('cfg-gestor-whatsapp').value.replace(/\D/g, '');
+      const nome = document.getElementById('cfg-gestor-nome').value.trim();
+      if (zap) db.config.gestorWhatsapp = zap;
+      if (nome) db.config.gestorNome = nome;
+      saveDatabase();
+      showToast('WhatsApp comercial do gestor atualizado!');
+    }
+
+    function saveInfraConfig() {
+      db.config.supabaseUrl = document.getElementById('cfg-supabase-url').value.trim();
+      db.config.supabaseAnonKey = document.getElementById('cfg-supabase-key').value.trim();
+      db.config.resendEmailAlert = document.getElementById('cfg-resend-email').value.trim();
+      saveDatabase();
+      showToast('Credenciais salvas localmente no navegador!');
+    }
+
+    function simulateResendAlert() {
+      const email = document.getElementById('cfg-resend-email').value.trim() || 'gestor@clientenozap.com.br';
+      showToast(`Simulação Resend: Alerta de novo lead enviado para ${email}!`);
+    }
+
+    function openResetConfirmModal() {
+      openModal('modal-reset-confirm');
+    }
+
+    function executeResetDemoData() {
+      db = buildSeedDatabase();
+      saveDatabase();
+      closeModal('modal-reset-confirm');
+      renderAdminAll();
+      showToast('Base inicial da Grande Belém restaurada com sucesso!');
+    }
+
+    // Atalho ESC para fechar Mini-LP ou modais abertos
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        const miniLp = document.getElementById('mini-lp-overlay');
+        if (miniLp && !miniLp.classList.contains('hidden')) {
+          closeMiniLP();
+        }
+        ['modal-ponte', 'modal-cadastro-sucesso', 'modal-login', 'modal-auditoria', 'modal-editar-assinante', 'modal-churn', 'modal-renovar', 'modal-reset-confirm', 'modal-depoimento'].forEach((mId) => {
+          const el = document.getElementById(mId);
+          if (el && !el.classList.contains('hidden')) closeModal(mId);
+        });
+      }
+    });
+
+    // Inicialização na carga da janela
+    window.onload = function () {
+      loadDatabase();
+      renderAuthControls();
+      renderDepoimentos();
+      selectPlan('agenda_cheia', false);
+      lucide.createIcons();
+    };
+  </script>
+</body>
+</html>
