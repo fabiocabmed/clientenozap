@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ClienteNoZap | Clientes do Seu Bairro Chamando no WhatsApp — Grande Belém</title>
-  <meta name="description" content="Divulgação hiperlocalizada com página profissional criada por IA para autônomos, salões, mecânicos e prestadores de serviço em Belém, Ananindeua, Marituba e Benevides." />
-  
+  <title>ClienteNoZap | Clientes Prontos Chamando no Seu WhatsApp</title>
+  <meta name="description" content="Captação ativa de clientes para autônomos, prestadores de serviço e MEIs em Belém, Ananindeua, Icoaraci, Mosqueiro, Marituba, Benevides, Benfica e Castanhal." />
+
   <!-- Google Fonts: Plus Jakarta Sans & Inter -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet" />
-  
-  <!-- Tailwind CSS CDN -->
+
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -22,7 +22,7 @@
             display: ['Plus Jakarta Sans', 'sans-serif'],
           },
           colors: {
-            brand: {
+            zap: {
               50: '#ECFDF5',
               100: '#D1FAE5',
               200: '#A7F3D0',
@@ -30,9 +30,10 @@
               600: '#059669',
               700: '#047857',
             },
-            slate: {
-              850: '#152033',
+            dark: {
+              800: '#1E293B',
               900: '#0F172A',
+              950: '#090D16',
             }
           }
         }
@@ -48,1396 +49,537 @@
       font-family: 'Inter', sans-serif;
       background-color: #F8FAFC;
       color: #0F172A;
+      font-size: 16px;
+      line-height: 1.55;
     }
     h1, h2, h3, .font-display {
       font-family: 'Plus Jakarta Sans', sans-serif;
     }
-    .pulse-whatsapp {
+    .cta-pulse {
       box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.55);
-      animation: pulse-green 2s infinite;
+      animation: pulse-zap 2s infinite;
     }
-    @keyframes pulse-green {
+    @keyframes pulse-zap {
       0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.55); }
-      70% { transform: scale(1.015); box-shadow: 0 0 0 12px rgba(16, 185, 129, 0); }
+      70% { transform: scale(1.015); box-shadow: 0 0 0 14px rgba(16, 185, 129, 0); }
       100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
-    }
-    .view-section {
-      display: none;
-    }
-    .view-section.active {
-      display: block;
     }
   </style>
 </head>
-<body class="antialiased selection:bg-brand-100 selection:text-brand-700">
-
-  <!-- TOAST NOTIFICATION CONTAINER -->
-  <div id="toast-container" class="fixed bottom-4 right-4 z-[90] flex flex-col gap-2 max-w-sm w-full pointer-events-none px-4 sm:px-0"></div>
+<body class="antialiased selection:bg-zap-100 selection:text-zap-700 overflow-x-hidden">
 
   <!-- ===================================================================== -->
-  <!-- TOP NAVIGATION BAR (FIXED)                                            -->
+  <!-- TOPO COMPACTO E DIRETO                                                -->
   <!-- ===================================================================== -->
   <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-3">
-      <!-- Brand Logo -->
-      <button onclick="navigateTo('sales')" class="flex items-center gap-2.5 text-left group focus:outline-none">
-        <div class="w-9 h-9 rounded-xl bg-brand-500 group-hover:bg-brand-600 transition flex items-center justify-center text-white shadow-sm">
-          <i data-lucide="zap" class="w-5 h-5 fill-current"></i>
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between gap-3">
+      <a href="#inicio" class="flex items-center gap-2.5 focus:outline-none">
+        <div class="w-10 h-10 rounded-xl bg-zap-500 flex items-center justify-center text-white shadow-sm shrink-0">
+          <i data-lucide="message-circle" class="w-6 h-6"></i>
         </div>
         <div>
-          <span class="font-display font-extrabold text-xl tracking-tight text-slate-900">Cliente<span class="text-brand-500">NoZap</span></span>
-          <span class="hidden sm:inline-block ml-1.5 text-[11px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full bg-brand-50 text-brand-700 border border-brand-200">Grande Belém</span>
+          <span class="font-display font-extrabold text-xl tracking-tight text-slate-900 block leading-none">
+            Cliente<span class="text-zap-600">NoZap</span>
+          </span>
+          <span class="text-[11px] font-semibold text-slate-500">Belém • Região Metropolitana • Castanhal</span>
         </div>
-      </button>
+      </a>
 
-      <!-- Desktop & Mobile Nav Links -->
-      <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-600">
-        <button onclick="navigateToSection('como-funciona')" class="hover:text-brand-600 transition">Como Funciona</button>
-        <button onclick="navigateToSection('planos')" class="hover:text-brand-600 transition">Planos e Pacotes</button>
-        <button onclick="navigateTo('vitrine')" id="nav-vitrine-btn" class="flex items-center gap-1.5 hover:text-brand-600 transition">
-          <i data-lucide="store" class="w-4 h-4 text-brand-500"></i>
-          Vitrine de Profissionais
-        </button>
-      </nav>
-
-      <!-- Right Action Buttons -->
-      <div class="flex items-center gap-2">
-        <button onclick="navigateTo('vitrine')" class="md:hidden inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 text-slate-700 hover:bg-slate-200 transition">
-          <i data-lucide="store" class="w-3.5 h-3.5 text-brand-600"></i>
-          Vitrine
-        </button>
-
-        <div id="auth-nav-logged-out">
-          <button onclick="openLoginModal()" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-slate-900 text-white hover:bg-slate-800 transition shadow-sm">
-            <i data-lucide="lock" class="w-3.5 h-3.5 text-brand-500"></i>
-            Entrar
-          </button>
-        </div>
-
-        <div id="auth-nav-logged-in" class="hidden flex items-center gap-2">
-          <button onclick="navigateTo('admin')" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-brand-500 text-white hover:bg-brand-600 transition shadow-sm">
-            <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
-            Painel Admin
-          </button>
-          <button onclick="logoutAdmin()" title="Sair do Painel" class="p-2 rounded-xl text-slate-500 hover:text-red-600 hover:bg-red-50 transition">
-            <i data-lucide="log-out" class="w-4 h-4"></i>
-          </button>
-        </div>
-      </div>
+      <a href="#escolher-opcao" class="inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl bg-zap-600 hover:bg-zap-700 text-white font-display font-bold text-sm shadow-sm transition">
+        <span>Começar Agora</span>
+        <i data-lucide="arrow-down" class="w-4 h-4"></i>
+      </a>
     </div>
   </header>
 
   <!-- ===================================================================== -->
-  <!-- VIEW 1: PÁGINA DE VENDA (PORTA DE ENTRADA PRINCIPAL)                  -->
+  <!-- 1. HERO DE ALTA CONVERSÃO (DIRETO NA DOR E NO RESULTADO)              -->
   <!-- ===================================================================== -->
-  <main id="view-sales" class="view-section active">
-    
-    <!-- HERO SECTION -->
-    <section class="relative overflow-hidden bg-gradient-to-b from-slate-900 via-slate-900 to-slate-850 text-white pt-10 pb-16 sm:pt-16 sm:pb-24">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div class="max-w-3xl mx-auto text-center">
-          <!-- Seasonal & Local Tag -->
-          <div class="inline-flex flex-wrap items-center justify-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/15 text-xs font-medium text-brand-200 mb-6">
-            <span class="w-2 h-2 rounded-full bg-brand-500 animate-ping"></span>
-            <span>Especial Fim de Ano &amp; Férias • Belém, Ananindeua, Marituba e Benevides</span>
-          </div>
+  <section id="inicio" class="bg-gradient-to-b from-dark-950 via-dark-900 to-dark-800 text-white pt-10 pb-14 sm:pt-14 sm:pb-20">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 text-center">
+      <!-- Cobertura Regional -->
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/15 text-xs sm:text-sm font-medium text-zap-200 mb-5">
+        <span class="w-2 h-2 rounded-full bg-zap-500 animate-ping shrink-0"></span>
+        <span>Belém • Ananindeua • Icoaraci • Mosqueiro • Marituba • Benevides • Benfica • Castanhal</span>
+      </div>
 
-          <h1 class="font-display font-extrabold text-3xl sm:text-5xl lg:text-[52px] tracking-tight leading-[1.12] mb-6">
-            Você foca no seu serviço, a gente coloca <span class="text-brand-500">moradores do seu bairro</span> chamando no seu WhatsApp.
-          </h1>
+      <h1 class="font-display font-extrabold text-3xl sm:text-5xl tracking-tight leading-[1.12] mb-5">
+        Tem gente procurando pelo seu serviço agora. A gente faz esse cliente <span class="text-zap-500">chamar no seu WhatsApp</span>.
+      </h1>
 
-          <p class="text-base sm:text-lg text-slate-300 leading-relaxed mb-8 max-w-2xl mx-auto">
-            Feito para <strong>salões, maquiadoras, mecânicos, técnicos de refrigeração e prestadores locais</strong>. Nossa IA monta sua página profissional e rodamos anúncios na sua região — ou nossa equipe ainda negocia e já entrega o horário agendado para você.
+      <p class="text-base sm:text-xl text-slate-200 leading-relaxed max-w-2xl mx-auto mb-8">
+        Feito para <strong>autônomos, prestadores de serviço e MEIs</strong>. Você escolhe a área onde quer atender e nós fazemos a captação ativa de quem precisa contratar hoje — sem mensalidade presa e com <strong>100% do lucro direto no seu bolso</strong>.
+      </p>
+
+      <!-- CTA Principal -->
+      <div class="flex flex-col items-center gap-4">
+        <a href="#escolher-opcao" class="cta-pulse w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-2xl bg-zap-500 hover:bg-zap-600 text-white font-display font-extrabold text-lg shadow-xl transition">
+          <i data-lucide="zap" class="w-6 h-6 fill-current"></i>
+          <span>Quero Clientes Chamando no Meu Zap</span>
+        </a>
+
+        <!-- 3 Ancoras de Confiança Compactas -->
+        <div class="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs sm:text-sm text-slate-300 mt-1">
+          <span class="inline-flex items-center gap-1.5">
+            <i data-lucide="map-pin" class="w-4 h-4 text-zap-400 shrink-0"></i>
+            Você escolhe onde atender
+          </span>
+          <span class="inline-flex items-center gap-1.5">
+            <i data-lucide="wallet" class="w-4 h-4 text-zap-400 shrink-0"></i>
+            Zero comissão sobre seus serviços
+          </span>
+          <span class="inline-flex items-center gap-1.5">
+            <i data-lucide="shield-check" class="w-4 h-4 text-zap-400 shrink-0"></i>
+            Sem contrato de fidelidade
+          </span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================================== -->
+  <!-- 2. A CONTA QUE FECHA NO BOLSO (BLOCO ENXUTO DE ROI)                   -->
+  <!-- ===================================================================== -->
+  <section class="py-10 sm:py-14 max-w-5xl mx-auto px-4 sm:px-6">
+    <div class="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-sm">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+        <div class="lg:col-span-7">
+          <span class="text-xs font-extrabold uppercase tracking-wider text-zap-700">A conta simples pra quem trabalha por conta própria</span>
+          <h2 class="font-display font-extrabold text-2xl sm:text-3xl text-slate-900 mt-1">
+            Com 1 ou 2 serviços fechados você já paga o investimento. O resto é lucro limpo.
+          </h2>
+          <p class="text-base text-slate-600 mt-3">
+            Quem vive só de indicação fica refém do movimento da semana: num dia tem correria, no outro o telefone não toca. Com captação ativa na região que você escolher, você mantém fluxo constante de gente pedindo orçamento todo dia.
           </p>
+        </div>
 
-          <!-- Primary & Secondary CTAs -->
-          <div class="flex flex-col sm:flex-row items-center justify-center gap-3.5 mb-10">
-            <button onclick="navigateToSection('planos')" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-4 rounded-2xl bg-brand-500 hover:bg-brand-600 text-white font-display font-bold text-base shadow-lg shadow-brand-500/25 transition">
-              <i data-lucide="rocket" class="w-5 h-5"></i>
-              Escolher Meu Pacote Agora
-            </button>
-            <button onclick="navigateTo('vitrine')" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-4 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/15 text-white font-semibold text-sm sm:text-base transition">
-              <i data-lucide="store" class="w-4 h-4 text-brand-400"></i>
-              Ver Vitrine da Grande Belém
-            </button>
+        <div class="lg:col-span-5 grid grid-cols-1 gap-3">
+          <div class="flex items-start gap-3 p-4 rounded-2xl bg-slate-50 border border-slate-200">
+            <div class="w-9 h-9 rounded-xl bg-zap-100 text-zap-700 flex items-center justify-center shrink-0 mt-0.5">
+              <i data-lucide="crosshair" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <h3 class="font-display font-bold text-base text-slate-900">Você define o território</h3>
+              <p class="text-sm text-slate-600">Atenda só no seu bairro ou abra para toda a Grande Belém e Castanhal.</p>
+            </div>
           </div>
 
-          <!-- Trust Badges -->
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs sm:text-sm text-slate-300 border-t border-white/10 pt-7">
-            <div class="flex items-center justify-center gap-2">
-              <i data-lucide="sparkles" class="w-4 h-4 text-brand-400 shrink-0"></i>
-              <span>Página exclusiva criada por IA</span>
+          <div class="flex items-start gap-3 p-4 rounded-2xl bg-slate-50 border border-slate-200">
+            <div class="w-9 h-9 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center shrink-0 mt-0.5">
+              <i data-lucide="hand-coins" class="w-5 h-5"></i>
             </div>
-            <div class="flex items-center justify-center gap-2">
-              <i data-lucide="map-pin" class="w-4 h-4 text-brand-400 shrink-0"></i>
-              <span>Anúncios direcionados no seu bairro</span>
-            </div>
-            <div class="flex items-center justify-center gap-2">
-              <i data-lucide="shield-check" class="w-4 h-4 text-brand-400 shrink-0"></i>
-              <span>Sem fidelidade • Pacotes por período</span>
+            <div>
+              <h3 class="font-display font-bold text-base text-slate-900">100% do dinheiro é seu</h3>
+              <p class="text-sm text-slate-600">O cliente negocia e paga direto no seu Pix. Não pegamos porcentagem nenhuma.</p>
             </div>
           </div>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- ALTA TEMPORADA FIM DE ANO BANNER -->
-    <section class="bg-amber-50 border-b border-amber-200/80 py-4">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-3 text-center md:text-left">
-        <div class="flex items-center gap-2.5 text-amber-900 text-xs sm:text-sm font-medium">
-          <span class="px-2.5 py-0.5 rounded-md bg-amber-500 text-white font-bold text-[11px] uppercase tracking-wide shrink-0">Alta Demanda</span>
-          <span><strong>Novembro e Dezembro:</strong> Pessoas buscando progressiva, maquiagem de festas, revisão de carro para viagem e limpeza de split agora mesmo na Grande Belém.</span>
-        </div>
-        <button onclick="navigateToSection('planos')" class="text-xs font-bold text-amber-800 hover:text-amber-950 underline underline-offset-2 shrink-0">
-          Garantir minha campanha da semana →
+  <!-- ===================================================================== -->
+  <!-- 3. ESCOLHA SEU FORMATO + PACOTES (DIRETO E SEM RODEIOS)               -->
+  <!-- ===================================================================== -->
+  <section id="escolher-opcao" class="pb-14 sm:pb-20 max-w-5xl mx-auto px-4 sm:px-6">
+    <div class="text-center max-w-2xl mx-auto mb-8">
+      <span class="text-xs font-extrabold uppercase tracking-wider text-zap-700">Escolha o melhor formato pra sua rotina</span>
+      <h2 class="font-display font-extrabold text-2xl sm:text-4xl text-slate-900 mt-1">
+        Como você prefere receber seus clientes?
+      </h2>
+
+      <!-- Seletor das 2 Modalidades -->
+      <div class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-w-2xl mx-auto bg-slate-200/80 p-1.5 rounded-2xl">
+        <button type="button" id="btn-modo-1" onclick="trocarModo('M1')" class="py-3.5 px-4 rounded-xl font-display font-bold text-sm sm:text-base bg-dark-900 text-white shadow-sm transition flex items-center justify-center gap-2">
+          <i data-lucide="smartphone" class="w-5 h-5 text-zap-400 shrink-0"></i>
+          <span>1. Você Responde no Seu Zap</span>
+        </button>
+
+        <button type="button" id="btn-modo-2" onclick="trocarModo('M2')" class="py-3.5 px-4 rounded-xl font-display font-bold text-sm sm:text-base text-slate-800 hover:bg-white/60 transition flex items-center justify-center gap-2">
+          <i data-lucide="calendar-check" class="w-5 h-5 text-amber-600 shrink-0"></i>
+          <span>2. A Gente Agenda pra Você</span>
         </button>
       </div>
-    </section>
+    </div>
 
-    <!-- COMO FUNCIONA (3 ETAPAS) -->
-    <section id="como-funciona" class="py-14 sm:py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center max-w-2xl mx-auto mb-12">
-        <span class="text-xs font-bold uppercase tracking-wider text-brand-600">Simples, Direto e Sem Complicação</span>
-        <h2 class="font-display font-extrabold text-2xl sm:text-4xl text-slate-900 mt-1.5">Como o ClienteNoZap coloca movimento na sua semana</h2>
-        <p class="text-slate-600 text-sm sm:text-base mt-3">Você escolhe se prefere apenas receber os contatos direto no seu WhatsApp ou se quer que nossa equipe feche e agende para você.</p>
-      </div>
+    <!-- MODALIDADE 1: VOCÊ RESPONDE NO SEU ZAP -->
+    <div id="bloco-modo-1" class="space-y-5">
+      <p class="text-center text-sm sm:text-base text-slate-700 max-w-2xl mx-auto bg-zap-50 border border-zap-200 rounded-2xl px-4 py-3">
+        <strong>Ideal pra quem responde rápido:</strong> Nós captamos quem precisa do seu serviço na área escolhida e o cliente chama <strong>direto no seu WhatsApp</strong> para você fechar.
+      </p>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="bg-white rounded-2xl p-6 sm:p-7 border border-slate-200 shadow-sm">
-          <div class="w-11 h-11 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center font-display font-extrabold text-lg mb-5 border border-brand-200">1</div>
-          <h3 class="font-display font-bold text-lg text-slate-900 mb-2">Escolha seu pacote e região</h3>
-          <p class="text-slate-600 text-sm leading-relaxed">Informe seu ofício, cidade e bairro principal (Belém, Ananindeua, Marituba ou Benevides) e selecione o período da sua campanha.</p>
-        </div>
-
-        <div class="bg-white rounded-2xl p-6 sm:p-7 border border-slate-200 shadow-sm">
-          <div class="w-11 h-11 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center font-display font-extrabold text-lg mb-5 border border-brand-200">2</div>
-          <h3 class="font-display font-bold text-lg text-slate-900 mb-2">Ativamos sua Página IA e Anúncios</h3>
-          <p class="text-slate-600 text-sm leading-relaxed">Nossa IA cria sua mini-página profissional, publica seu perfil na Vitrine Local e ativa anúncios patrocinados no Instagram e Facebook do seu bairro.</p>
-        </div>
-
-        <div class="bg-white rounded-2xl p-6 sm:p-7 border border-slate-200 shadow-sm">
-          <div class="w-11 h-11 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center font-display font-extrabold text-lg mb-5 border border-brand-200">3</div>
-          <h3 class="font-display font-bold text-lg text-slate-900 mb-2">Conexão no Zap ou Agenda Pronta</h3>
-          <p class="text-slate-600 text-sm leading-relaxed">Nos <strong>Pacotes de Conexão</strong>, o interessado chama direto no seu Zap. No plano <strong>Agenda Pronta</strong>, nossa equipe atende, negocia e já te entrega o horário marcado.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- PLANOS & CONFIGURADOR DE CADASTRO -->
-    <section id="planos" class="py-14 sm:py-20 bg-white border-t border-slate-200">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="text-center max-w-3xl mx-auto mb-10">
-          <span class="text-xs font-bold uppercase tracking-wider text-brand-600">Transparência Total • Sem Promessa Irreal</span>
-          <h2 class="font-display font-extrabold text-2xl sm:text-4xl text-slate-900 mt-1.5">Escolha a modalidade ideal para o seu momento</h2>
-          <p class="text-slate-600 text-sm sm:text-base mt-3">
-            Trabalhamos com <strong>períodos ativos de campanha patrocinada</strong> e estrutura digital pronta — sem fidelidade e com ativação rápida via Pix.
-          </p>
-
-          <!-- Product Mode Toggle Tabs -->
-          <div class="mt-7 inline-flex flex-col sm:flex-row p-1.5 rounded-2xl bg-slate-100 border border-slate-200 gap-1.5">
-            <button type="button" id="tab-prod-p1" onclick="switchProductTab('P1')" class="px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition bg-slate-900 text-white shadow-sm flex items-center justify-center gap-2">
-              <i data-lucide="message-circle" class="w-4 h-4 text-brand-400"></i>
-              1. Pacotes de Visibilidade &amp; Conexão (Você atende)
-            </button>
-            <button type="button" id="tab-prod-p2" onclick="switchProductTab('P2')" class="px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition text-slate-700 hover:text-slate-900 flex items-center justify-center gap-2">
-              <i data-lucide="calendar-check-2" class="w-4 h-4 text-amber-500"></i>
-              2. Agenda Pronta VIP (Nós fechamos e agendamos)
-            </button>
-          </div>
-        </div>
-
-        <!-- PRODUTO 1 CARDS (POR PERÍODO: 7, 15, 30 DIAS) -->
-        <div id="plans-grid-p1" class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto mb-12">
-          <!-- Start 7 dias -->
-          <div id="card-plan-start_7d" onclick="selectPlan('start_7d')" class="plan-card cursor-pointer rounded-2xl border-2 border-slate-200 bg-slate-50/50 hover:border-brand-500 p-6 sm:p-7 transition flex flex-col justify-between">
-            <div>
-              <div class="flex items-center justify-between mb-3">
-                <span class="text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-lg bg-slate-200/80 text-slate-700">Teste Rápido</span>
-                <span class="text-xs font-semibold text-slate-500">7 dias ativos</span>
-              </div>
-              <h3 class="font-display font-extrabold text-xl text-slate-900">Pacote Start</h3>
-              <div class="mt-3 mb-4 flex items-baseline gap-1">
-                <span class="text-sm font-semibold text-slate-500">R$</span>
-                <span class="font-display font-extrabold text-4xl text-slate-900">127</span>
-                <span class="text-xs font-medium text-slate-500">/ 7 dias</span>
-              </div>
-              <p class="text-xs text-slate-600 mb-5 pb-4 border-b border-slate-200">Ideal para validar sua região nesta semana sem compromisso mensal.</p>
-              <ul class="space-y-2.5 text-sm text-slate-700 mb-6">
-                <li class="flex items-start gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-brand-500 shrink-0 mt-0.5"></i><span><strong>7 dias corridos</strong> de campanha patrocinada no seu bairro</span></li>
-                <li class="flex items-start gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-brand-500 shrink-0 mt-0.5"></i><span>Mini-Landing Page exclusiva criada por IA</span></li>
-                <li class="flex items-start gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-brand-500 shrink-0 mt-0.5"></i><span>Perfil ativo na Vitrine Local ClienteNoZap</span></li>
-                <li class="flex items-start gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-brand-500 shrink-0 mt-0.5"></i><span>Conexões diretas no <strong>seu próprio WhatsApp</strong></span></li>
-              </ul>
-            </div>
-            <button type="button" class="w-full py-3 px-4 rounded-xl font-bold text-sm bg-white border border-slate-300 text-slate-900 hover:bg-brand-500 hover:text-white hover:border-brand-500 transition">
-              Selecionar Start (7 dias)
-            </button>
-          </div>
-
-          <!-- Acelera 15 dias (Destaque) -->
-          <div id="card-plan-acelera_15d" onclick="selectPlan('acelera_15d')" class="plan-card cursor-pointer relative rounded-2xl border-2 border-brand-500 bg-white shadow-lg shadow-brand-500/10 p-6 sm:p-7 transition flex flex-col justify-between">
-            <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 px-3.5 py-1 rounded-full bg-brand-500 text-white text-[11px] font-extrabold uppercase tracking-wider shadow-sm">
-              Mais Escolhido
-            </div>
-            <div>
-              <div class="flex items-center justify-between mb-3">
-                <span class="text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-lg bg-brand-50 text-brand-700">Quinzena Cheia</span>
-                <span class="text-xs font-semibold text-brand-600">15 dias ativos</span>
-              </div>
-              <h3 class="font-display font-extrabold text-xl text-slate-900">Pacote Acelera</h3>
-              <div class="mt-3 mb-4 flex items-baseline gap-1">
-                <span class="text-sm font-semibold text-slate-500">R$</span>
-                <span class="font-display font-extrabold text-4xl text-slate-900">197</span>
-                <span class="text-xs font-medium text-slate-500">/ 15 dias</span>
-              </div>
-              <p class="text-xs text-slate-600 mb-5 pb-4 border-b border-slate-200">Tempo ideal para o algoritmo aprender seu bairro e manter fluxo constante.</p>
-              <ul class="space-y-2.5 text-sm text-slate-700 mb-6">
-                <li class="flex items-start gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-brand-500 shrink-0 mt-0.5"></i><span><strong>15 dias corridos</strong> de campanha patrocinada (bairro + vizinhos)</span></li>
-                <li class="flex items-start gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-brand-500 shrink-0 mt-0.5"></i><span>Mini-Landing Page exclusiva com tema sazonal</span></li>
-                <li class="flex items-start gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-brand-500 shrink-0 mt-0.5"></i><span>Destaque prioritário na Vitrine da sua cidade</span></li>
-                <li class="flex items-start gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-brand-500 shrink-0 mt-0.5"></i><span>Acompanhamento semanal de desempenho + check-in</span></li>
-              </ul>
-            </div>
-            <button type="button" class="w-full py-3 px-4 rounded-xl font-bold text-sm bg-brand-500 text-white hover:bg-brand-600 transition shadow-sm">
-              Selecionar Acelera (15 dias)
-            </button>
-          </div>
-
-          <!-- Cheio 30 dias -->
-          <div id="card-plan-cheio_30d" onclick="selectPlan('cheio_30d')" class="plan-card cursor-pointer rounded-2xl border-2 border-slate-200 bg-slate-50/50 hover:border-brand-500 p-6 sm:p-7 transition flex flex-col justify-between">
-            <div>
-              <div class="flex items-center justify-between mb-3">
-                <span class="text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-lg bg-slate-200/80 text-slate-700">Mês Completo</span>
-                <span class="text-xs font-semibold text-slate-500">30 dias ativos</span>
-              </div>
-              <h3 class="font-display font-extrabold text-xl text-slate-900">Pacote Cheio</h3>
-              <div class="mt-3 mb-4 flex items-baseline gap-1">
-                <span class="text-sm font-semibold text-slate-500">R$</span>
-                <span class="font-display font-extrabold text-4xl text-slate-900">347</span>
-                <span class="text-xs font-medium text-slate-500">/ 30 dias</span>
-              </div>
-              <p class="text-xs text-slate-600 mb-5 pb-4 border-b border-slate-200">Presença contínua o mês inteiro com maior alcance geográfico na cidade.</p>
-              <ul class="space-y-2.5 text-sm text-slate-700 mb-6">
-                <li class="flex items-start gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-brand-500 shrink-0 mt-0.5"></i><span><strong>30 dias corridos</strong> de campanha patrocinada com maior verba</span></li>
-                <li class="flex items-start gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-brand-500 shrink-0 mt-0.5"></i><span>Mini-Landing Page exclusiva + ajustes de oferta</span></li>
-                <li class="flex items-start gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-brand-500 shrink-0 mt-0.5"></i><span>Topo da Vitrine Local na sua categoria</span></li>
-                <li class="flex items-start gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-brand-500 shrink-0 mt-0.5"></i><span>Suporte prioritário direto no WhatsApp</span></li>
-              </ul>
-            </div>
-            <button type="button" class="w-full py-3 px-4 rounded-xl font-bold text-sm bg-white border border-slate-300 text-slate-900 hover:bg-brand-500 hover:text-white hover:border-brand-500 transition">
-              Selecionar Cheio (30 dias)
-            </button>
-          </div>
-        </div>
-
-        <!-- PRODUTO 2 CARD (AGENDA PRONTA — FECHAMENTO & AGENDAMENTO) -->
-        <div id="plans-grid-p2" class="hidden max-w-4xl mx-auto mb-12">
-          <div id="card-plan-agenda_pronta_15d" onclick="selectPlan('agenda_pronta_15d')" class="plan-card cursor-pointer rounded-3xl border-2 border-amber-400 bg-gradient-to-br from-slate-900 via-slate-900 to-slate-850 text-white p-7 sm:p-10 shadow-xl">
-            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-8">
-              <div class="lg:w-3/5">
-                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/20 border border-amber-400/40 text-amber-300 text-xs font-bold uppercase tracking-wider mb-4">
-                  <i data-lucide="crown" class="w-3.5 h-3.5"></i>
-                  Operação Comercial Completa • Sem Perder Tempo no Zap
-                </div>
-                <h3 class="font-display font-extrabold text-2xl sm:text-3xl text-white">ClienteNoZap Agenda Pronta</h3>
-                <p class="text-slate-300 text-sm sm:text-base mt-3 leading-relaxed">
-                  Você está atendendo no salão ou na oficina e não consegue responder mensagens na hora? <strong>Nossa equipe atende os interessados, tira dúvidas na sua tabela, envia seu link/chave Pix e já te entrega o horário agendado.</strong>
-                </p>
-
-                <ul class="mt-6 space-y-3 text-sm text-slate-200">
-                  <li class="flex items-start gap-2.5">
-                    <i data-lucide="check-circle-2" class="w-5 h-5 text-brand-400 shrink-0 mt-0.5"></i>
-                    <span><strong>15 dias de campanha patrocinada</strong> + Mini-Página IA dedicada</span>
-                  </li>
-                  <li class="flex items-start gap-2.5">
-                    <i data-lucide="check-circle-2" class="w-5 h-5 text-brand-400 shrink-0 mt-0.5"></i>
-                    <span><strong>Atendimento comercial rápido</strong> feito pela nossa central de agendamento</span>
-                  </li>
-                  <li class="flex items-start gap-2.5">
-                    <i data-lucide="check-circle-2" class="w-5 h-5 text-brand-400 shrink-0 mt-0.5"></i>
-                    <span>Pagamento do serviço vai <strong>direto para o seu Pix/link</strong> (zero intermediação financeira)</span>
-                  </li>
-                  <li class="flex items-start gap-2.5">
-                    <i data-lucide="check-circle-2" class="w-5 h-5 text-brand-400 shrink-0 mt-0.5"></i>
-                    <span>Aviso imediato no seu WhatsApp com nome, serviço, dia e horário confirmado</span>
-                  </li>
-                </ul>
-              </div>
-
-              <div class="lg:w-2/5 bg-white/5 border border-white/10 rounded-2xl p-6 text-center">
-                <span class="text-xs font-semibold uppercase tracking-wider text-amber-300">Ciclo Quinzenal VIP</span>
-                <div class="mt-2 mb-1 flex items-baseline justify-center gap-1">
-                  <span class="text-base font-semibold text-slate-300">R$</span>
-                  <span class="font-display font-extrabold text-5xl text-white">397</span>
-                  <span class="text-xs text-slate-300">/ 15 dias</span>
-                </div>
-                <p class="text-xs text-slate-400 mb-6">Campanha + Atendimento Comercial + Agenda</p>
-                <button type="button" class="w-full py-3.5 px-5 rounded-xl font-display font-bold text-sm bg-brand-500 hover:bg-brand-600 text-white transition shadow-lg">
-                  Selecionar Agenda Pronta
-                </button>
-                <p class="text-[11px] text-slate-400 mt-3">Ideal para Cabeleireiras, Maquiadoras, Estética e Revisões Automotivas.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- FORMULÁRIO DE PRÉ-CADASTRO DO PROFISSIONAL -->
-        <div id="cadastro-form-box" class="max-w-3xl mx-auto bg-slate-50 rounded-3xl border border-slate-200 p-6 sm:p-10 shadow-sm">
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-6 mb-6 border-b border-slate-200">
-            <div>
-              <h3 class="font-display font-extrabold text-xl sm:text-2xl text-slate-900">Ative sua página e campanha agora</h3>
-              <p class="text-xs sm:text-sm text-slate-600 mt-1">Preencha os dados abaixo para gerar sua reserva e finalizar a ativação no WhatsApp.</p>
-            </div>
-            <span id="selected-plan-badge" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-brand-100 text-brand-700 text-xs font-bold shrink-0">
-              <i data-lucide="check" class="w-3.5 h-3.5"></i>
-              Pacote Acelera (15d) — R$ 197
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+        <!-- 7 Dias -->
+        <div id="card-7dias" onclick="escolherPacote('7dias')" class="pacote-card cursor-pointer bg-white rounded-3xl border-2 border-slate-200 hover:border-zap-500 p-6 flex flex-col justify-between transition shadow-sm">
+          <div>
+            <span class="inline-block px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 text-xs font-bold uppercase">
+              Entrada rápida
             </span>
+            <h3 class="font-display font-extrabold text-xl text-slate-900 mt-2.5">7 Dias para Testar</h3>
+            <div class="mt-2 mb-3 flex items-baseline gap-1">
+              <span class="text-sm font-bold text-slate-500">R$</span>
+              <span class="font-display font-extrabold text-4xl sm:text-5xl text-slate-900">127</span>
+              <span class="text-xs text-slate-500">único</span>
+            </div>
+            <p class="text-sm text-slate-600 pb-3.5 mb-3.5 border-b border-slate-200">
+              Para sentir na prática os clientes da sua região chamando no seu número.
+            </p>
+            <ul class="space-y-2.5 text-sm text-slate-700 mb-6">
+              <li class="flex items-start gap-2">
+                <i data-lucide="check-circle-2" class="w-4 h-4 text-zap-600 shrink-0 mt-0.5"></i>
+                <span><strong>7 dias</strong> de captação ativa na área escolhida</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <i data-lucide="check-circle-2" class="w-4 h-4 text-zap-600 shrink-0 mt-0.5"></i>
+                <span>Clientes chamando direto no <strong>seu WhatsApp</strong></span>
+              </li>
+              <li class="flex items-start gap-2">
+                <i data-lucide="check-circle-2" class="w-4 h-4 text-zap-600 shrink-0 mt-0.5"></i>
+                <span>Sem renovação automática</span>
+              </li>
+            </ul>
           </div>
-
-          <form id="lead-signup-form" onsubmit="handleProfessionalSignup(event)" class="space-y-5">
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label for="prof-nome" class="block text-xs font-bold uppercase tracking-wide text-slate-700 mb-1.5">Seu Nome ou Nome do Negócio *</label>
-                <input type="text" id="prof-nome" required maxlength="80" placeholder="Ex: Studio Camila Hair ou Oficina J&M" class="w-full px-4 py-3 rounded-xl bg-white border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500" />
-              </div>
-
-              <div>
-                <label for="prof-whatsapp" class="block text-xs font-bold uppercase tracking-wide text-slate-700 mb-1.5">Seu WhatsApp com DDD *</label>
-                <input type="tel" id="prof-whatsapp" required maxlength="15" oninput="maskPhoneInput(this)" placeholder="(91) 98888-7777" class="w-full px-4 py-3 rounded-xl bg-white border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-brand-500" />
-              </div>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              <div>
-                <label for="prof-oficio" class="block text-xs font-bold uppercase tracking-wide text-slate-700 mb-1.5">Seu Ofício / Área *</label>
-                <select id="prof-oficio" required class="w-full px-4 py-3 rounded-xl bg-white border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
-                  <option value="Beleza & Cabelo">Beleza &amp; Cabelo</option>
-                  <option value="Maquiagem & Estética">Maquiagem &amp; Estética</option>
-                  <option value="Mecânica & Revisão">Mecânica &amp; Revisão</option>
-                  <option value="Refrigeração & Elétrica">Refrigeração &amp; Elétrica</option>
-                  <option value="Reformas & Reparos">Reformas &amp; Reparos</option>
-                  <option value="Outros Serviços">Outros Serviços</option>
-                </select>
-              </div>
-
-              <div>
-                <label for="prof-cidade" class="block text-xs font-bold uppercase tracking-wide text-slate-700 mb-1.5">Cidade *</label>
-                <select id="prof-cidade" required class="w-full px-4 py-3 rounded-xl bg-white border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
-                  <option value="Belém">Belém</option>
-                  <option value="Ananindeua">Ananindeua</option>
-                  <option value="Marituba">Marituba</option>
-                  <option value="Benevides">Benevides</option>
-                </select>
-              </div>
-
-              <div>
-                <label for="prof-bairro" class="block text-xs font-bold uppercase tracking-wide text-slate-700 mb-1.5">Bairro Principal *</label>
-                <input type="text" id="prof-bairro" required maxlength="50" placeholder="Ex: Marco, Cidade Nova..." class="w-full px-4 py-3 rounded-xl bg-white border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500" />
-              </div>
-            </div>
-
-            <div>
-              <label for="prof-plano" class="block text-xs font-bold uppercase tracking-wide text-slate-700 mb-1.5">Modalidade e Pacote Escolhido *</label>
-              <select id="prof-plano" onchange="syncPlanFromSelect(this.value)" class="w-full px-4 py-3 rounded-xl bg-white border border-slate-300 text-sm font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-500">
-                <option value="start_7d">Produto 1 — Pacote Start (7 dias de campanha + Página IA) — R$ 127</option>
-                <option value="acelera_15d" selected>Produto 1 — Pacote Acelera (15 dias de campanha + Página IA) — R$ 197</option>
-                <option value="cheio_30d">Produto 1 — Pacote Cheio (30 dias de campanha + Página IA) — R$ 347</option>
-                <option value="agenda_pronta_15d">Produto 2 — Agenda Pronta VIP (15 dias + Nós fechamos e agendamos) — R$ 397</option>
-              </select>
-            </div>
-
-            <!-- Terms & Transparency Checkbox -->
-            <div class="bg-white p-4 rounded-xl border border-slate-200">
-              <label class="flex items-start gap-3 cursor-pointer">
-                <input type="checkbox" id="prof-termos" required class="mt-1 w-4 h-4 rounded border-slate-300 text-brand-600 focus:ring-brand-500" />
-                <span class="text-xs text-slate-600 leading-relaxed">
-                  Li e concordo com os <button type="button" onclick="openLegalModal('termos')" class="text-brand-600 font-semibold underline">Termos de Adesão</button>. Estou ciente de que os pacotes de Visibilidade &amp; Conexão entregam página profissional e veiculação patrocinada pelo período escolhido (sem garantia fixa de fechamentos), e que no plano Agenda Pronta o atendimento comercial segue a tabela de preços informada por mim.
-                </span>
-              </label>
-            </div>
-
-            <button type="submit" class="w-full py-4 px-6 rounded-2xl bg-brand-500 hover:bg-brand-600 text-white font-display font-bold text-base shadow-lg shadow-brand-500/20 transition flex items-center justify-center gap-2">
-              <i data-lucide="send" class="w-5 h-5"></i>
-              Reservar Minha Página e Ativar no WhatsApp
-            </button>
-          </form>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <!-- ===================================================================== -->
-  <!-- VIEW 2: VITRINE LOCAL DE PROFISSIONAIS                                -->
-  <!-- ===================================================================== -->
-  <section id="view-vitrine" class="view-section py-10 sm:py-14">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <!-- Header -->
-      <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8">
-        <div>
-          <span class="text-xs font-bold uppercase tracking-wider text-brand-600">Diretório Verificado • Região Metropolitana de Belém</span>
-          <h1 class="font-display font-extrabold text-2xl sm:text-4xl text-slate-900 mt-1">Profissionais perto de você</h1>
-          <p class="text-slate-600 text-sm sm:text-base mt-1.5">Escolha um profissional verificado no seu bairro e solicite seu orçamento ou agendamento direto no WhatsApp.</p>
-        </div>
-        <button onclick="navigateToSection('planos')" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs sm:text-sm font-bold transition self-start">
-          <i data-lucide="plus-circle" class="w-4 h-4 text-brand-400"></i>
-          Sou Profissional: Quero Aparecer Aqui
-        </button>
-      </div>
-
-      <!-- Real-time Filters -->
-      <div class="bg-white rounded-2xl border border-slate-200 p-4 sm:p-5 shadow-sm mb-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
-        <div>
-          <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1">Buscar Nome ou Bairro</label>
-          <div class="relative">
-            <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
-            <input type="text" id="filter-search" oninput="renderVitrine()" placeholder="Ex: Marco, Cidade Nova, Camila..." class="w-full pl-9 pr-3 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500" />
-          </div>
-        </div>
-
-        <div>
-          <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1">Categoria / Ofício</label>
-          <select id="filter-oficio" onchange="renderVitrine()" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand-500">
-            <option value="Todos">Todos os Serviços</option>
-            <option value="Beleza & Cabelo">Beleza &amp; Cabelo</option>
-            <option value="Maquiagem & Estética">Maquiagem &amp; Estética</option>
-            <option value="Mecânica & Revisão">Mecânica &amp; Revisão</option>
-            <option value="Refrigeração & Elétrica">Refrigeração &amp; Elétrica</option>
-            <option value="Reformas & Reparos">Reformas &amp; Reparos</option>
-            <option value="Outros Serviços">Outros Serviços</option>
-          </select>
-        </div>
-
-        <div>
-          <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1">Cidade</label>
-          <select id="filter-cidade" onchange="renderVitrine()" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand-500">
-            <option value="Todas">Todas (Grande Belém)</option>
-            <option value="Belém">Belém</option>
-            <option value="Ananindeua">Ananindeua</option>
-            <option value="Marituba">Marituba</option>
-            <option value="Benevides">Benevides</option>
-          </select>
-        </div>
-
-        <div>
-          <label class="block text-[11px] font-bold uppercase text-slate-500 mb-1">Tipo de Atendimento</label>
-          <select id="filter-modalidade" onchange="renderVitrine()" class="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-brand-500">
-            <option value="Todos">Todos os Atendimentos</option>
-            <option value="P1">Atendimento Direto no Zap</option>
-            <option value="P2">Agendamento Rápido (Agenda Pronta)</option>
-          </select>
-        </div>
-      </div>
-
-      <!-- Cards Grid -->
-      <div id="vitrine-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-    </div>
-  </section>
-
-  <!-- ===================================================================== -->
-  <!-- VIEW 3: MOTOR DE MINI-LANDING PAGE EXCLUSIVA POR IA                   -->
-  <!-- ===================================================================== -->
-  <section id="view-minilp" class="view-section min-h-screen bg-slate-50 pb-16">
-    <!-- Control Top Strip -->
-    <div class="bg-slate-900 text-white border-b border-slate-800 py-3 px-4">
-      <div class="max-w-5xl mx-auto flex flex-wrap items-center justify-between gap-2">
-        <button onclick="exitMiniLP()" class="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-slate-300 hover:text-white transition">
-          <i data-lucide="arrow-left" class="w-4 h-4"></i>
-          Voltar para Vitrine
-        </button>
-
-        <div class="flex items-center gap-2">
-          <button onclick="cycleMiniLPTheme()" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/15 text-xs font-semibold text-amber-300 transition">
-            <i data-lucide="palette" class="w-3.5 h-3.5"></i>
-            Alternar Visual IA (<span id="minilp-theme-label">1/3</span>)
+          <button type="button" class="w-full py-3 px-4 rounded-xl border-2 border-slate-900 text-slate-900 hover:bg-slate-900 hover:text-white font-display font-bold text-sm sm:text-base transition">
+            Escolher 7 Dias
           </button>
-          <button onclick="copyMiniLPLink()" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-brand-500 hover:bg-brand-600 text-xs font-bold text-white transition">
-            <i data-lucide="link" class="w-3.5 h-3.5"></i>
-            Copiar Link de Anúncio
+        </div>
+
+        <!-- 15 Dias (Mais Escolhido) -->
+        <div id="card-15dias" onclick="escolherPacote('15dias')" class="pacote-card cursor-pointer relative bg-white rounded-3xl border-2 border-zap-500 p-6 flex flex-col justify-between transition shadow-lg">
+          <div class="absolute -top-3 left-1/2 -translate-x-1/2 px-3.5 py-0.5 rounded-full bg-zap-600 text-white text-xs font-extrabold uppercase tracking-wider shadow">
+            Mais Escolhido
+          </div>
+          <div>
+            <span class="inline-block px-2.5 py-1 rounded-lg bg-zap-50 text-zap-700 text-xs font-bold uppercase">
+              Melhor custo-benefício
+            </span>
+            <h3 class="font-display font-extrabold text-xl text-slate-900 mt-2.5">15 Dias Direto</h3>
+            <div class="mt-2 mb-3 flex items-baseline gap-1">
+              <span class="text-sm font-bold text-slate-500">R$</span>
+              <span class="font-display font-extrabold text-4xl sm:text-5xl text-slate-900">197</span>
+              <span class="text-xs text-slate-500">único</span>
+            </div>
+            <p class="text-sm text-slate-600 pb-3.5 mb-3.5 border-b border-slate-200">
+              Duas semanas seguidas de captação forte para encher sua agenda.
+            </p>
+            <ul class="space-y-2.5 text-sm text-slate-700 mb-6">
+              <li class="flex items-start gap-2">
+                <i data-lucide="check-circle-2" class="w-4 h-4 text-zap-600 shrink-0 mt-0.5"></i>
+                <span><strong>15 dias</strong> de captação ativa na região selecionada</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <i data-lucide="check-circle-2" class="w-4 h-4 text-zap-600 shrink-0 mt-0.5"></i>
+                <span>Alcance ampliado para bairros e cidades vizinhas</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <i data-lucide="check-circle-2" class="w-4 h-4 text-zap-600 shrink-0 mt-0.5"></i>
+                <span>Acompanhamento de resultados direto no Zap</span>
+              </li>
+            </ul>
+          </div>
+          <button type="button" class="w-full py-3 px-4 rounded-xl bg-zap-600 hover:bg-zap-700 text-white font-display font-bold text-sm sm:text-base transition shadow-sm">
+            Escolher 15 Dias
+          </button>
+        </div>
+
+        <!-- 30 Dias -->
+        <div id="card-30dias" onclick="escolherPacote('30dias')" class="pacote-card cursor-pointer bg-white rounded-3xl border-2 border-slate-200 hover:border-zap-500 p-6 flex flex-col justify-between transition shadow-sm">
+          <div>
+            <span class="inline-block px-2.5 py-1 rounded-lg bg-slate-100 text-slate-700 text-xs font-bold uppercase">
+              Fluxo contínuo
+            </span>
+            <h3 class="font-display font-extrabold text-xl text-slate-900 mt-2.5">30 Dias Mês Inteiro</h3>
+            <div class="mt-2 mb-3 flex items-baseline gap-1">
+              <span class="text-sm font-bold text-slate-500">R$</span>
+              <span class="font-display font-extrabold text-4xl sm:text-5xl text-slate-900">347</span>
+              <span class="text-xs text-slate-500">único</span>
+            </div>
+            <p class="text-sm text-slate-600 pb-3.5 mb-3.5 border-b border-slate-200">
+              Para quem não quer deixar espaço vazio na semana o mês inteiro.
+            </p>
+            <ul class="space-y-2.5 text-sm text-slate-700 mb-6">
+              <li class="flex items-start gap-2">
+                <i data-lucide="check-circle-2" class="w-4 h-4 text-zap-600 shrink-0 mt-0.5"></i>
+                <span><strong>30 dias</strong> ininterruptos de captação de clientes</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <i data-lucide="check-circle-2" class="w-4 h-4 text-zap-600 shrink-0 mt-0.5"></i>
+                <span>Cobertura máxima nas áreas que você escolher</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <i data-lucide="check-circle-2" class="w-4 h-4 text-zap-600 shrink-0 mt-0.5"></i>
+                <span>Prioridade no suporte via WhatsApp</span>
+              </li>
+            </ul>
+          </div>
+          <button type="button" class="w-full py-3 px-4 rounded-xl border-2 border-slate-900 text-slate-900 hover:bg-slate-900 hover:text-white font-display font-bold text-sm sm:text-base transition">
+            Escolher 30 Dias
           </button>
         </div>
       </div>
     </div>
 
-    <!-- Dynamic Mini-LP Content Container -->
-    <div id="minilp-content" class="max-w-4xl mx-auto px-4 sm:px-6 pt-6 sm:pt-10"></div>
-  </section>
+    <!-- MODALIDADE 2: A GENTE AGENDA PRA VOCÊ -->
+    <div id="bloco-modo-2" class="hidden max-w-4xl mx-auto">
+      <div id="card-agenda" onclick="escolherPacote('agenda')" class="pacote-card cursor-pointer rounded-3xl bg-dark-900 text-white border-2 border-amber-400 p-6 sm:p-8 shadow-xl">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+          <div class="lg:w-3/5">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-400 text-slate-950 text-xs font-extrabold uppercase tracking-wider mb-3">
+              <i data-lucide="star" class="w-3.5 h-3.5 fill-current"></i>
+              Pra quem trabalha com a mão na massa e não pode parar
+            </span>
 
-  <!-- ===================================================================== -->
-  <!-- VIEW 4: PAINEL ADMINISTRATIVO & INTELIGÊNCIA COMERCIAL                -->
-  <!-- ===================================================================== -->
-  <section id="view-admin" class="view-section py-8 sm:py-12">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <!-- Admin Header -->
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-        <div>
-          <span class="text-xs font-bold uppercase tracking-wider text-brand-600">Gestão Operacional &amp; Financeira</span>
-          <h1 class="font-display font-extrabold text-2xl sm:text-3xl text-slate-900">Painel Executivo ClienteNoZap</h1>
-        </div>
+            <h3 class="font-display font-extrabold text-2xl sm:text-3xl text-white">
+              15 Dias Agenda na Mão
+            </h3>
+            <p class="text-sm sm:text-base text-slate-200 mt-2.5 leading-relaxed">
+              Você só informa seus preços e horários livres. <strong>Nossa equipe atende os interessados, tira as dúvidas, envia a sua chave Pix para confirmar e te entrega o serviço já agendado.</strong>
+            </p>
 
-        <!-- Admin Tabs Navigation -->
-        <div class="flex flex-wrap gap-1.5 bg-white p-1.5 rounded-2xl border border-slate-200 shadow-sm">
-          <button onclick="switchAdminTab('dashboard')" id="admin-tab-btn-dashboard" class="admin-tab-btn px-3.5 py-2 rounded-xl text-xs font-bold transition bg-slate-900 text-white">
-            1. Dashboard &amp; Margem
-          </button>
-          <button onclick="switchAdminTab('interessados')" id="admin-tab-btn-interessados" class="admin-tab-btn px-3.5 py-2 rounded-xl text-xs font-bold transition text-slate-600 hover:bg-slate-100">
-            2. Interessados (<span id="badge-count-interessados">0</span>)
-          </button>
-          <button onclick="switchAdminTab('assinantes')" id="admin-tab-btn-assinantes" class="admin-tab-btn px-3.5 py-2 rounded-xl text-xs font-bold transition text-slate-600 hover:bg-slate-100">
-            3. Carteira Ativa (<span id="badge-count-assinantes">0</span>)
-          </button>
-          <button onclick="switchAdminTab('config')" id="admin-tab-btn-config" class="admin-tab-btn px-3.5 py-2 rounded-xl text-xs font-bold transition text-slate-600 hover:bg-slate-100">
-            4. Operação &amp; Backup
-          </button>
-        </div>
-      </div>
-
-      <!-- TAB 1: DASHBOARD EXECUTIVO -->
-      <div id="admin-tab-dashboard" class="admin-tab-panel space-y-6">
-        <!-- 4 Main KPI Cards -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
-            <div class="flex items-center justify-between text-slate-500 text-xs font-bold uppercase">
-              <span>Receita Bruta Ativa</span>
-              <i data-lucide="wallet" class="w-4 h-4 text-brand-500"></i>
-            </div>
-            <div id="kpi-receita-bruta" class="font-display font-extrabold text-2xl sm:text-3xl text-slate-900 mt-2">R$ 0,00</div>
-            <p id="kpi-receita-sub" class="text-xs text-slate-500 mt-1">Ciclos vigentes na carteira</p>
+            <ul class="mt-4 space-y-2 text-sm sm:text-base text-slate-100">
+              <li class="flex items-start gap-2">
+                <i data-lucide="check-circle-2" class="w-5 h-5 text-zap-400 shrink-0 mt-0.5"></i>
+                <span><strong>15 dias de captação ativa</strong> na área que você escolher</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <i data-lucide="check-circle-2" class="w-5 h-5 text-zap-400 shrink-0 mt-0.5"></i>
+                <span><strong>Atendimento rápido feito pela nossa equipe</strong> (você não perde venda por demora)</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <i data-lucide="check-circle-2" class="w-5 h-5 text-zap-400 shrink-0 mt-0.5"></i>
+                <span>Pagamento do cliente vai <strong>direto no seu Pix</strong></span>
+              </li>
+            </ul>
           </div>
 
-          <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
-            <div class="flex items-center justify-between text-slate-500 text-xs font-bold uppercase">
-              <span>Assinantes Ativos</span>
-              <i data-lucide="users" class="w-4 h-4 text-blue-500"></i>
+          <div class="lg:w-2/5 bg-white/10 border border-white/15 rounded-2xl p-5 text-center">
+            <span class="text-xs font-bold uppercase tracking-wider text-amber-300">15 dias completos</span>
+            <div class="mt-1.5 mb-1.5 flex items-baseline justify-center gap-1">
+              <span class="text-base font-bold text-slate-300">R$</span>
+              <span class="font-display font-extrabold text-5xl text-white">397</span>
             </div>
-            <div id="kpi-ativos-total" class="font-display font-extrabold text-2xl sm:text-3xl text-slate-900 mt-2">0</div>
-            <p id="kpi-ativos-split" class="text-xs text-slate-500 mt-1">0 Conexão (P1) • 0 Agenda Pronta (P2)</p>
-          </div>
-
-          <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
-            <div class="flex items-center justify-between text-slate-500 text-xs font-bold uppercase">
-              <span>Conexões Rastreadas</span>
-              <i data-lucide="message-square-plus" class="w-4 h-4 text-emerald-500"></i>
-            </div>
-            <div id="kpi-entregas-total" class="font-display font-extrabold text-2xl sm:text-3xl text-slate-900 mt-2">0</div>
-            <p id="kpi-agendamentos-sub" class="text-xs text-slate-500 mt-1">0 agendamentos confirmados (P2)</p>
-          </div>
-
-          <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
-            <div class="flex items-center justify-between text-slate-500 text-xs font-bold uppercase">
-              <span>Taxa de Churn</span>
-              <i data-lucide="activity" class="w-4 h-4 text-amber-500"></i>
-            </div>
-            <div id="kpi-churn-rate" class="font-display font-extrabold text-2xl sm:text-3xl text-slate-900 mt-2">0.0%</div>
-            <p id="kpi-churn-sub" class="text-xs text-slate-500 mt-1">Histórico de cancelamentos</p>
-          </div>
-        </div>
-
-        <!-- Unit Economics Real (Meta Ads 2026 - 12.15% Tax + Family Split) -->
-        <div class="bg-slate-900 text-white rounded-2xl p-6 shadow-sm">
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-5 pb-4 border-b border-white/10">
-            <div>
-              <h2 class="font-display font-bold text-base sm:text-lg">Saúde Financeira Real (Regra Fiscal Meta Ads 2026 — 12,15%)</h2>
-              <p class="text-xs text-slate-400">Cálculo automático do Pix depositado na Meta, imposto retido, mídia líquida e divisão operacional.</p>
-            </div>
-            <span class="text-[11px] font-bold px-2.5 py-1 rounded-lg bg-brand-500/20 text-brand-300 border border-brand-500/30 self-start">Margem Protegida</span>
-          </div>
-
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-            <div class="bg-white/5 rounded-xl p-4 border border-white/10">
-              <span class="text-[11px] uppercase tracking-wider text-slate-400 font-semibold">1. Depósito Pix Meta Ads</span>
-              <div id="fin-pix-meta" class="font-display font-extrabold text-xl text-white mt-1">R$ 0,00</div>
-              <span class="text-[11px] text-slate-400">Verba bruta reservada</span>
-            </div>
-
-            <div class="bg-white/5 rounded-xl p-4 border border-white/10">
-              <span class="text-[11px] uppercase tracking-wider text-slate-400 font-semibold">2. Imposto Meta (12,15%)</span>
-              <div id="fin-imposto-meta" class="font-display font-extrabold text-xl text-amber-400 mt-1">R$ 0,00</div>
-              <span class="text-[11px] text-slate-400">PIS/Cofins + ISS retido</span>
-            </div>
-
-            <div class="bg-white/5 rounded-xl p-4 border border-white/10">
-              <span class="text-[11px] uppercase tracking-wider text-slate-400 font-semibold">3. Mídia Líquida nos Ads</span>
-              <div id="fin-midia-liquida" class="font-display font-extrabold text-xl text-sky-400 mt-1">R$ 0,00</div>
-              <span class="text-[11px] text-slate-400">Saldo efetivo no leilão</span>
-            </div>
-
-            <div class="bg-white/5 rounded-xl p-4 border border-white/10">
-              <span class="text-[11px] uppercase tracking-wider text-slate-400 font-semibold">4. Repasse Closer P2 (50%)</span>
-              <div id="fin-repasse-closer" class="font-display font-extrabold text-xl text-purple-300 mt-1">R$ 0,00</div>
-              <span class="text-[11px] text-slate-400">Operação Agenda Pronta</span>
-            </div>
-
-            <div class="bg-brand-500/15 rounded-xl p-4 border border-brand-500/40">
-              <span class="text-[11px] uppercase tracking-wider text-brand-300 font-bold">5. Caixa Líquido Gestor</span>
-              <div id="fin-lucro-gestor" class="font-display font-extrabold text-xl text-brand-400 mt-1">R$ 0,00</div>
-              <span class="text-[11px] text-brand-200">Livre após mídia e repasse</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Analytics Row: Top Niches & Turnover Radar -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
-            <h3 class="font-display font-bold text-base text-slate-900 mb-1">Nichos que Mais Assinam (Carteira Ativa)</h3>
-            <p class="text-xs text-slate-500 mb-5">Distribuição de receita e pacotes ativos por segmento na Grande Belém.</p>
-            <div id="analytics-top-niches" class="space-y-4"></div>
-          </div>
-
-          <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm">
-            <h3 class="font-display font-bold text-base text-slate-900 mb-1">Radar de Turnover (Cancelamentos por Ofício)</h3>
-            <p class="text-xs text-slate-500 mb-5">Monitoramento de retenção e motivos de saída registrados.</p>
-            <div id="analytics-turnover" class="space-y-4"></div>
-          </div>
-        </div>
-      </div>
-
-      <!-- TAB 2: FUNIL DE INTERESSADOS -->
-      <div id="admin-tab-interessados" class="admin-tab-panel hidden space-y-4">
-        <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div>
-            <h2 class="font-display font-bold text-lg text-slate-900">Profissionais Interessados (Pré-Cadastros)</h2>
-            <p class="text-xs text-slate-500">Feche no WhatsApp, confirme o Pix e clique em <strong>Ativar Assinatura</strong> para publicar na Vitrine.</p>
-          </div>
-        </div>
-        <div id="interessados-list" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
-      </div>
-
-      <!-- TAB 3: ASSINANTES ATIVOS & DIAS DE CAMPANHA -->
-      <div id="admin-tab-assinantes" class="admin-tab-panel hidden space-y-5">
-        <!-- Smart Reminders Banner -->
-        <div id="smart-reminders-box" class="bg-amber-50 border border-amber-200 rounded-2xl p-4 sm:p-5"></div>
-
-        <!-- Active Subscribers Cards -->
-        <div id="assinantes-list" class="grid grid-cols-1 lg:grid-cols-2 gap-5"></div>
-      </div>
-
-      <!-- TAB 4: CONFIGURAÇÕES, ROTEAMENTO FAMILIAR & BACKUP -->
-      <div id="admin-tab-config" class="admin-tab-panel hidden grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <!-- Operational WhatsApp Routing -->
-        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-4">
-          <div class="flex items-center gap-2.5">
-            <div class="w-9 h-9 rounded-xl bg-brand-50 text-brand-600 flex items-center justify-center">
-              <i data-lucide="phone-forwarded" class="w-5 h-5"></i>
-            </div>
-            <div>
-              <h3 class="font-display font-bold text-base text-slate-900">Roteamento de WhatsApp (Operação)</h3>
-              <p class="text-xs text-slate-500">Defina os números oficiais de atendimento comercial e fechamento.</p>
-            </div>
-          </div>
-
-          <div>
-            <label class="block text-xs font-bold uppercase text-slate-700 mb-1">WhatsApp Comercial do Gestor (Recebe Novos Cadastros)</label>
-            <input type="text" id="cfg-gestor-zap" placeholder="5591988880000" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm" />
-            <p class="text-[11px] text-slate-500 mt-1">Use código do país + DDD + número (apenas dígitos, ex: <code>5591984122313</code>).</p>
-          </div>
-
-          <div>
-            <label class="block text-xs font-bold uppercase text-slate-700 mb-1">WhatsApp Central Agenda Pronta (Produto 2 — Closer/Filha)</label>
-            <input type="text" id="cfg-closer-zap" placeholder="5591988881111" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm" />
-            <p class="text-[11px] text-slate-500 mt-1">Leads dos assinantes do <strong>Produto 2 (Agenda Pronta)</strong> serão roteados automaticamente para este WhatsApp.</p>
-          </div>
-
-          <button onclick="saveOperationalConfig()" class="w-full py-2.5 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-sm font-bold transition">
-            Salvar Números Operacionais
-          </button>
-        </div>
-
-        <!-- Security & Backup -->
-        <div class="bg-white rounded-2xl p-6 border border-slate-200 shadow-sm space-y-5">
-          <div class="flex items-center gap-2.5">
-            <div class="w-9 h-9 rounded-xl bg-slate-100 text-slate-800 flex items-center justify-center">
-              <i data-lucide="shield" class="w-5 h-5"></i>
-            </div>
-            <div>
-              <h3 class="font-display font-bold text-base text-slate-900">Segurança &amp; Backup dos Dados</h3>
-              <p class="text-xs text-slate-500">Proteja o acesso ao painel e exporte cópias de segurança da carteira.</p>
-            </div>
-          </div>
-
-          <div class="pb-4 border-b border-slate-200 space-y-3">
-            <label class="block text-xs font-bold uppercase text-slate-700">Alterar Senha do Painel Admin</label>
-            <div class="flex gap-2">
-              <input type="password" id="cfg-new-password" placeholder="Nova senha (mín. 6 caracteres)" class="flex-1 px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm" />
-              <button onclick="updateAdminPassword()" class="px-4 py-2.5 rounded-xl bg-brand-500 hover:bg-brand-600 text-white text-xs font-bold transition">
-                Atualizar
-              </button>
-            </div>
-          </div>
-
-          <div class="space-y-2.5">
-            <label class="block text-xs font-bold uppercase text-slate-700">Backup e Portabilidade (JSON)</label>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-              <button onclick="exportBackupJSON()" class="inline-flex items-center justify-center gap-1.5 py-2.5 px-4 rounded-xl border border-slate-300 hover:bg-slate-50 text-xs font-bold text-slate-800 transition">
-                <i data-lucide="download" class="w-4 h-4 text-brand-600"></i>
-                Exportar Backup (.json)
-              </button>
-              <label class="inline-flex items-center justify-center gap-1.5 py-2.5 px-4 rounded-xl border border-slate-300 hover:bg-slate-50 text-xs font-bold text-slate-800 transition cursor-pointer">
-                <i data-lucide="upload" class="w-4 h-4 text-blue-600"></i>
-                Restaurar Backup (.json)
-                <input type="file" accept=".json" onchange="importBackupJSON(event)" class="hidden" />
-              </label>
-            </div>
-          </div>
-
-          <div class="pt-2">
-            <button onclick="resetDemoData()" class="w-full py-2.5 px-4 rounded-xl bg-red-50 hover:bg-red-100 text-red-700 border border-red-200 text-xs font-bold transition">
-              Restaurar Dados Iniciais de Demonstração (Grande Belém)
+            <p class="text-xs sm:text-sm text-slate-300 mb-5">Captação + Atendimento + Agendamento</p>
+            <button type="button" class="w-full py-3.5 px-5 rounded-xl bg-zap-500 hover:bg-zap-600 text-white font-display font-extrabold text-base transition shadow-lg">
+              Escolher Agenda na Mão
             </button>
           </div>
         </div>
       </div>
     </div>
+
+    <!-- =================================================================== -->
+    <!-- 4. FORMULÁRIO RÁPIDO DE ATIVAÇÃO (NA MESMA TELA)                    -->
+    <!-- =================================================================== -->
+    <div id="formulario-pedido" class="mt-10 max-w-2xl mx-auto bg-white rounded-3xl border-2 border-slate-200 p-6 sm:p-8 shadow-md">
+      <div class="pb-4 mb-5 border-b border-slate-200">
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-zap-100 text-zap-800 text-xs sm:text-sm font-bold mb-2" id="resumo-pacote-badge">
+          Opção escolhida: 15 Dias Direto (R$ 197)
+        </span>
+        <h3 class="font-display font-extrabold text-xl sm:text-2xl text-slate-900">
+          Ative sua captação de clientes agora
+        </h3>
+        <p class="text-sm text-slate-600 mt-1">
+          Preencha em 30 segundos e finalize direto no WhatsApp.
+        </p>
+      </div>
+
+      <form onsubmit="enviarPedidoWhatsApp(event)" class="space-y-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label for="campo-nome" class="block text-sm font-bold text-slate-800 mb-1">
+              1. Seu nome ou negócio *
+            </label>
+            <input type="text" id="campo-nome" required placeholder="Ex: Oficina do Carlos, Ana Beleza..." class="w-full px-4 py-3 rounded-xl border-2 border-slate-300 text-base focus:outline-none focus:border-zap-600" />
+          </div>
+
+          <div>
+            <label for="campo-zap" class="block text-sm font-bold text-slate-800 mb-1">
+              2. Seu WhatsApp (com DDD) *
+            </label>
+            <input type="tel" id="campo-zap" required maxlength="15" oninput="mascaraTelefone(this)" placeholder="(91) 98888-7777" class="w-full px-4 py-3 rounded-xl border-2 border-slate-300 text-base focus:outline-none focus:border-zap-600" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label for="campo-servico" class="block text-sm font-bold text-slate-800 mb-1">
+              3. Qual serviço você faz? *
+            </label>
+            <input type="text" id="campo-servico" required placeholder="Ex: Pedreiro, Diarista, Mecânico, Frete..." class="w-full px-4 py-3 rounded-xl border-2 border-slate-300 text-base focus:outline-none focus:border-zap-600" />
+          </div>
+
+          <div>
+            <label for="campo-local" class="block text-sm font-bold text-slate-800 mb-1">
+              4. Onde você quer atender? *
+            </label>
+            <input type="text" id="campo-local" required placeholder="Ex: Belém e Ananindeua, Castanhal, Icoaraci..." class="w-full px-4 py-3 rounded-xl border-2 border-slate-300 text-base focus:outline-none focus:border-zap-600" />
+          </div>
+        </div>
+
+        <div>
+          <label for="campo-pacote" class="block text-sm font-bold text-slate-800 mb-1">
+            5. Opção escolhida *
+          </label>
+          <select id="campo-pacote" onchange="sincronizarSelect(this.value)" class="w-full px-4 py-3 rounded-xl border-2 border-slate-300 bg-slate-50 font-semibold text-sm sm:text-base text-slate-900 focus:outline-none focus:border-zap-600">
+            <option value="7dias">Você Responde no Zap — 7 Dias para Testar (R$ 127)</option>
+            <option value="15dias" selected>Você Responde no Zap — 15 Dias Direto (R$ 197)</option>
+            <option value="30dias">Você Responde no Zap — 30 Dias Mês Inteiro (R$ 347)</option>
+            <option value="agenda">A Gente Agenda pra Você — 15 Dias Agenda na Mão (R$ 397)</option>
+          </select>
+        </div>
+
+        <button type="submit" class="w-full py-4 px-6 rounded-2xl bg-zap-600 hover:bg-zap-700 text-white font-display font-extrabold text-base sm:text-lg shadow-lg transition flex items-center justify-center gap-2.5">
+          <i data-lucide="message-circle" class="w-6 h-6"></i>
+          <span>Continuar no WhatsApp Agora</span>
+        </button>
+
+        <p class="text-xs text-center text-slate-500">
+          Pagamento único pelo período escolhido • Sem fidelidade e sem cobrança automática.
+        </p>
+      </form>
+    </div>
   </section>
 
   <!-- ===================================================================== -->
-  <!-- FOOTER (COM LINKS LEGAIS LGPD & TERMOS)                               -->
+  <!-- 5. QUEBRA RÁPIDA DE OBJEÇÕES (3 RESPOSTAS CURTAS)                     -->
   <!-- ===================================================================== -->
-  <footer class="bg-slate-900 text-slate-400 border-t border-slate-800 py-10 mt-12">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
-      <div class="flex items-center gap-2">
-        <span class="font-display font-extrabold text-base text-white">Cliente<span class="text-brand-500">NoZap</span></span>
-        <span>• Plataforma Hiperlocal de Conexão Comercial — Grande Belém/PA</span>
-      </div>
-      <div class="flex flex-wrap items-center gap-5">
-        <button onclick="openLegalModal('privacidade')" class="hover:text-white underline underline-offset-2 transition">Política de Privacidade (LGPD)</button>
-        <button onclick="openLegalModal('termos')" class="hover:text-white underline underline-offset-2 transition">Termos de Uso e Transparência</button>
-        <button onclick="navigateTo('vitrine')" class="hover:text-white transition">Vitrine Local</button>
+  <section class="py-10 bg-white border-t border-slate-200">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="bg-slate-50 rounded-2xl p-5 border border-slate-200">
+          <h3 class="font-display font-bold text-base text-slate-900">Vocês cobram comissão?</h3>
+          <p class="text-sm text-slate-600 mt-1">
+            <strong>Zero.</strong> Você recebe 100% do valor de cada serviço direto no seu bolso ou no seu Pix.
+          </p>
+        </div>
+
+        <div class="bg-slate-50 rounded-2xl p-5 border border-slate-200">
+          <h3 class="font-display font-bold text-base text-slate-900">Posso escolher mais de um bairro ou cidade?</h3>
+          <p class="text-sm text-slate-600 mt-1">
+            <strong>Sim.</strong> Você define se quer atender só perto de você ou em Belém, Ananindeua, Icoaraci, Mosqueiro, Marituba, Benevides, Benfica e Castanhal.
+          </p>
+        </div>
+
+        <div class="bg-slate-50 rounded-2xl p-5 border border-slate-200">
+          <h3 class="font-display font-bold text-base text-slate-900">Tem multa ou contrato preso?</h3>
+          <p class="text-sm text-slate-600 mt-1">
+            <strong>Nenhuma.</strong> Você contrata pelos dias escolhidos e só renova quando quiser continuar recebendo clientes.
+          </p>
+        </div>
       </div>
     </div>
+  </section>
+
+  <!-- ===================================================================== -->
+  <!-- RODAPÉ COMPACTO                                                       -->
+  <!-- ===================================================================== -->
+  <footer class="bg-dark-950 text-slate-300 py-6 text-center px-4">
+    <p class="font-display font-bold text-base text-white">
+      Cliente<span class="text-zap-500">NoZap</span> • Pará
+    </p>
+    <p class="text-xs text-slate-400 mt-1">
+      Belém • Ananindeua • Icoaraci • Mosqueiro • Marituba • Benevides • Benfica • Castanhal
+    </p>
   </footer>
 
   <!-- ===================================================================== -->
-  <!-- MODALS                                                                -->
+  <!-- MODAL DE CONFIRMAÇÃO ANTES DE ABRIR O WHATSAPP                       -->
   <!-- ===================================================================== -->
-
-  <!-- MODAL 1: CONFIRMAÇÃO DE PRÉ-CADASTRO DO PROFISSIONAL -->
-  <div id="modal-signup-success" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/70 backdrop-blur-sm p-4">
-    <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-slate-200 text-center">
-      <div class="w-14 h-14 rounded-2xl bg-brand-100 text-brand-600 flex items-center justify-center mx-auto mb-4">
+  <div id="modal-confirmacao" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-950/75 backdrop-blur-sm p-4">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-7 shadow-2xl border border-slate-200 text-center">
+      <div class="w-14 h-14 rounded-2xl bg-zap-100 text-zap-600 flex items-center justify-center mx-auto mb-3">
         <i data-lucide="check-circle-2" class="w-8 h-8"></i>
       </div>
-      <h3 class="font-display font-extrabold text-2xl text-slate-900">Pré-Cadastro Reservado!</h3>
-      <p id="modal-signup-desc" class="text-sm text-slate-600 mt-2 leading-relaxed"></p>
+      <h3 class="font-display font-extrabold text-2xl text-slate-900">Tudo pronto!</h3>
+      <p id="texto-confirmacao" class="text-sm sm:text-base text-slate-600 mt-2 leading-relaxed"></p>
 
-      <a id="modal-signup-wa-link" href="#" target="_blank" rel="noopener noreferrer" class="mt-6 w-full py-4 px-5 rounded-2xl bg-brand-500 hover:bg-brand-600 text-white font-display font-bold text-sm sm:text-base shadow-lg shadow-brand-500/25 flex items-center justify-center gap-2 transition">
+      <a id="link-whatsapp-final" href="#" target="_blank" rel="noopener noreferrer" class="mt-5 w-full py-3.5 px-5 rounded-2xl bg-zap-600 hover:bg-zap-700 text-white font-display font-extrabold text-base shadow-lg flex items-center justify-center gap-2 transition">
         <i data-lucide="message-circle" class="w-5 h-5"></i>
-        Finalizar Ativação no WhatsApp
+        <span>Abrir Conversa no WhatsApp</span>
       </a>
 
-      <button onclick="closeModal('modal-signup-success')" class="mt-3 w-full py-2.5 text-xs font-semibold text-slate-500 hover:text-slate-800">
-        Fechar janela
+      <button type="button" onclick="fecharModal()" class="mt-3 w-full py-2 text-sm font-semibold text-slate-500 hover:text-slate-800">
+        Voltar para a página
       </button>
     </div>
   </div>
 
-  <!-- MODAL 2: PONTE RASTREADA + CONSENTIMENTO LGPD (CONSUMIDOR FINAL) -->
-  <div id="modal-ponte-rastreada" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/75 backdrop-blur-sm p-4">
-    <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-7 shadow-2xl border border-slate-200">
-      <div class="flex items-start justify-between gap-3 mb-4">
-        <div>
-          <span id="ponte-badge-tipo" class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-brand-50 text-brand-700 border border-brand-200">
-            Atendimento Rápido via WhatsApp
-          </span>
-          <h3 id="ponte-prof-nome" class="font-display font-extrabold text-xl text-slate-900 mt-1.5">Solicitar Orçamento</h3>
-          <p id="ponte-prof-local" class="text-xs text-slate-500"></p>
-        </div>
-        <button onclick="closeModal('modal-ponte-rastreada')" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100">
-          <i data-lucide="x" class="w-5 h-5"></i>
-        </button>
-      </div>
-
-      <form id="ponte-form" onsubmit="submitPonteRastreada(event)" class="space-y-4">
-        <div>
-          <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Seu Nome *</label>
-          <input type="text" id="ponte-consumidor-nome" required maxlength="60" placeholder="Como podemos te chamar?" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500" />
-        </div>
-
-        <div>
-          <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Seu WhatsApp com DDD *</label>
-          <input type="tel" id="ponte-consumidor-zap" required maxlength="15" oninput="maskPhoneInput(this)" placeholder="(91) 98888-0000" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500" />
-        </div>
-
-        <div>
-          <label class="block text-xs font-bold uppercase text-slate-700 mb-1">O que você precisa? (Opcional)</label>
-          <input type="text" id="ponte-consumidor-servico" maxlength="90" placeholder="Ex: Progressiva, revisão freios, limpeza split..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500" />
-        </div>
-
-        <!-- LGPD Consent -->
-        <div class="bg-slate-50 p-3 rounded-xl border border-slate-200">
-          <label class="flex items-start gap-2.5 cursor-pointer">
-            <input type="checkbox" id="ponte-lgpd-check" required checked class="mt-0.5 w-4 h-4 rounded border-slate-300 text-brand-600 focus:ring-brand-500" />
-            <span class="text-[11px] text-slate-600 leading-snug">
-              Concordo em compartilhar meu nome e WhatsApp exclusivamente para este atendimento/orçamento, conforme a <strong>LGPD (Lei 13.709/2018)</strong>.
-            </span>
-          </label>
-        </div>
-
-        <button type="submit" class="w-full py-3.5 px-5 rounded-2xl bg-brand-500 hover:bg-brand-600 text-white font-display font-bold text-sm shadow-lg shadow-brand-500/20 flex items-center justify-center gap-2 transition">
-          <i data-lucide="message-circle" class="w-5 h-5"></i>
-          Continuar para o WhatsApp
-        </button>
-      </form>
-    </div>
-  </div>
-
-  <!-- MODAL 3: LOGIN ADMINISTRATIVO (SEM SENHA EXPOSTA NO HTML) -->
-  <div id="modal-login" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/75 backdrop-blur-sm p-4">
-    <div class="bg-white rounded-3xl max-w-sm w-full p-6 sm:p-7 shadow-2xl border border-slate-200">
-      <div class="flex items-center justify-between mb-4">
-        <div class="flex items-center gap-2">
-          <div class="w-8 h-8 rounded-lg bg-slate-900 text-brand-400 flex items-center justify-center">
-            <i data-lucide="shield-check" class="w-4 h-4"></i>
-          </div>
-          <h3 class="font-display font-extrabold text-lg text-slate-900">Acesso Restrito</h3>
-        </div>
-        <button onclick="closeModal('modal-login')" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-700">
-          <i data-lucide="x" class="w-5 h-5"></i>
-        </button>
-      </div>
-      <p class="text-xs text-slate-500 mb-4">Área exclusiva do gestor da operação ClienteNoZap.</p>
-
-      <form onsubmit="handleAdminLogin(event)" class="space-y-4">
-        <div>
-          <label class="block text-xs font-bold uppercase text-slate-700 mb-1">Senha do Gestor</label>
-          <input type="password" id="login-password-input" required placeholder="Digite sua senha de acesso" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500" />
-        </div>
-        <button type="submit" class="w-full py-3 px-4 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-bold text-sm transition">
-          Entrar no Painel
-        </button>
-      </form>
-    </div>
-  </div>
-
-  <!-- MODAL 4: EDITAR ASSINANTE & ROTEAMENTO P1/P2 -->
-  <div id="modal-edit-assinante" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/75 backdrop-blur-sm p-4 overflow-y-auto">
-    <div class="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-7 shadow-2xl border border-slate-200 my-8">
-      <div class="flex items-center justify-between mb-4">
-        <h3 class="font-display font-extrabold text-lg text-slate-900">Editar Perfil, Campanha &amp; Roteamento</h3>
-        <button onclick="closeModal('modal-edit-assinante')" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-700">
-          <i data-lucide="x" class="w-5 h-5"></i>
-        </button>
-      </div>
-
-      <form onsubmit="saveAssinanteEdits(event)" class="space-y-3.5 text-sm">
-        <input type="hidden" id="edit-ass-id" />
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <div>
-            <label class="block text-[11px] font-bold uppercase text-slate-600 mb-1">Nome do Negócio</label>
-            <input type="text" id="edit-ass-nome" required class="w-full px-3 py-2 rounded-xl border border-slate-300" />
-          </div>
-          <div>
-            <label class="block text-[11px] font-bold uppercase text-slate-600 mb-1">Bairro</label>
-            <input type="text" id="edit-ass-bairro" required class="w-full px-3 py-2 rounded-xl border border-slate-300" />
-          </div>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <div>
-            <label class="block text-[11px] font-bold uppercase text-slate-600 mb-1">WhatsApp do Profissional</label>
-            <input type="text" id="edit-ass-zap" required class="w-full px-3 py-2 rounded-xl border border-slate-300" />
-          </div>
-          <div>
-            <label class="block text-[11px] font-bold uppercase text-slate-600 mb-1">Dias Decorridos da Campanha</label>
-            <input type="number" id="edit-ass-dias-corridos" min="0" max="60" required class="w-full px-3 py-2 rounded-xl border border-slate-300" />
-          </div>
-        </div>
-
-        <div class="bg-slate-50 p-3.5 rounded-xl border border-slate-200 space-y-2.5">
-          <label class="block text-[11px] font-bold uppercase text-slate-700">Modalidade de Entrega &amp; Roteamento</label>
-          <select id="edit-ass-produto" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-xs font-semibold">
-            <option value="P1">Produto 1 — Conexão Direta (Envia para WhatsApp do Profissional)</option>
-            <option value="P2">Produto 2 — Agenda Pronta (Envia para Central Closer / Filha)</option>
-          </select>
-          <div>
-            <label class="block text-[11px] font-semibold text-slate-600 mb-1">WhatsApp Closer / Filha (Opcional — sobrescreve o padrão no P2)</label>
-            <input type="text" id="edit-ass-closer-zap" placeholder="Deixe vazio para usar o padrão da configuração" class="w-full px-3 py-2 rounded-xl border border-slate-300 bg-white text-xs" />
-          </div>
-        </div>
-
-        <div>
-          <label class="block text-[11px] font-bold uppercase text-slate-600 mb-1">Headline da Mini-Landing Page (IA)</label>
-          <input type="text" id="edit-ass-headline" required class="w-full px-3 py-2 rounded-xl border border-slate-300" />
-        </div>
-
-        <div>
-          <label class="block text-[11px] font-bold uppercase text-slate-600 mb-1">3 Diferenciais (separados por vírgula)</label>
-          <input type="text" id="edit-ass-diferenciais" required class="w-full px-3 py-2 rounded-xl border border-slate-300" />
-        </div>
-
-        <button type="submit" class="w-full py-3 rounded-xl bg-brand-500 hover:bg-brand-600 text-white font-bold transition">
-          Salvar Alterações
-        </button>
-      </form>
-    </div>
-  </div>
-
-  <!-- MODAL 5: AUDITORIA DE CONEXÕES & AGENDAMENTOS -->
-  <div id="modal-audit-entregas" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/75 backdrop-blur-sm p-4">
-    <div class="bg-white rounded-3xl max-w-2xl w-full p-6 sm:p-7 shadow-2xl border border-slate-200 max-h-[85vh] flex flex-col">
-      <div class="flex items-center justify-between pb-4 border-b border-slate-200">
-        <div>
-          <h3 id="audit-modal-title" class="font-display font-extrabold text-lg text-slate-900">Histórico de Conexões</h3>
-          <p id="audit-modal-sub" class="text-xs text-slate-500"></p>
-        </div>
-        <button onclick="closeModal('modal-audit-entregas')" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-700">
-          <i data-lucide="x" class="w-5 h-5"></i>
-        </button>
-      </div>
-
-      <div class="py-3 flex flex-wrap gap-2 border-b border-slate-100">
-        <button onclick="simulateManualConnection()" class="px-3 py-1.5 rounded-lg bg-brand-50 hover:bg-brand-100 text-brand-700 border border-brand-200 text-xs font-bold transition">
-          + Registrar Conexão Manual
-        </button>
-        <button id="btn-add-agendamento-p2" onclick="incrementConfirmedAppointment()" class="px-3 py-1.5 rounded-lg bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 text-xs font-bold transition">
-          + Confirmar Agendamento Fechado (P2)
-        </button>
-      </div>
-
-      <div id="audit-modal-list" class="overflow-y-auto flex-1 divide-y divide-slate-100 my-2 text-xs"></div>
-    </div>
-  </div>
-
-  <!-- MODAL 6: REGISTRAR CANCELAMENTO (CHURN) -->
-  <div id="modal-churn" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/75 backdrop-blur-sm p-4">
-    <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-slate-200">
-      <h3 class="font-display font-extrabold text-lg text-slate-900">Registrar Encerramento / Churn</h3>
-      <p id="churn-prof-name" class="text-xs text-slate-500 mt-1 mb-4"></p>
-      <input type="hidden" id="churn-ass-id" />
-
-      <label class="block text-xs font-bold uppercase text-slate-700 mb-1.5">Motivo Principal</label>
-      <select id="churn-motivo" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm mb-5">
-        <option value="Concluiu período teste / Pausa temporária">Concluiu período teste / Pausa temporária</option>
-        <option value="Agenda lotada com os atendimentos">Agenda lotada com os atendimentos</option>
-        <option value="Pouco fechamento no atendimento próprio">Pouco fechamento no atendimento próprio</option>
-        <option value="Orçamento / Fluxo de caixa">Orçamento / Fluxo de caixa</option>
-      </select>
-
-      <div class="flex gap-2">
-        <button onclick="closeModal('modal-churn')" class="flex-1 py-2.5 rounded-xl border border-slate-300 text-xs font-bold text-slate-700">Cancelar</button>
-        <button onclick="confirmChurn()" class="flex-1 py-2.5 rounded-xl bg-red-600 hover:bg-red-700 text-white text-xs font-bold">Confirmar Saída</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL 7: TERMOS LEGAIS & LGPD -->
-  <div id="modal-legal" class="fixed inset-0 z-50 hidden items-center justify-center bg-slate-900/75 backdrop-blur-sm p-4">
-    <div class="bg-white rounded-3xl max-w-2xl w-full p-6 sm:p-8 shadow-2xl border border-slate-200 max-h-[82vh] flex flex-col">
-      <div class="flex items-center justify-between pb-3 border-b border-slate-200">
-        <h3 id="legal-modal-title" class="font-display font-extrabold text-lg text-slate-900">Termos e Privacidade</h3>
-        <button onclick="closeModal('modal-legal')" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-700">
-          <i data-lucide="x" class="w-5 h-5"></i>
-        </button>
-      </div>
-      <div id="legal-modal-body" class="overflow-y-auto py-4 text-xs sm:text-sm text-slate-600 space-y-3 leading-relaxed"></div>
-    </div>
-  </div>
-
   <!-- ===================================================================== -->
-  <!-- JAVASCRIPT APPLICATION ENGINE                                         -->
+  <!-- SCRIPT DA PÁGINA DE VENDAS                                            -->
   <!-- ===================================================================== -->
   <script>
-    // -----------------------------------------------------------------------
-    // 1. CONSTANTS, PLANS & NICHE VISUAL SYSTEM
-    // -----------------------------------------------------------------------
-    const DB_KEY = 'clientenozap_db_v5';
-    const SESSION_KEY = 'clientenozap_admin_session_v5';
-    // Default password hash for 'admin2026' (SHA-256)
-    const DEFAULT_PASS_HASH = '7213986026073812c9f15a45f9093c4d4f16165353c431467198967764784056';
+    const WHATSAPP_GESTOR = '5591980789170';
 
-    const PLANS_CATALOG = {
-      start_7d: {
-        id: 'start_7d',
-        produtoTipo: 'P1',
-        nome: 'Pacote Start (7 dias)',
-        dias: 7,
-        valor: 127,
-        pixMeta: 60
+    const PACOTES = {
+      '7dias': {
+        modo: 'M1',
+        titulo: 'Você Responde no Zap — 7 Dias para Testar',
+        preco: 'R$ 127'
       },
-      acelera_15d: {
-        id: 'acelera_15d',
-        produtoTipo: 'P1',
-        nome: 'Pacote Acelera (15 dias)',
-        dias: 15,
-        valor: 197,
-        pixMeta: 105
+      '15dias': {
+        modo: 'M1',
+        titulo: 'Você Responde no Zap — 15 Dias Direto',
+        preco: 'R$ 197'
       },
-      cheio_30d: {
-        id: 'cheio_30d',
-        produtoTipo: 'P1',
-        nome: 'Pacote Cheio (30 dias)',
-        dias: 30,
-        valor: 347,
-        pixMeta: 210
+      '30dias': {
+        modo: 'M1',
+        titulo: 'Você Responde no Zap — 30 Dias Mês Inteiro',
+        preco: 'R$ 347'
       },
-      agenda_pronta_15d: {
-        id: 'agenda_pronta_15d',
-        produtoTipo: 'P2',
-        nome: 'Agenda Pronta VIP (15 dias)',
-        dias: 15,
-        valor: 397,
-        pixMeta: 120
+      'agenda': {
+        modo: 'M2',
+        titulo: 'A Gente Agenda pra Você — 15 Dias Agenda na Mão',
+        preco: 'R$ 397'
       }
     };
 
-    const NICHE_THEMES = {
-      'Beleza & Cabelo': {
-        accent: '#EC4899',
-        badgeBg: 'bg-pink-50 text-pink-700 border-pink-200',
-        gradient: 'from-pink-900 via-rose-900 to-slate-900',
-        diferenciais: ['Alisamento e Tratamento com Produtos Originais', 'Atendimento com Hora Marcada no Bairro', 'Avaliação Rápida pelo WhatsApp'],
-        banners: [
-          'https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=1000&q=80',
-          'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?auto=format&fit=crop&w=1000&q=80',
-          'https://images.unsplash.com/photo-1595476108010-b4d1f102b1b1?auto=format&fit=crop&w=1000&q=80'
-        ]
-      },
-      'Maquiagem & Estética': {
-        accent: '#D946EF',
-        badgeBg: 'bg-fuchsia-50 text-fuchsia-700 border-fuchsia-200',
-        gradient: 'from-fuchsia-950 via-purple-900 to-slate-900',
-        diferenciais: ['Maquiagem Social e Festas de Alta Durabilidade', 'Materiais 100% Higienizados', 'Agenda Especial para Formaturas e Fim de Ano'],
-        banners: [
-          'https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?auto=format&fit=crop&w=1000&q=80',
-          'https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=1000&q=80',
-          'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?auto=format&fit=crop&w=1000&q=80'
-        ]
-      },
-      'Mecânica & Revisão': {
-        accent: '#F59E0B',
-        badgeBg: 'bg-amber-50 text-amber-800 border-amber-200',
-        gradient: 'from-amber-950 via-slate-900 to-slate-950',
-        diferenciais: ['Checklist Completo de Viagem e Revisão', 'Orçamento Transparente Antes do Serviço', 'Atendimento Ágil na Região'],
-        banners: [
-          'https://images.unsplash.com/photo-1619642751034-765dfdf7c58e?auto=format&fit=crop&w=1000&q=80',
-          'https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&w=1000&q=80',
-          'https://images.unsplash.com/photo-1530046339160-ce3e530c7d2f?auto=format&fit=crop&w=1000&q=80'
-        ]
-      },
-      'Refrigeração & Elétrica': {
-        accent: '#06B6D4',
-        badgeBg: 'bg-cyan-50 text-cyan-800 border-cyan-200',
-        gradient: 'from-cyan-950 via-slate-900 to-slate-950',
-        diferenciais: ['Limpeza, Carga de Gás e Instalação de Split', 'Visita Técnica Pontual no Bairro', 'Garantia no Serviço Executado'],
-        banners: [
-          'https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?auto=format&fit=crop&w=1000&q=80',
-          'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=1000&q=80',
-          'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?auto=format&fit=crop&w=1000&q=80'
-        ]
-      },
-      'Reformas & Reparos': {
-        accent: '#10B981',
-        badgeBg: 'bg-emerald-50 text-emerald-800 border-emerald-200',
-        gradient: 'from-emerald-950 via-slate-900 to-slate-950',
-        diferenciais: ['Pintura, Elétrica Residencial e Pequenos Reparos', 'Acabamento Limpo e Cumprimento de Prazo', 'Orçamento Rápido pelo WhatsApp'],
-        banners: [
-          'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?auto=format&fit=crop&w=1000&q=80',
-          'https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1000&q=80',
-          'https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1000&q=80'
-        ]
-      },
-      'Outros Serviços': {
-        accent: '#6366F1',
-        badgeBg: 'bg-indigo-50 text-indigo-800 border-indigo-200',
-        gradient: 'from-indigo-950 via-slate-900 to-slate-950',
-        diferenciais: ['Profissional Verificado na Grande Belém', 'Orçamento Direto e Sem Burocracia', 'Atendimento Rápido pelo WhatsApp'],
-        banners: [
-          'https://images.unsplash.com/photo-1556740758-90de374c12ad?auto=format&fit=crop&w=1000&q=80',
-          'https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=1000&q=80',
-          'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1000&q=80'
-        ]
-      }
-    };
+    function trocarModo(modo) {
+      const ehModo1 = modo === 'M1';
+      const btn1 = document.getElementById('btn-modo-1');
+      const btn2 = document.getElementById('btn-modo-2');
 
-    // -----------------------------------------------------------------------
-    // 2. SEED DATA (GRANDE BELÉM — ALTA TEMPORADA FIM DE ANO)
-    // -----------------------------------------------------------------------
-    function buildInitialSeedData() {
-      return {
-        config: {
-          gestorWhatsapp: '5591984122313',
-          operacaoCloserWhatsapp: '5591988881111',
-          adminPassHash: DEFAULT_PASS_HASH
-        },
-        interessados: [
-          {
-            id: 'INT-101',
-            nome: 'Studio Glam Make & Penteados',
-            whatsapp: '(91) 98234-5510',
-            oficio: 'Maquiagem & Estética',
-            cidade: 'Belém',
-            bairro: 'Nazaré',
-            planoId: 'agenda_pronta_15d',
-            produtoTipo: 'P2',
-            planoNome: 'Agenda Pronta VIP (15 dias)',
-            dias: 15,
-            valor: 397,
-            pixMeta: 120,
-            dataCadastro: '20/11/2026 10:15'
-          },
-          {
-            id: 'INT-102',
-            nome: 'Auto Center Coqueiro',
-            whatsapp: '(91) 98411-9022',
-            oficio: 'Mecânica & Revisão',
-            cidade: 'Ananindeua',
-            bairro: 'Coqueiro',
-            planoId: 'start_7d',
-            produtoTipo: 'P1',
-            planoNome: 'Pacote Start (7 dias)',
-            dias: 7,
-            valor: 127,
-            pixMeta: 60,
-            dataCadastro: '20/11/2026 11:40'
-          }
-        ],
-        assinantes: [
-          {
-            id: 'ASS-001',
-            nome: 'Studio Camila Hair & Progressiva',
-            whatsapp: '5591981123344',
-            closerWhatsapp: '',
-            oficio: 'Beleza & Cabelo',
-            cidade: 'Belém',
-            bairro: 'Marco',
-            planoId: 'agenda_pronta_15d',
-            produtoTipo: 'P2',
-            planoNome: 'Agenda Pronta VIP (15 dias)',
-            diasTotal: 15,
-            diasCorridos: 13,
-            valor: 397,
-            pixMeta: 120,
-            agendamentosConfirmados: 7,
-            status: 'ativo',
-            dataAtivacao: '08/11/2026',
-            motivoCancelamento: null,
-            iaProfile: {
-              headline: 'Cabelo alinhado e brilho de salão para as festas de fim de ano no Marco!',
-              subheadline: 'Especialista em progressiva sem formol, botox capilar e cronograma. Agende seu horário com atendimento rápido.',
-              diferenciais: ['Progressiva Sem Formol e Alto Brilho', 'Atendimento Pontual no Bairro do Marco', 'Sinal Facilitado Direto no Pix do Salão'],
-              bannerIndex: 0,
-              checkinRealizado: true
-            }
-          },
-          {
-            id: 'ASS-002',
-            nome: 'Oficina Revisão Total J&M',
-            whatsapp: '5591982234455',
-            closerWhatsapp: '',
-            oficio: 'Mecânica & Revisão',
-            cidade: 'Ananindeua',
-            bairro: 'Cidade Nova',
-            planoId: 'acelera_15d',
-            produtoTipo: 'P1',
-            planoNome: 'Pacote Acelera (15 dias)',
-            diasTotal: 15,
-            diasCorridos: 14,
-            valor: 197,
-            pixMeta: 105,
-            agendamentosConfirmados: 0,
-            status: 'ativo',
-            dataAtivacao: '07/11/2026',
-            motivoCancelamento: null,
-            iaProfile: {
-              headline: 'Vai pegar estrada no fim de ano? Faça sua revisão completa na Cidade Nova!',
-              subheadline: 'Freios, suspensão, troca de óleo e injeção eletrônica com diagnóstico transparente antes de viajar.',
-              diferenciais: ['Checklist de Viagem em 30 Itens', 'Orçamento Transparente no WhatsApp', 'Peças de Primeira Linha com Garantia'],
-              bannerIndex: 0,
-              checkinRealizado: false
-            }
-          },
-          {
-            id: 'ASS-003',
-            nome: 'Renata Lima Makeup & Penteados',
-            whatsapp: '5591983345566',
-            closerWhatsapp: '',
-            oficio: 'Maquiagem & Estética',
-            cidade: 'Belém',
-            bairro: 'Umarizal',
-            planoId: 'agenda_pronta_15d',
-            produtoTipo: 'P2',
-            planoNome: 'Agenda Pronta VIP (15 dias)',
-            diasTotal: 15,
-            diasCorridos: 6,
-            valor: 397,
-            pixMeta: 120,
-            agendamentosConfirmados: 4,
-            status: 'ativo',
-            dataAtivacao: '15/11/2026',
-            motivoCancelamento: null,
-            iaProfile: {
-              headline: 'Produção impecável para formaturas, confraternizações e festas em Belém!',
-              subheadline: 'Maquiagem blindada e penteados modernos no Umarizal ou atendimento a domicílio sob consulta.',
-              diferenciais: ['Pele Blindada de Longa Duração', 'Cílios Inclusos na Produção', 'Reserva Rápida de Horário pelo WhatsApp'],
-              bannerIndex: 1,
-              checkinRealizado: true
-            }
-          },
-          {
-            id: 'ASS-004',
-            nome: 'ClimaFrio Split & Manutenção',
-            whatsapp: '5591984456677',
-            closerWhatsapp: '',
-            oficio: 'Refrigeração & Elétrica',
-            cidade: 'Belém',
-            bairro: 'Pedreira',
-            planoId: 'cheio_30d',
-            produtoTipo: 'P1',
-            planoNome: 'Pacote Cheio (30 dias)',
-            diasTotal: 30,
-            diasCorridos: 12,
-            valor: 347,
-            pixMeta: 210,
-            agendamentosConfirmados: 0,
-            status: 'ativo',
-            dataAtivacao: '09/11/2026',
-            motivoCancelamento: null,
-            iaProfile: {
-              headline: 'Ar-condicionado gelando forte neste fim de ano — atendimento rápido na Pedreira!',
-              subheadline: 'Higienização completa, recarga de gás e instalação de split residencial e comercial.',
-              diferenciais: ['Atendimento no Mesmo Dia na Grande Belém', 'Limpeza com Bolsa Coletora Sem Sujeira', 'Garantia de 90 Dias no Serviço'],
-              bannerIndex: 0,
-              checkinRealizado: true
-            }
-          },
-          {
-            id: 'ASS-005',
-            nome: 'Auto Elétrica Paraense',
-            whatsapp: '5591985567788',
-            closerWhatsapp: '',
-            oficio: 'Mecânica & Revisão',
-            cidade: 'Marituba',
-            bairro: 'Centro',
-            planoId: 'start_7d',
-            produtoTipo: 'P1',
-            planoNome: 'Pacote Start (7 dias)',
-            diasTotal: 7,
-            diasCorridos: 5,
-            valor: 127,
-            pixMeta: 60,
-            agendamentosConfirmados: 0,
-            status: 'ativo',
-            dataAtivacao: '16/11/2026',
-            motivoCancelamento: null,
-            iaProfile: {
-              headline: 'Socorro elétrico, alternador, motor de partida e baterias em Marituba!',
-              subheadline: 'Diagnóstico computadorizado e manutenção rápida no Centro de Marituba e BR-316.',
-              diferenciais: ['Teste de Bateria e Alternador na Hora', 'Atendimento Rápido na BR-316 e Centro', 'Preço Justo e Pagamento Facilitado'],
-              bannerIndex: 1,
-              checkinRealizado: false
-            }
-          },
-          {
-            id: 'ASS-006',
-            nome: 'Mestre Carlos Pinturas & Reparos',
-            whatsapp: '5591986678899',
-            closerWhatsapp: '',
-            oficio: 'Reformas & Reparos',
-            cidade: 'Benevides',
-            bairro: 'Centro',
-            planoId: 'start_7d',
-            produtoTipo: 'P1',
-            planoNome: 'Pacote Start (7 dias)',
-            diasTotal: 7,
-            diasCorridos: 3,
-            valor: 127,
-            pixMeta: 60,
-            agendamentosConfirmados: 0,
-            status: 'ativo',
-            dataAtivacao: '18/11/2026',
-            motivoCancelamento: null,
-            iaProfile: {
-              headline: 'Deixe sua casa renovada para receber a família neste Natal e Ano Novo!',
-              subheadline: 'Pintura residencial, texturas, reparos elétricos e hidráulicos em Benevides e região.',
-              diferenciais: ['Orçamento Sem Compromisso', 'Acabamento Limpo e Organizado', 'Entrega Dentro do Prazo Combinado'],
-              bannerIndex: 0,
-              checkinRealizado: true
-            }
-          },
-          {
-            id: 'ASS-901',
-            nome: 'Espaço Unhas & Cílios Belém',
-            whatsapp: '5591987789900',
-            closerWhatsapp: '',
-            oficio: 'Maquiagem & Estética',
-            cidade: 'Belém',
-            bairro: 'Batista Campos',
-            planoId: 'start_7d',
-            produtoTipo: 'P1',
-            planoNome: 'Pacote Start (7 dias)',
-            diasTotal: 7,
-            diasCorridos: 7,
-            valor: 127,
-            pixMeta: 60,
-            agendamentosConfirmados: 0,
-            status: 'cancelado',
-            dataAtivacao: '01/11/2026',
-            motivoCancelamento: 'Agenda lotada com os atendimentos',
-            iaProfile: {
-              headline: 'Unhas em gel e extensão de cílios em Batista Campos',
-              subheadline: 'Atendimento personalizado.',
-              diferenciais: ['Material Esterilizado', 'Hora Marcada', 'Durabilidade'],
-              bannerIndex: 0,
-              checkinRealizado: true
-            }
-          }
-        ],
-        entregas: [
-          { id: 'LED-01', assinanteId: 'ASS-001', assinanteNome: 'Studio Camila Hair & Progressiva', consumidorNome: 'Fernanda Oliveira', consumidorWhatsapp: '(91) 98190-2211', servico: 'Progressiva sem formol', destinoRota: 'Central Agenda Pronta (P2)', origem: 'Mini-LP IA (Anúncio)', dataHora: '18/11/2026 14:22' },
-          { id: 'LED-02', assinanteId: 'ASS-001', assinanteNome: 'Studio Camila Hair & Progressiva', consumidorNome: 'Patrícia Mendes', consumidorWhatsapp: '(91) 98401-7788', servico: 'Botox capilar sábado', destinoRota: 'Central Agenda Pronta (P2)', origem: 'Vitrine Local', dataHora: '19/11/2026 09:45' },
-          { id: 'LED-03', assinanteId: 'ASS-002', assinanteNome: 'Oficina Revisão Total J&M', consumidorNome: 'Ricardo Souza', consumidorWhatsapp: '(91) 98210-3399', servico: 'Revisão freios e óleo', destinoRota: 'Direto Profissional (P1)', origem: 'Mini-LP IA (Anúncio)', dataHora: '19/11/2026 16:10' },
-          { id: 'LED-04', assinanteId: 'ASS-003', assinanteNome: 'Renata Lima Makeup & Penteados', consumidorNome: 'Juliana Costa', consumidorWhatsapp: '(91) 98355-1100', servico: 'Make formatura sexta', destinoRota: 'Central Agenda Pronta (P2)', origem: 'Mini-LP IA (Anúncio)', dataHora: '20/11/2026 10:05' },
-          { id: 'LED-05', assinanteId: 'ASS-004', assinanteNome: 'ClimaFrio Split & Manutenção', consumidorNome: 'Marcos Vinícius', consumidorWhatsapp: '(91) 98512-4433', servico: 'Limpeza 2 splits 12k', destinoRota: 'Vitrine Local', origem: 'Vitrine Local', dataHora: '20/11/2026 11:30' }
-        ]
-      };
+      btn1.className = ehModo1
+        ? 'py-3.5 px-4 rounded-xl font-display font-bold text-sm sm:text-base bg-dark-900 text-white shadow-sm transition flex items-center justify-center gap-2'
+        : 'py-3.5 px-4 rounded-xl font-display font-bold text-sm sm:text-base text-slate-800 hover:bg-white/60 transition flex items-center justify-center gap-2';
+
+      btn2.className = !ehModo1
+        ? 'py-3.5 px-4 rounded-xl font-display font-bold text-sm sm:text-base bg-dark-900 text-white shadow-sm transition flex items-center justify-center gap-2'
+        : 'py-3.5 px-4 rounded-xl font-display font-bold text-sm sm:text-base text-slate-800 hover:bg-white/60 transition flex items-center justify-center gap-2';
+
+      document.getElementById('bloco-modo-1').classList.toggle('hidden', !ehModo1);
+      document.getElementById('bloco-modo-2').classList.toggle('hidden', ehModo1);
+
+      escolherPacote(ehModo1 ? '15dias' : 'agenda', false);
     }
 
-    // -----------------------------------------------------------------------
-    // 3. STATE MANAGEMENT & SECURITY HELPERS
-    // -----------------------------------------------------------------------
-    let db = loadDatabase();
-    let currentMiniLPId = null;
-    let currentAuditAssinanteId = null;
+    function escolherPacote(chave, rolarAteFormulario = true) {
+      const info = PACOTES[chave];
+      if (!info) return;
 
-    function loadDatabase() {
-      try {
-        const raw = localStorage.getItem(DB_KEY);
-        if (!raw) {
-          const seed = buildInitialSeedData();
-          localStorage.setItem(DB_KEY, JSON.stringify(seed));
-          return seed;
-        }
-        return JSON.parse(raw);
-      } catch (e) {
-        const seed = buildInitialSeedData();
-        localStorage.setItem(DB_KEY, JSON.stringify(seed));
-        return seed;
+      document.querySelectorAll('.pacote-card').forEach(card => {
+        card.classList.remove('ring-4', 'ring-zap-500/30');
+      });
+      const selecionado = document.getElementById(`card-${chave}`);
+      if (selecionado) {
+        selecionado.classList.add('ring-4', 'ring-zap-500/30');
+      }
+
+      document.getElementById('campo-pacote').value = chave;
+      document.getElementById('resumo-pacote-badge').textContent = `Opção escolhida: ${info.titulo} (${info.preco})`;
+
+      if (rolarAteFormulario) {
+        document.getElementById('formulario-pedido').scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
     }
 
-    function saveDatabase() {
-      localStorage.setItem(DB_KEY, JSON.stringify(db));
-      updateAdminCounters();
+    function sincronizarSelect(chave) {
+      const info = PACOTES[chave];
+      if (!info) return;
+      trocarModo(info.modo);
+      escolherPacote(chave, false);
     }
 
-    function escapeHTML(str) {
-      if (str === null || str === undefined) return '';
-      return String(str)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#039;');
-    }
-
-    function sanitizeDigits(str) {
-      return String(str || '').replace(/\D/g, '');
-    }
-
-    function formatBRL(val) {
-      return Number(val || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-    }
-
-    function maskPhoneInput(input) {
+    function mascaraTelefone(input) {
       let v = input.value.replace(/\D/g, '').slice(0, 11);
       if (v.length > 6) {
         input.value = `(${v.slice(0, 2)}) ${v.slice(2, 7)}-${v.slice(7)}`;
@@ -1448,1053 +590,44 @@
       }
     }
 
-    function showToast(message, type = 'success') {
-      const container = document.getElementById('toast-container');
-      const el = document.createElement('div');
-      const bg = type === 'error' ? 'bg-red-600' : type === 'warning' ? 'bg-amber-600' : 'bg-slate-900';
-      el.className = `${bg} text-white px-4 py-3 rounded-xl shadow-lg text-xs sm:text-sm font-medium flex items-center gap-2.5 pointer-events-auto border border-white/10 transition-all`;
-      el.innerHTML = `<span class="w-2 h-2 rounded-full bg-brand-400 shrink-0"></span><span>${escapeHTML(message)}</span>`;
-      container.appendChild(el);
-      setTimeout(() => {
-        el.style.opacity = '0';
-        setTimeout(() => el.remove(), 300);
-      }, 3600);
-    }
-
-    async function sha256Hex(message) {
-      const msgBuffer = new TextEncoder().encode(message);
-      const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-      const hashArray = Array.from(new Uint8Array(hashBuffer));
-      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-    }
-
-    function isAdminLoggedIn() {
-      const token = sessionStorage.getItem(SESSION_KEY);
-      return token === 'authenticated_v5';
-    }
-
-    function syncAuthUI() {
-      const logged = isAdminLoggedIn();
-      document.getElementById('auth-nav-logged-out').classList.toggle('hidden', logged);
-      document.getElementById('auth-nav-logged-in').classList.toggle('hidden', !logged);
-    }
-
-    // -----------------------------------------------------------------------
-    // 4. NAVIGATION & ROUTING (WITH HASH SUPPORT #lp=ASS-001)
-    // -----------------------------------------------------------------------
-    function navigateTo(viewName) {
-      document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
-      const target = document.getElementById(`view-${viewName}`);
-      if (target) target.classList.add('active');
-
-      if (viewName === 'vitrine') {
-        history.replaceState(null, '', '#vitrine');
-        renderVitrine();
-      } else if (viewName === 'admin') {
-        if (!isAdminLoggedIn()) {
-          navigateTo('sales');
-          openLoginModal();
-          return;
-        }
-        history.replaceState(null, '', '#admin');
-        renderAdminAll();
-      } else if (viewName === 'sales') {
-        history.replaceState(null, '', window.location.pathname);
-      }
-
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      lucide.createIcons();
-    }
-
-    function navigateToSection(sectionId) {
-      navigateTo('sales');
-      setTimeout(() => {
-        const el = document.getElementById(sectionId);
-        if (el) el.scrollIntoView({ behavior: 'smooth' });
-      }, 60);
-    }
-
-    function checkInitialHashRoute() {
-      const hash = window.location.hash || '';
-      if (hash.startsWith('#lp=')) {
-        const assId = hash.replace('#lp=', '').trim();
-        const exists = db.assinantes.find(a => a.id === assId && a.status === 'ativo');
-        if (exists) {
-          openMiniLP(assId);
-          return;
-        }
-      } else if (hash === '#vitrine') {
-        navigateTo('vitrine');
-      } else if (hash === '#admin' && isAdminLoggedIn()) {
-        navigateTo('admin');
-      }
-    }
-
-    // -----------------------------------------------------------------------
-    // 5. SALES PAGE PLAN SWITCHER & SIGNUP FLOW
-    // -----------------------------------------------------------------------
-    function switchProductTab(prodType) {
-      const isP1 = prodType === 'P1';
-      const btnP1 = document.getElementById('tab-prod-p1');
-      const btnP2 = document.getElementById('tab-prod-p2');
-
-      btnP1.className = isP1
-        ? 'px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition bg-slate-900 text-white shadow-sm flex items-center justify-center gap-2'
-        : 'px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition text-slate-700 hover:text-slate-900 flex items-center justify-center gap-2';
-
-      btnP2.className = !isP1
-        ? 'px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition bg-slate-900 text-white shadow-sm flex items-center justify-center gap-2'
-        : 'px-5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition text-slate-700 hover:text-slate-900 flex items-center justify-center gap-2';
-
-      document.getElementById('plans-grid-p1').classList.toggle('hidden', !isP1);
-      document.getElementById('plans-grid-p2').classList.toggle('hidden', isP1);
-
-      if (isP1) {
-        selectPlan('acelera_15d', false);
-      } else {
-        selectPlan('agenda_pronta_15d', false);
-      }
-    }
-
-    function selectPlan(planId, scrollToForm = true) {
-      const plan = PLANS_CATALOG[planId];
-      if (!plan) return;
-
-      document.querySelectorAll('.plan-card').forEach(c => {
-        c.classList.remove('ring-4', 'ring-brand-500/25', 'border-brand-500');
-      });
-      const activeCard = document.getElementById(`card-plan-${planId}`);
-      if (activeCard) {
-        activeCard.classList.add('ring-4', 'ring-brand-500/25');
-      }
-
-      document.getElementById('prof-plano').value = planId;
-      document.getElementById('selected-plan-badge').innerHTML = `<i data-lucide="check" class="w-3.5 h-3.5"></i> ${escapeHTML(plan.nome)} — ${formatBRL(plan.valor)}`;
-      lucide.createIcons();
-
-      if (scrollToForm) {
-        document.getElementById('cadastro-form-box').scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
-    }
-
-    function syncPlanFromSelect(planId) {
-      const plan = PLANS_CATALOG[planId];
-      if (!plan) return;
-      switchProductTab(plan.produtoTipo);
-      selectPlan(planId, false);
-    }
-
-    function handleProfessionalSignup(e) {
+    function enviarPedidoWhatsApp(e) {
       e.preventDefault();
-      const nome = document.getElementById('prof-nome').value.trim();
-      const whatsapp = document.getElementById('prof-whatsapp').value.trim();
-      const oficio = document.getElementById('prof-oficio').value;
-      const cidade = document.getElementById('prof-cidade').value;
-      const bairro = document.getElementById('prof-bairro').value.trim();
-      const planoId = document.getElementById('prof-plano').value;
-      const plan = PLANS_CATALOG[planoId];
+      const nome = document.getElementById('campo-nome').value.trim();
+      const zap = document.getElementById('campo-zap').value.trim();
+      const servico = document.getElementById('campo-servico').value.trim();
+      const local = document.getElementById('campo-local').value.trim();
+      const chave = document.getElementById('campo-pacote').value;
+      const info = PACOTES[chave];
 
-      const now = new Date();
-      const dataStr = now.toLocaleDateString('pt-BR') + ' ' + now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-
-      const newLead = {
-        id: 'INT-' + Math.floor(100 + Math.random() * 900),
-        nome,
-        whatsapp,
-        oficio,
-        cidade,
-        bairro,
-        planoId: plan.id,
-        produtoTipo: plan.produtoTipo,
-        planoNome: plan.nome,
-        dias: plan.dias,
-        valor: plan.valor,
-        pixMeta: plan.pixMeta,
-        dataCadastro: dataStr
-      };
-
-      db.interessados.unshift(newLead);
-      saveDatabase();
-
-      const gestorPhone = sanitizeDigits(db.config.gestorWhatsapp) || '5591984122313';
-      const msg = encodeURIComponent(
-        `Olá! Acabei de reservar minha página no *ClienteNoZap*.\n\n` +
-        `*Negócio/Nome:* ${nome}\n` +
-        `*Ofício:* ${oficio}\n` +
-        `*Região:* ${bairro} - ${cidade}\n` +
-        `*Modalidade:* ${plan.produtoTipo === 'P2' ? 'Produto 2 (Agenda Pronta VIP)' : 'Produto 1 (Conexão Direta)'}\n` +
-        `*Pacote:* ${plan.nome} (${formatBRL(plan.valor)})\n\n` +
-        `Quero finalizar minha ativação e colocar no ar!`
+      const mensagem = encodeURIComponent(
+        `Olá! Vim pela página do *ClienteNoZap* e quero ativar minha captação de clientes.\n\n` +
+        `*Nome / Negócio:* ${nome}\n` +
+        `*Meu WhatsApp:* ${zap}\n` +
+        `*Serviço:* ${servico}\n` +
+        `*Onde quero atender:* ${local}\n` +
+        `*Opção escolhida:* ${info.titulo} (${info.preco})\n\n` +
+        `Como fazemos pra começar?`
       );
 
-      document.getElementById('modal-signup-desc').innerHTML =
-        `Reservamos o <strong>${escapeHTML(plan.nome)}</strong> (${formatBRL(plan.valor)}) para <strong>${escapeHTML(nome)}</strong> em <strong>${escapeHTML(bairro)} (${escapeHTML(cidade)})</strong>. Clique abaixo para concluir a ativação no WhatsApp.`;
-      document.getElementById('modal-signup-wa-link').href = `https://wa.me/${gestorPhone}?text=${msg}`;
+      document.getElementById('texto-confirmacao').innerHTML =
+        `Preparamos sua mensagem para <strong>${nome.replace(/</g, '&lt;')}</strong> (área: ${local.replace(/</g, '&lt;')}) na opção <strong>${info.titulo} (${info.preco})</strong>. Clique abaixo para falar direto no WhatsApp:`;
 
-      e.target.reset();
-      selectPlan('acelera_15d', false);
-      openModal('modal-signup-success');
-      showToast('Pré-cadastro salvo com sucesso!');
-    }
+      document.getElementById('link-whatsapp-final').href = `https://wa.me/${WHATSAPP_GESTOR}?text=${mensagem}`;
 
-    // -----------------------------------------------------------------------
-    // 6. VITRINE LOCAL & AI MINI-LANDING PAGE ENGINE
-    // -----------------------------------------------------------------------
-    function renderVitrine() {
-      const search = (document.getElementById('filter-search').value || '').toLowerCase().trim();
-      const oficio = document.getElementById('filter-oficio').value;
-      const cidade = document.getElementById('filter-cidade').value;
-      const modalidade = document.getElementById('filter-modalidade').value;
-
-      const ativos = db.assinantes.filter(a => a.status === 'ativo').filter(a => {
-        if (oficio !== 'Todos' && a.oficio !== oficio) return false;
-        if (cidade !== 'Todas' && a.cidade !== cidade) return false;
-        if (modalidade !== 'Todos' && a.produtoTipo !== modalidade) return false;
-        if (search) {
-          const hay = `${a.nome} ${a.bairro} ${a.cidade} ${a.oficio}`.toLowerCase();
-          if (!hay.includes(search)) return false;
-        }
-        return true;
-      });
-
-      const grid = document.getElementById('vitrine-grid');
-      if (ativos.length === 0) {
-        grid.innerHTML = `
-          <div class="col-span-full bg-white rounded-2xl border border-slate-200 p-10 text-center">
-            <p class="font-display font-bold text-lg text-slate-800">Nenhum profissional encontrado com esses filtros.</p>
-            <p class="text-sm text-slate-500 mt-1">Tente limpar a busca ou selecionar "Todas (Grande Belém)".</p>
-          </div>`;
-        return;
-      }
-
-      grid.innerHTML = ativos.map(a => {
-        const theme = NICHE_THEMES[a.oficio] || NICHE_THEMES['Outros Serviços'];
-        const bannerIdx = (a.iaProfile?.bannerIndex || 0) % theme.banners.length;
-        const bannerUrl = theme.banners[bannerIdx];
-        const isP2 = a.produtoTipo === 'P2';
-
-        return `
-          <article class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm hover:shadow-md transition flex flex-col justify-between">
-            <div>
-              <div class="relative h-44 bg-gradient-to-br ${theme.gradient} overflow-hidden">
-                <img src="${bannerUrl}" alt="${escapeHTML(a.nome)}" onerror="this.style.display='none'" class="w-full h-full object-cover opacity-85" />
-                <div class="absolute inset-0 bg-gradient-to-t from-slate-900/85 via-slate-900/20 to-transparent"></div>
-                <div class="absolute top-3 left-3 flex flex-wrap gap-1.5">
-                  <span class="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-white/95 text-slate-900 shadow-sm">${escapeHTML(a.oficio)}</span>
-                  ${isP2 ? '<span class="px-2.5 py-1 rounded-lg text-[11px] font-bold bg-amber-400 text-slate-950 shadow-sm">Agenda Rápida</span>' : ''}
-                </div>
-                <div class="absolute bottom-3 left-3.5 right-3.5 text-white">
-                  <div class="flex items-center gap-1 text-[11px] text-brand-300 font-semibold">
-                    <i data-lucide="badge-check" class="w-3.5 h-3.5"></i>
-                    <span>Profissional Verificado • ${escapeHTML(a.bairro)} (${escapeHTML(a.cidade)})</span>
-                  </div>
-                  <h3 class="font-display font-extrabold text-lg leading-snug mt-0.5">${escapeHTML(a.nome)}</h3>
-                </div>
-              </div>
-
-              <div class="p-5">
-                <p class="text-xs sm:text-sm text-slate-600 leading-relaxed line-clamp-2">${escapeHTML(a.iaProfile?.subheadline || '')}</p>
-                <div class="mt-3.5 flex flex-wrap gap-1.5">
-                  ${(a.iaProfile?.diferenciais || []).slice(0, 2).map(d => `
-                    <span class="text-[11px] font-medium px-2.5 py-1 rounded-md bg-slate-100 text-slate-700">${escapeHTML(d)}</span>
-                  `).join('')}
-                </div>
-              </div>
-            </div>
-
-            <div class="px-5 pb-5 pt-2 flex flex-col sm:flex-row gap-2">
-              <button onclick="openMiniLP('${a.id}')" class="flex-1 py-2.5 px-3 rounded-xl border border-slate-300 hover:bg-slate-50 text-slate-800 text-xs font-bold transition flex items-center justify-center gap-1.5">
-                <i data-lucide="sparkles" class="w-3.5 h-3.5 text-brand-600"></i>
-                Ver Página (IA)
-              </button>
-              <button onclick="openPonteModal('${a.id}', 'Vitrine Local')" class="flex-1 py-2.5 px-3 rounded-xl bg-brand-500 hover:bg-brand-600 text-white text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-sm">
-                <i data-lucide="message-circle" class="w-3.5 h-3.5"></i>
-                ${isP2 ? 'Agendar no Zap' : 'Orçamento no Zap'}
-              </button>
-            </div>
-          </article>
-        `;
-      }).join('');
-
+      const modal = document.getElementById('modal-confirmacao');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
       lucide.createIcons();
     }
 
-    function openMiniLP(assinanteId) {
-      const a = db.assinantes.find(item => item.id === assinanteId);
-      if (!a) return;
-      currentMiniLPId = assinanteId;
-
-      document.querySelectorAll('.view-section').forEach(el => el.classList.remove('active'));
-      document.getElementById('view-minilp').classList.add('active');
-      history.replaceState(null, '', `#lp=${a.id}`);
-
-      renderMiniLPContent(a);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+    function fecharModal() {
+      const modal = document.getElementById('modal-confirmacao');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
     }
 
-    function exitMiniLP() {
-      currentMiniLPId = null;
-      navigateTo('vitrine');
-    }
-
-    function cycleMiniLPTheme() {
-      const a = db.assinantes.find(item => item.id === currentMiniLPId);
-      if (!a) return;
-      a.iaProfile.bannerIndex = ((a.iaProfile.bannerIndex || 0) + 1) % 3;
-      saveDatabase();
-      renderMiniLPContent(a);
-      showToast(`Visual IA alterado para variação ${a.iaProfile.bannerIndex + 1}/3`);
-    }
-
-    function copyMiniLPLink() {
-      if (!currentMiniLPId) return;
-      const url = `${window.location.origin}${window.location.pathname}#lp=${currentMiniLPId}`;
-      navigator.clipboard?.writeText(url);
-      showToast('Link direto da Mini-LP copiado! Pronto para colar no Meta Ads.');
-    }
-
-    function renderMiniLPContent(a) {
-      const theme = NICHE_THEMES[a.oficio] || NICHE_THEMES['Outros Serviços'];
-      const bannerIdx = (a.iaProfile?.bannerIndex || 0) % theme.banners.length;
-      const bannerUrl = theme.banners[bannerIdx];
-      const isP2 = a.produtoTipo === 'P2';
-
-      document.getElementById('minilp-theme-label').textContent = `${bannerIdx + 1}/3`;
-
-      document.getElementById('minilp-content').innerHTML = `
-        <div class="bg-white rounded-3xl border border-slate-200 overflow-hidden shadow-xl">
-          <!-- Hero Banner -->
-          <div class="relative min-h-[300px] sm:min-h-[360px] bg-gradient-to-br ${theme.gradient} flex items-end p-6 sm:p-10">
-            <img src="${bannerUrl}" alt="${escapeHTML(a.nome)}" onerror="this.style.display='none'" class="absolute inset-0 w-full h-full object-cover opacity-45" />
-            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/70 to-transparent"></div>
-
-            <div class="relative z-10 max-w-2xl text-white">
-              <div class="inline-flex flex-wrap items-center gap-2 px-3 py-1 rounded-full bg-white/15 backdrop-blur-sm text-xs font-bold mb-4">
-                <i data-lucide="map-pin" class="w-3.5 h-3.5 text-brand-400"></i>
-                <span>Atendimento em ${escapeHTML(a.bairro)} • ${escapeHTML(a.cidade)}/PA</span>
-              </div>
-
-              <h1 class="font-display font-extrabold text-2xl sm:text-4xl leading-tight">
-                ${escapeHTML(a.iaProfile?.headline || a.nome)}
-              </h1>
-
-              <p class="text-slate-200 text-sm sm:text-base mt-3 leading-relaxed">
-                ${escapeHTML(a.iaProfile?.subheadline || '')}
-              </p>
-
-              <div class="mt-6">
-                <button onclick="openPonteModal('${a.id}', 'Mini-LP IA (Anúncio)')" class="pulse-whatsapp w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-7 py-4 rounded-2xl bg-brand-500 hover:bg-brand-600 text-white font-display font-extrabold text-base shadow-xl transition">
-                  <i data-lucide="message-circle" class="w-5 h-5"></i>
-                  ${isP2 ? 'Consultar Horários e Agendar no Zap' : 'Pedir Orçamento no WhatsApp Agora'}
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Differentials & Trust -->
-          <div class="p-6 sm:p-10">
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-6 mb-6 border-b border-slate-200">
-              <div>
-                <span class="text-xs font-bold uppercase tracking-wider text-brand-600">Por que escolher</span>
-                <h2 class="font-display font-extrabold text-xl sm:text-2xl text-slate-900">${escapeHTML(a.nome)}</h2>
-              </div>
-              <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-brand-50 text-brand-700 border border-brand-200 text-xs font-bold self-start">
-                <i data-lucide="shield-check" class="w-4 h-4"></i>
-                Cadastro Verificado ClienteNoZap
-              </span>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-              ${(a.iaProfile?.diferenciais || theme.diferenciais).map((dif, idx) => `
-                <div class="rounded-2xl bg-slate-50 border border-slate-200 p-5">
-                  <div class="w-8 h-8 rounded-lg bg-brand-500 text-white font-display font-bold text-sm flex items-center justify-center mb-3">0${idx + 1}</div>
-                  <p class="font-display font-bold text-sm text-slate-900">${escapeHTML(dif)}</p>
-                </div>
-              `).join('')}
-            </div>
-
-            <div class="bg-slate-900 text-white rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-              <div>
-                <h3 class="font-display font-bold text-lg">Pronto para falar sobre seu atendimento?</h3>
-                <p class="text-xs sm:text-sm text-slate-300 mt-0.5">Clique ao lado para iniciar a conversa direta no WhatsApp.</p>
-              </div>
-              <button onclick="openPonteModal('${a.id}', 'Mini-LP IA (Anúncio)')" class="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-brand-500 hover:bg-brand-600 text-white font-bold text-sm transition shrink-0 flex items-center justify-center gap-2">
-                <i data-lucide="message-circle" class="w-4 h-4"></i>
-                Chamar no WhatsApp
-              </button>
-            </div>
-          </div>
-        </div>
-      `;
-
-      lucide.createIcons();
-    }
-
-    // -----------------------------------------------------------------------
-    // 7. PONTE RASTREADA + SMART ROUTING (P1 PROFESSIONAL vs P2 CLOSER)
-    // -----------------------------------------------------------------------
-    let ponteTargetAssinante = null;
-    let ponteTargetOrigem = 'Vitrine Local';
-
-    function openPonteModal(assinanteId, origem) {
-      const a = db.assinantes.find(item => item.id === assinanteId);
-      if (!a) return;
-      ponteTargetAssinante = a;
-      ponteTargetOrigem = origem;
-
-      const isP2 = a.produtoTipo === 'P2';
-      document.getElementById('ponte-badge-tipo').textContent = isP2
-        ? 'Central de Agendamento Rápido'
-        : 'Conexão Direta com o Profissional';
-      document.getElementById('ponte-prof-nome').textContent = a.nome;
-      document.getElementById('ponte-prof-local').textContent = `${a.oficio} • ${a.bairro} (${a.cidade})`;
-
-      openModal('modal-ponte-rastreada');
-    }
-
-    function submitPonteRastreada(e) {
-      e.preventDefault();
-      if (!ponteTargetAssinante) return;
-
-      const cNome = document.getElementById('ponte-consumidor-nome').value.trim();
-      const cZap = document.getElementById('ponte-consumidor-zap').value.trim();
-      const cServico = document.getElementById('ponte-consumidor-servico').value.trim() || 'Orçamento / Horário';
-
-      const isP2 = ponteTargetAssinante.produtoTipo === 'P2';
-      // Smart routing: P1 goes to professional's WhatsApp; P2 goes to Closer/Daughter's WhatsApp!
-      const destinationPhone = isP2
-        ? sanitizeDigits(ponteTargetAssinante.closerWhatsapp || db.config.operacaoCloserWhatsapp || ponteTargetAssinante.whatsapp)
-        : sanitizeDigits(ponteTargetAssinante.whatsapp);
-
-      const now = new Date();
-      const dataHora = now.toLocaleDateString('pt-BR') + ' ' + now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-
-      db.entregas.unshift({
-        id: 'LED-' + Math.floor(1000 + Math.random() * 9000),
-        assinanteId: ponteTargetAssinante.id,
-        assinanteNome: ponteTargetAssinante.nome,
-        consumidorNome: cNome,
-        consumidorWhatsapp: cZap,
-        servico: cServico,
-        destinoRota: isP2 ? 'Central Agenda Pronta (P2)' : 'Direto Profissional (P1)',
-        origem: ponteTargetOrigem,
-        dataHora
-      });
-      saveDatabase();
-
-      const waText = isP2
-        ? encodeURIComponent(
-            `Olá! Vi a página de *${ponteTargetAssinante.nome}* (${ponteTargetAssinante.bairro}) no ClienteNoZap.\n` +
-            `Meu nome é *${cNome}* e gostaria de verificar horário/valor para: *${cServico}*.`
-          )
-        : encodeURIComponent(
-            `Olá *${ponteTargetAssinante.nome}*! Vi seu perfil no ClienteNoZap (${ponteTargetAssinante.bairro}).\n` +
-            `Meu nome é *${cNome}* e gostaria de pedir um orçamento para: *${cServico}*.`
-          );
-
-      e.target.reset();
-      closeModal('modal-ponte-rastreada');
-      showToast('Conexão registrada! Abrindo WhatsApp...');
-      window.open(`https://wa.me/${destinationPhone}?text=${waText}`, '_blank', 'noopener,noreferrer');
-    }
-
-    // -----------------------------------------------------------------------
-    // 8. ADMIN AUTH, DASHBOARD, FUNNEL, SUBSCRIBERS & BACKUP
-    // -----------------------------------------------------------------------
-    function openLoginModal() {
-      openModal('modal-login');
-      setTimeout(() => document.getElementById('login-password-input').focus(), 80);
-    }
-
-    async function handleAdminLogin(e) {
-      e.preventDefault();
-      const inputPass = document.getElementById('login-password-input').value;
-      const hash = await sha256Hex(inputPass);
-      const validHash = db.config.adminPassHash || DEFAULT_PASS_HASH;
-
-      if (hash === validHash) {
-        sessionStorage.setItem(SESSION_KEY, 'authenticated_v5');
-        document.getElementById('login-password-input').value = '';
-        closeModal('modal-login');
-        syncAuthUI();
-        navigateTo('admin');
-        showToast('Bem-vindo ao Painel Executivo!');
-      } else {
-        showToast('Senha incorreta. Tente novamente.', 'error');
-      }
-    }
-
-    function logoutAdmin() {
-      sessionStorage.removeItem(SESSION_KEY);
-      syncAuthUI();
-      navigateTo('sales');
-      showToast('Sessão encerrada com segurança.');
-    }
-
-    function switchAdminTab(tabName) {
-      document.querySelectorAll('.admin-tab-panel').forEach(p => p.classList.add('hidden'));
-      document.getElementById(`admin-tab-${tabName}`).classList.remove('hidden');
-
-      document.querySelectorAll('.admin-tab-btn').forEach(b => {
-        b.className = 'admin-tab-btn px-3.5 py-2 rounded-xl text-xs font-bold transition text-slate-600 hover:bg-slate-100';
-      });
-      document.getElementById(`admin-tab-btn-${tabName}`).className =
-        'admin-tab-btn px-3.5 py-2 rounded-xl text-xs font-bold transition bg-slate-900 text-white';
-
-      renderAdminAll();
-    }
-
-    function updateAdminCounters() {
-      const ativos = db.assinantes.filter(a => a.status === 'ativo');
-      document.getElementById('badge-count-interessados').textContent = db.interessados.length;
-      document.getElementById('badge-count-assinantes').textContent = ativos.length;
-    }
-
-    function renderAdminAll() {
-      updateAdminCounters();
-      renderAdminDashboard();
-      renderAdminInteressados();
-      renderAdminAssinantes();
-      renderAdminConfig();
-      lucide.createIcons();
-    }
-
-    function renderAdminDashboard() {
-      const ativos = db.assinantes.filter(a => a.status === 'ativo');
-      const cancelados = db.assinantes.filter(a => a.status === 'cancelado');
-
-      const ativosP1 = ativos.filter(a => a.produtoTipo === 'P1');
-      const ativosP2 = ativos.filter(a => a.produtoTipo === 'P2');
-
-      const receitaBruta = ativos.reduce((acc, a) => acc + Number(a.valor || 0), 0);
-      const pixMetaTotal = ativos.reduce((acc, a) => acc + Number(a.pixMeta || 0), 0);
-      const impostoMeta = pixMetaTotal * 0.1215;
-      const midiaLiquida = pixMetaTotal - impostoMeta;
-
-      // Family split: 50% of net margin on P2 goes to Closer/Daughter
-      const repasseCloserP2 = ativosP2.reduce((acc, a) => acc + ((Number(a.valor || 0) - Number(a.pixMeta || 0)) * 0.5), 0);
-      const lucroGestor = receitaBruta - pixMetaTotal - repasseCloserP2;
-
-      const totalAgendamentosP2 = ativosP2.reduce((acc, a) => acc + Number(a.agendamentosConfirmados || 0), 0);
-      const totalHistorico = ativos.length + cancelados.length;
-      const churnRate = totalHistorico > 0 ? ((cancelados.length / totalHistorico) * 100) : 0;
-
-      document.getElementById('kpi-receita-bruta').textContent = formatBRL(receitaBruta);
-      document.getElementById('kpi-receita-sub').textContent = `${ativos.length} pacotes vigentes na carteira`;
-
-      document.getElementById('kpi-ativos-total').textContent = ativos.length;
-      document.getElementById('kpi-ativos-split').textContent = `${ativosP1.length} Conexão (P1) • ${ativosP2.length} Agenda Pronta (P2)`;
-
-      document.getElementById('kpi-entregas-total').textContent = db.entregas.length;
-      document.getElementById('kpi-agendamentos-sub').textContent = `${totalAgendamentosP2} agendamentos confirmados (P2)`;
-
-      document.getElementById('kpi-churn-rate').textContent = `${churnRate.toFixed(1)}%`;
-      document.getElementById('kpi-churn-sub').textContent = `${cancelados.length} saída(s) de ${totalHistorico} históricos`;
-
-      document.getElementById('fin-pix-meta').textContent = formatBRL(pixMetaTotal);
-      document.getElementById('fin-imposto-meta').textContent = formatBRL(impostoMeta);
-      document.getElementById('fin-midia-liquida').textContent = formatBRL(midiaLiquida);
-      document.getElementById('fin-repasse-closer').textContent = formatBRL(repasseCloserP2);
-      document.getElementById('fin-lucro-gestor').textContent = formatBRL(lucroGestor);
-
-      // Top Niches
-      const nicheMap = {};
-      ativos.forEach(a => {
-        if (!nicheMap[a.oficio]) nicheMap[a.oficio] = { count: 0, rev: 0 };
-        nicheMap[a.oficio].count += 1;
-        nicheMap[a.oficio].rev += Number(a.valor || 0);
-      });
-      const sortedNiches = Object.entries(nicheMap).sort((a, b) => b[1].rev - a[1].rev);
-      document.getElementById('analytics-top-niches').innerHTML = sortedNiches.length === 0
-        ? '<p class="text-xs text-slate-400">Sem assinantes ativos.</p>'
-        : sortedNiches.map(([oficio, info]) => {
-            const pct = receitaBruta > 0 ? Math.round((info.rev / receitaBruta) * 100) : 0;
-            return `
-              <div>
-                <div class="flex justify-between text-xs font-bold text-slate-800 mb-1">
-                  <span>${escapeHTML(oficio)} (${info.count})</span>
-                  <span>${formatBRL(info.rev)} (${pct}%)</span>
-                </div>
-                <div class="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden">
-                  <div class="h-full bg-brand-500 rounded-full" style="width: ${pct}%"></div>
-                </div>
-              </div>
-            `;
-          }).join('');
-
-      // Turnover Radar
-      const allByNiche = {};
-      db.assinantes.forEach(a => {
-        if (!allByNiche[a.oficio]) allByNiche[a.oficio] = { total: 0, churned: 0, reasons: [] };
-        allByNiche[a.oficio].total += 1;
-        if (a.status === 'cancelado') {
-          allByNiche[a.oficio].churned += 1;
-          if (a.motivoCancelamento) allByNiche[a.oficio].reasons.push(a.motivoCancelamento);
-        }
-      });
-      document.getElementById('analytics-turnover').innerHTML = Object.entries(allByNiche).map(([oficio, info]) => {
-        const rate = info.total > 0 ? Math.round((info.churned / info.total) * 100) : 0;
-        const barColor = rate >= 40 ? 'bg-red-500' : rate > 0 ? 'bg-amber-500' : 'bg-emerald-500';
-        return `
-          <div>
-            <div class="flex justify-between text-xs font-bold text-slate-800 mb-1">
-              <span>${escapeHTML(oficio)}</span>
-              <span>${rate}% saída (${info.churned}/${info.total})</span>
-            </div>
-            <div class="w-full h-2.5 bg-slate-100 rounded-full overflow-hidden">
-              <div class="h-full ${barColor} rounded-full" style="width: ${Math.max(rate, 4)}%"></div>
-            </div>
-            ${info.reasons.length ? `<p class="text-[11px] text-slate-500 mt-1">Motivo: ${escapeHTML(info.reasons.join(', '))}</p>` : ''}
-          </div>
-        `;
-      }).join('');
-    }
-
-    function renderAdminInteressados() {
-      const container = document.getElementById('interessados-list');
-      if (db.interessados.length === 0) {
-        container.innerHTML = `<div class="col-span-full bg-white rounded-2xl border border-slate-200 p-8 text-center text-sm text-slate-500">Nenhum pré-cadastro pendente no momento.</div>`;
-        return;
-      }
-
-      container.innerHTML = db.interessados.map(lead => {
-        const phone = sanitizeDigits(lead.whatsapp);
-        const waPhone = phone.startsWith('55') ? phone : `55${phone}`;
-        const pitch = encodeURIComponent(
-          `Olá *${lead.nome}*! Aqui é o Fábio do *ClienteNoZap*.\n` +
-          `Vi seu cadastro para *${lead.oficio}* em *${lead.bairro} (${lead.cidade})* no *${lead.planoNome}* (${formatBRL(lead.valor)}).\n\n` +
-          `Já deixei sua página profissional pré-montada! Podemos confirmar sua ativação no Pix para colocar sua campanha no ar hoje?`
-        );
-
-        return `
-          <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm flex flex-col justify-between gap-4">
-            <div>
-              <div class="flex items-center justify-between gap-2 mb-2">
-                <span class="px-2.5 py-0.5 rounded-lg text-[11px] font-bold ${lead.produtoTipo === 'P2' ? 'bg-amber-100 text-amber-800' : 'bg-brand-50 text-brand-700'}">
-                  ${lead.produtoTipo === 'P2' ? 'Produto 2 — Agenda Pronta' : 'Produto 1 — Conexão Direta'}
-                </span>
-                <span class="text-[11px] text-slate-400">${escapeHTML(lead.dataCadastro)}</span>
-              </div>
-              <h3 class="font-display font-extrabold text-lg text-slate-900">${escapeHTML(lead.nome)}</h3>
-              <p class="text-xs text-slate-600 mt-0.5">${escapeHTML(lead.oficio)} • ${escapeHTML(lead.bairro)} (${escapeHTML(lead.cidade)})</p>
-              <p class="text-xs font-semibold text-slate-800 mt-2">WhatsApp: ${escapeHTML(lead.whatsapp)} • Pacote: <span class="text-brand-600 font-bold">${escapeHTML(lead.planoNome)} (${formatBRL(lead.valor)})</span></p>
-            </div>
-
-            <div class="flex flex-col sm:flex-row gap-2 pt-3 border-t border-slate-100">
-              <a href="https://wa.me/${waPhone}?text=${pitch}" target="_blank" rel="noopener noreferrer" class="flex-1 py-2.5 px-3 rounded-xl border border-slate-300 hover:bg-slate-50 text-slate-800 text-xs font-bold text-center transition">
-                1. Chamar no Zap
-              </a>
-              <button onclick="activateInteressado('${lead.id}')" class="flex-1 py-2.5 px-3 rounded-xl bg-brand-500 hover:bg-brand-600 text-white text-xs font-bold transition shadow-sm">
-                2. Ativar Assinatura (IA)
-              </button>
-            </div>
-          </div>
-        `;
-      }).join('');
-    }
-
-    function activateInteressado(leadId) {
-      const idx = db.interessados.findIndex(l => l.id === leadId);
-      if (idx === -1) return;
-      const lead = db.interessados[idx];
-      const theme = NICHE_THEMES[lead.oficio] || NICHE_THEMES['Outros Serviços'];
-      const cleanPhone = sanitizeDigits(lead.whatsapp);
-      const fullPhone = cleanPhone.startsWith('55') ? cleanPhone : `55${cleanPhone}`;
-
-      const newAssinante = {
-        id: 'ASS-' + Math.floor(100 + Math.random() * 900),
-        nome: lead.nome,
-        whatsapp: fullPhone,
-        closerWhatsapp: '',
-        oficio: lead.oficio,
-        cidade: lead.cidade,
-        bairro: lead.bairro,
-        planoId: lead.planoId,
-        produtoTipo: lead.produtoTipo || 'P1',
-        planoNome: lead.planoNome,
-        diasTotal: lead.dias || 15,
-        diasCorridos: 1,
-        valor: lead.valor,
-        pixMeta: lead.pixMeta || 60,
-        agendamentosConfirmados: 0,
-        status: 'ativo',
-        dataAtivacao: new Date().toLocaleDateString('pt-BR'),
-        motivoCancelamento: null,
-        iaProfile: {
-          headline: `Precisando de ${lead.oficio} em ${lead.bairro} (${lead.cidade})? Fale com ${lead.nome}!`,
-          subheadline: `Atendimento rápido na região de ${lead.bairro} com qualidade e orçamento direto pelo WhatsApp.`,
-          diferenciais: [...theme.diferenciais],
-          bannerIndex: 0,
-          checkinRealizado: false
-        }
-      };
-
-      db.assinantes.unshift(newAssinante);
-      db.interessados.splice(idx, 1);
-      saveDatabase();
-      renderAdminAll();
-      showToast(`Assinatura ativada! Mini-LP IA de ${newAssinante.nome} publicada.`);
-    }
-
-    function renderAdminAssinantes() {
-      const ativos = db.assinantes.filter(a => a.status === 'ativo');
-
-      // Smart Reminders (campaigns expiring in <= 2 days or pending check-in)
-      const expiringSoon = ativos.filter(a => (a.diasTotal - a.diasCorridos) <= 2);
-      const pendingCheckin = ativos.filter(a => !a.iaProfile?.checkinRealizado);
-
-      document.getElementById('smart-reminders-box').innerHTML = `
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-          <div class="flex items-center gap-2 text-amber-900 font-display font-bold text-sm">
-            <i data-lucide="bell-ring" class="w-4 h-4 text-amber-600"></i>
-            <span>Central de Ações do Dia:</span>
-          </div>
-          <div class="flex flex-wrap gap-2 text-xs">
-            <span class="px-2.5 py-1 rounded-lg bg-amber-200/70 text-amber-950 font-bold">
-              ${expiringSoon.length} campanha(s) perto do vencimento (Renovar)
-            </span>
-            <span class="px-2.5 py-1 rounded-lg bg-white text-slate-700 border border-amber-200 font-semibold">
-              ${pendingCheckin.length} check-in(s) semanal(is) pendente(s)
-            </span>
-          </div>
-        </div>
-      `;
-
-      const list = document.getElementById('assinantes-list');
-      list.innerHTML = ativos.map(a => {
-        const entregasCount = db.entregas.filter(e => e.assinanteId === a.id).length;
-        const diasRestantes = Math.max(0, (a.diasTotal || 15) - (a.diasCorridos || 0));
-        const pctPeriodo = Math.min(100, Math.round(((a.diasCorridos || 0) / (a.diasTotal || 15)) * 100));
-        const nearEnd = diasRestantes <= 2;
-        const isP2 = a.produtoTipo === 'P2';
-        const margemAss = Number(a.valor || 0) - Number(a.pixMeta || 0);
-
-        const checkinMsg = encodeURIComponent(
-          `Olá *${a.nome}*! Passando para nosso acompanhamento rápido do ClienteNoZap.\n` +
-          `Como estão os chamados que chegaram no WhatsApp esta semana? Precisa ajustar alguma oferta na sua página?`
-        );
-        const renewMsg = encodeURIComponent(
-          `Olá *${a.nome}*! Sua campanha de ${a.diasTotal} dias no ClienteNoZap está entrando na reta final (restam ${diasRestantes} dia(s)).\n` +
-          `Vamos renovar por mais um ciclo para manter seu serviço aparecendo no bairro sem pausar o anúncio?`
-        );
-
-        return `
-          <div class="bg-white rounded-2xl border ${nearEnd ? 'border-amber-400 ring-2 ring-amber-400/20' : 'border-slate-200'} p-5 shadow-sm flex flex-col justify-between gap-4">
-            <div>
-              <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
-                <div class="flex items-center gap-1.5">
-                  <span class="px-2.5 py-0.5 rounded-lg text-[11px] font-bold ${isP2 ? 'bg-amber-100 text-amber-800' : 'bg-slate-100 text-slate-800'}">
-                    ${isP2 ? 'P2 • Agenda Pronta' : 'P1 • Conexão Direta'}
-                  </span>
-                  <span class="text-xs font-bold text-brand-600">${escapeHTML(a.planoNome)}</span>
-                </div>
-                <span class="text-xs font-extrabold text-slate-900">${formatBRL(a.valor)} <span class="text-[11px] font-normal text-slate-500">(Margem ${formatBRL(margemAss)})</span></span>
-              </div>
-
-              <h3 class="font-display font-extrabold text-lg text-slate-900">${escapeHTML(a.nome)}</h3>
-              <p class="text-xs text-slate-500">${escapeHTML(a.oficio)} • ${escapeHTML(a.bairro)} (${escapeHTML(a.cidade)}) • Ativado em ${escapeHTML(a.dataAtivacao)}</p>
-
-              <!-- Campaign Period Progress Bar -->
-              <div class="mt-4 bg-slate-50 p-3 rounded-xl border border-slate-200/80">
-                <div class="flex justify-between text-xs font-bold mb-1.5">
-                  <span class="text-slate-700">Período: Dia ${a.diasCorridos} de ${a.diasTotal}</span>
-                  <span class="${nearEnd ? 'text-amber-600' : 'text-brand-600'}">${diasRestantes} dia(s) restante(s)</span>
-                </div>
-                <div class="w-full h-2.5 bg-slate-200 rounded-full overflow-hidden">
-                  <div class="h-full ${nearEnd ? 'bg-amber-500' : 'bg-brand-500'} rounded-full transition-all" style="width: ${pctPeriodo}%"></div>
-                </div>
-                <div class="mt-2 flex items-center justify-between text-[11px] text-slate-600">
-                  <span><strong>${entregasCount}</strong> conexão(ões) rastreada(s)</span>
-                  ${isP2 ? `<span class="font-bold text-amber-800">${a.agendamentosConfirmados || 0} agendamento(s) fechado(s)</span>` : `<span>Pix Meta: ${formatBRL(a.pixMeta)}</span>`}
-                </div>
-              </div>
-            </div>
-
-            <!-- Action Controls -->
-            <div class="space-y-2 pt-2 border-t border-slate-100">
-              <div class="grid grid-cols-3 gap-1.5 text-[11px] font-bold">
-                <button onclick="openMiniLP('${a.id}')" class="py-2 px-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 transition">
-                  Abrir Mini-LP
-                </button>
-                <button onclick="openEditAssinanteModal('${a.id}')" class="py-2 px-2 rounded-lg bg-slate-100 hover:bg-slate-200 text-slate-800 transition">
-                  Editar / Rota
-                </button>
-                <button onclick="openAuditModal('${a.id}')" class="py-2 px-2 rounded-lg bg-brand-50 hover:bg-brand-100 text-brand-700 border border-brand-200 transition">
-                  Auditar (${entregasCount})
-                </button>
-              </div>
-
-              <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 text-[11px] font-bold">
-                <a href="https://wa.me/${sanitizeDigits(a.whatsapp)}?text=${checkinMsg}" target="_blank" onclick="markCheckinDone('${a.id}')" class="py-2 px-2 rounded-lg border border-slate-300 hover:bg-slate-50 text-slate-700 text-center transition">
-                  ${a.iaProfile?.checkinRealizado ? 'Check-in OK' : 'Check-in Zap'}
-                </a>
-                <a href="https://wa.me/${sanitizeDigits(a.whatsapp)}?text=${renewMsg}" target="_blank" class="py-2 px-2 rounded-lg ${nearEnd ? 'bg-amber-500 text-white hover:bg-amber-600' : 'border border-slate-300 text-slate-700 hover:bg-slate-50'} text-center transition">
-                  Renovar Zap
-                </a>
-                <button onclick="renewCycleLocal('${a.id}')" class="py-2 px-2 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-700 border border-emerald-200 transition">
-                  +1 Ciclo Pago
-                </button>
-                <button onclick="openChurnModal('${a.id}')" class="py-2 px-2 rounded-lg bg-red-50 hover:bg-red-100 text-red-700 transition">
-                  Encerrar
-                </button>
-              </div>
-            </div>
-          </div>
-        `;
-      }).join('');
-    }
-
-    function markCheckinDone(assId) {
-      const a = db.assinantes.find(item => item.id === assId);
-      if (a) {
-        a.iaProfile.checkinRealizado = true;
-        saveDatabase();
-        renderAdminAssinantes();
-      }
-    }
-
-    function renewCycleLocal(assId) {
-      const a = db.assinantes.find(item => item.id === assId);
-      if (!a) return;
-      a.diasCorridos = 1;
-      a.dataAtivacao = new Date().toLocaleDateString('pt-BR');
-      a.iaProfile.checkinRealizado = false;
-      saveDatabase();
-      renderAdminAll();
-      showToast(`Novo ciclo de ${a.diasTotal} dias iniciado para ${a.nome}!`);
-    }
-
-    function openEditAssinanteModal(assId) {
-      const a = db.assinantes.find(item => item.id === assId);
-      if (!a) return;
-      document.getElementById('edit-ass-id').value = a.id;
-      document.getElementById('edit-ass-nome').value = a.nome;
-      document.getElementById('edit-ass-bairro').value = a.bairro;
-      document.getElementById('edit-ass-zap').value = a.whatsapp;
-      document.getElementById('edit-ass-dias-corridos').value = a.diasCorridos || 1;
-      document.getElementById('edit-ass-produto').value = a.produtoTipo || 'P1';
-      document.getElementById('edit-ass-closer-zap').value = a.closerWhatsapp || '';
-      document.getElementById('edit-ass-headline').value = a.iaProfile?.headline || '';
-      document.getElementById('edit-ass-diferenciais').value = (a.iaProfile?.diferenciais || []).join(', ');
-      openModal('modal-edit-assinante');
-    }
-
-    function saveAssinanteEdits(e) {
-      e.preventDefault();
-      const id = document.getElementById('edit-ass-id').value;
-      const a = db.assinantes.find(item => item.id === id);
-      if (!a) return;
-
-      a.nome = document.getElementById('edit-ass-nome').value.trim();
-      a.bairro = document.getElementById('edit-ass-bairro').value.trim();
-      a.whatsapp = sanitizeDigits(document.getElementById('edit-ass-zap').value);
-      a.diasCorridos = parseInt(document.getElementById('edit-ass-dias-corridos').value, 10) || 1;
-      a.produtoTipo = document.getElementById('edit-ass-produto').value;
-      a.closerWhatsapp = sanitizeDigits(document.getElementById('edit-ass-closer-zap').value);
-      a.iaProfile.headline = document.getElementById('edit-ass-headline').value.trim();
-      a.iaProfile.diferenciais = document.getElementById('edit-ass-diferenciais').value
-        .split(',')
-        .map(s => s.trim())
-        .filter(Boolean)
-        .slice(0, 3);
-
-      saveDatabase();
-      closeModal('modal-edit-assinante');
-      renderAdminAll();
-      showToast('Perfil e roteamento atualizados!');
-    }
-
-    function openAuditModal(assId) {
-      const a = db.assinantes.find(item => item.id === assId);
-      if (!a) return;
-      currentAuditAssinanteId = assId;
-      const items = db.entregas.filter(e => e.assinanteId === assId);
-
-      document.getElementById('audit-modal-title').textContent = `Auditoria: ${a.nome}`;
-      document.getElementById('audit-modal-sub').textContent = `${items.length} conexão(ões) registrada(s) • Modalidade: ${a.produtoTipo === 'P2' ? 'Agenda Pronta (P2)' : 'Conexão Direta (P1)'}`;
-      document.getElementById('btn-add-agendamento-p2').classList.toggle('hidden', a.produtoTipo !== 'P2');
-
-      const listEl = document.getElementById('audit-modal-list');
-      listEl.innerHTML = items.length === 0
-        ? '<p class="py-6 text-center text-slate-400">Nenhuma conexão registrada ainda para este assinante.</p>'
-        : items.map(it => `
-            <div class="py-2.5 flex items-center justify-between gap-2">
-              <div>
-                <p class="font-bold text-slate-900">${escapeHTML(it.consumidorNome)} <span class="font-normal text-slate-500">(${escapeHTML(it.consumidorWhatsapp)})</span></p>
-                <p class="text-[11px] text-slate-500">Interesse: ${escapeHTML(it.servico || 'Orçamento')} • Rota: ${escapeHTML(it.destinoRota || it.origem)}</p>
-              </div>
-              <span class="text-[11px] text-slate-400 shrink-0">${escapeHTML(it.dataHora)}</span>
-            </div>
-          `).join('');
-
-      openModal('modal-audit-entregas');
-    }
-
-    function simulateManualConnection() {
-      const a = db.assinantes.find(item => item.id === currentAuditAssinanteId);
-      if (!a) return;
-      const now = new Date();
-      db.entregas.unshift({
-        id: 'LED-' + Math.floor(1000 + Math.random() * 9000),
-        assinanteId: a.id,
-        assinanteNome: a.nome,
-        consumidorNome: 'Cliente Teste Local',
-        consumidorWhatsapp: '(91) 98800-1234',
-        servico: 'Consulta via Anúncio',
-        destinoRota: a.produtoTipo === 'P2' ? 'Central Agenda Pronta (P2)' : 'Direto Profissional (P1)',
-        origem: 'Registro Manual Gestor',
-        dataHora: now.toLocaleDateString('pt-BR') + ' ' + now.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' })
-      });
-      saveDatabase();
-      openAuditModal(a.id);
-      renderAdminAll();
-      showToast('Conexão adicionada ao histórico!');
-    }
-
-    function incrementConfirmedAppointment() {
-      const a = db.assinantes.find(item => item.id === currentAuditAssinanteId);
-      if (!a) return;
-      a.agendamentosConfirmados = (a.agendamentosConfirmados || 0) + 1;
-      saveDatabase();
-      renderAdminAll();
-      showToast(`Agendamento confirmado registrado! Total: ${a.agendamentosConfirmados}`);
-    }
-
-    function openChurnModal(assId) {
-      const a = db.assinantes.find(item => item.id === assId);
-      if (!a) return;
-      document.getElementById('churn-ass-id').value = a.id;
-      document.getElementById('churn-prof-name').textContent = `Assinante: ${a.nome} (${a.oficio})`;
-      openModal('modal-churn');
-    }
-
-    function confirmChurn() {
-      const id = document.getElementById('churn-ass-id').value;
-      const motivo = document.getElementById('churn-motivo').value;
-      const a = db.assinantes.find(item => item.id === id);
-      if (!a) return;
-      a.status = 'cancelado';
-      a.motivoCancelamento = motivo;
-      saveDatabase();
-      closeModal('modal-churn');
-      renderAdminAll();
-      showToast('Encerramento registrado e atualizado no Radar de Turnover.', 'warning');
-    }
-
-    // -----------------------------------------------------------------------
-    // 9. CONFIGURATION, BACKUP & LEGAL MODALS
-    // -----------------------------------------------------------------------
-    function renderAdminConfig() {
-      document.getElementById('cfg-gestor-zap').value = db.config.gestorWhatsapp || '';
-      document.getElementById('cfg-closer-zap').value = db.config.operacaoCloserWhatsapp || '';
-    }
-
-    function saveOperationalConfig() {
-      db.config.gestorWhatsapp = sanitizeDigits(document.getElementById('cfg-gestor-zap').value);
-      db.config.operacaoCloserWhatsapp = sanitizeDigits(document.getElementById('cfg-closer-zap').value);
-      saveDatabase();
-      showToast('Números operacionais salvos com sucesso!');
-    }
-
-    async function updateAdminPassword() {
-      const newPass = document.getElementById('cfg-new-password').value.trim();
-      if (newPass.length < 6) {
-        showToast('A nova senha deve ter pelo menos 6 caracteres.', 'error');
-        return;
-      }
-      db.config.adminPassHash = await sha256Hex(newPass);
-      saveDatabase();
-      document.getElementById('cfg-new-password').value = '';
-      showToast('Senha do painel atualizada com criptografia SHA-256!');
-    }
-
-    function exportBackupJSON() {
-      const blob = new Blob([JSON.stringify(db, null, 2)], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `clientenozap-backup-${new Date().toISOString().slice(0, 10)}.json`;
-      a.click();
-      URL.revokeObjectURL(url);
-      showToast('Backup JSON baixado!');
-    }
-
-    function importBackupJSON(event) {
-      const file = event.target.files?.[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        try {
-          const parsed = JSON.parse(e.target.result);
-          if (!parsed.assinantes || !parsed.interessados || !parsed.entregas) {
-            throw new Error('Formato inválido');
-          }
-          db = parsed;
-          saveDatabase();
-          renderAdminAll();
-          showToast('Backup restaurado com sucesso!');
-        } catch (err) {
-          showToast('Arquivo de backup inválido.', 'error');
-        }
-      };
-      reader.readAsText(file);
-    }
-
-    function resetDemoData() {
-      const currentHash = db.config.adminPassHash;
-      db = buildInitialSeedData();
-      db.config.adminPassHash = currentHash;
-      saveDatabase();
-      renderAdminAll();
-      showToast('Dados iniciais da Grande Belém restaurados!');
-    }
-
-    function openLegalModal(type) {
-      const titleEl = document.getElementById('legal-modal-title');
-      const bodyEl = document.getElementById('legal-modal-body');
-
-      if (type === 'privacidade') {
-        titleEl.textContent = 'Política de Privacidade e Proteção de Dados (LGPD)';
-        bodyEl.innerHTML = `
-          <p><strong>1. Finalidade da Coleta:</strong> O ClienteNoZap coleta nome, telefone/WhatsApp e necessidade de serviço do usuário consumidor exclusivamente para viabilizar o contato comercial entre o solicitante e o profissional ou central de agendamento escolhida.</p>
-          <p><strong>2. Base Legal (Lei nº 13.709/2018):</strong> O tratamento de dados ocorre mediante consentimento livre, informado e inequívoco do titular antes do redirecionamento para o WhatsApp.</p>
-          <p><strong>3. Não Comercialização de Dados:</strong> Não vendemos, alugamos ou compartilhamos listas de contatos com terceiros estranhos ao atendimento solicitado pelo usuário.</p>
-          <p><strong>4. Direitos do Titular:</strong> A qualquer momento, o titular pode solicitar confirmação, correção ou exclusão de seus registros de contato junto ao canal de atendimento do ClienteNoZap.</p>
-        `;
-      } else {
-        titleEl.textContent = 'Termos de Adesão e Transparência Comercial';
-        bodyEl.innerHTML = `
-          <p><strong>1. Escopo — Produto 1 (Pacotes de Visibilidade & Conexão):</strong> Consiste na criação de página profissional digital, publicação na Vitrine Local e veiculação de anúncios patrocinados geolocalizados pelo período contratado (7, 15 ou 30 dias corridos). O atendimento, negociação de preços e fechamento dos serviços cabem integralmente ao profissional contratante, não havendo promessa de quantidade fixa de vendas fechadas.</p>
-          <p><strong>2. Escopo — Produto 2 (Agenda Pronta VIP):</strong> Além da veiculação patrocinada por 15 dias, nossa equipe comercial realiza o pré-atendimento dos interessados com base na tabela de preços e horários informados pelo profissional. Os pagamentos dos serviços agendados são realizados diretamente entre o cliente final e o profissional (via chave Pix ou link próprio do prestador).</p>
-          <p><strong>3. Vigência e Renovação:</strong> Os pacotes operam sem fidelidade contratual anual, encerrando-se automaticamente ao término dos dias contratados caso não haja renovação.</p>
-        `;
-      }
-      openModal('modal-legal');
-    }
-
-    function openModal(id) {
-      const el = document.getElementById(id);
-      if (!el) return;
-      el.classList.remove('hidden');
-      el.classList.add('flex');
-      lucide.createIcons();
-    }
-
-    function closeModal(id) {
-      const el = document.getElementById(id);
-      if (!el) return;
-      el.classList.add('hidden');
-      el.classList.remove('flex');
-    }
-
-    // -----------------------------------------------------------------------
-    // 10. INITIALIZATION
-    // -----------------------------------------------------------------------
     document.addEventListener('DOMContentLoaded', () => {
-      syncAuthUI();
-      updateAdminCounters();
-      selectPlan('acelera_15d', false);
-      checkInitialHashRoute();
+      escolherPacote('15dias', false);
       lucide.createIcons();
     });
   </script>
