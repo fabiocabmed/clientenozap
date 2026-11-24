@@ -6,7 +6,7 @@
   <title>ClienteNoZap | Captação de Clientes, Vitrine &amp; Painel</title>
   <meta name="description" content="Captação ativa de clientes para autônomos, prestadores de serviço e MEIs em Belém, Ananindeua, Icoaraci, Mosqueiro, Marituba, Benevides, Benfica e Castanhal." />
 
-  <!-- Google Fonts -->
+  <!-- Google Fonts: Plus Jakarta Sans, Inter, Manrope & DM Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@700;800&display=swap" rel="stylesheet" />
@@ -65,9 +65,12 @@
       100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
     }
 
-    /* Padrões Visuais Vitally Studio (Templates das Vitrines dos Clientes) */
+    /* =================================================================== */
+    /* PADRÕES VISUAIS VITALLY STUDIO (TEMPLATES DAS VITRINES DOS CLIENTES) */
+    /* =================================================================== */
     .vs-editorial {
       --vs-ink: #111315;
+      --vs-ink-2: #191c1f;
       --vs-paper: #f4f2ed;
       --vs-text: #24282b;
       --vs-accent: #f07832;
@@ -136,280 +139,366 @@
 <body class="antialiased selection:bg-zap-100 selection:text-zap-700 overflow-x-hidden flex flex-col min-h-screen">
 
   <!-- ===================================================================== -->
-  <!-- TOPO FIXO & NAVEGAÇÃO PRINCIPAL                                       -->
+  <!-- BARRA DE NAVEGAÇÃO SUPERIOR                                           -->
   <!-- ===================================================================== -->
   <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-2">
-      <button type="button" onclick="alternarTela('vendas')" class="flex items-center gap-2 text-left shrink-0">
-        <div class="w-9 h-9 rounded-xl bg-zap-600 text-white flex items-center justify-center shadow-sm">
-          <i data-lucide="zap" class="w-5 h-5"></i>
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-2">
+      <!-- Logotipo -->
+      <a href="#inicio" onclick="alternarTela('vendas')" class="flex items-center gap-2 shrink-0">
+        <div class="w-9 h-9 rounded-xl bg-zap-500 flex items-center justify-center text-white shadow-sm">
+          <i data-lucide="message-circle" class="w-5 h-5"></i>
         </div>
-        <div>
-          <span class="font-display font-extrabold text-base sm:text-lg tracking-tight text-slate-900 block leading-none">
-            Cliente<span class="text-zap-600">NoZap</span>
-          </span>
-          <span class="hidden sm:block text-[10px] font-semibold text-slate-500 mt-0.5">Clientes direto no seu WhatsApp</span>
-        </div>
-      </button>
+        <span class="font-display font-extrabold text-lg sm:text-xl tracking-tight text-slate-900">
+          Cliente<span class="text-zap-600">NoZap</span>
+        </span>
+      </a>
 
-      <nav class="flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200">
+      <!-- Alternador Público: Sou Profissional / Buscar Serviço -->
+      <nav aria-label="Modo de navegação" class="flex items-center bg-slate-100 p-1 rounded-xl border border-slate-200">
         <button type="button" id="nav-btn-vendas" onclick="alternarTela('vendas')" class="px-3 sm:px-4 py-2 rounded-lg font-display font-bold text-xs sm:text-sm bg-white text-slate-900 shadow-sm transition">
-          Contratar
+          Sou Profissional
         </button>
         <button type="button" id="nav-btn-vitrine" onclick="alternarTela('vitrine')" class="px-3 sm:px-4 py-2 rounded-lg font-display font-bold text-xs sm:text-sm text-slate-600 hover:text-slate-900 transition flex items-center gap-1.5">
           <i data-lucide="store" class="w-3.5 h-3.5 text-zap-600"></i>
-          <span>Vitrine <span class="hidden md:inline">de Profissionais</span></span>
+          <span>Buscar Serviço</span>
         </button>
       </nav>
 
+      <!-- Ações da Direita -->
       <div class="flex items-center gap-2 shrink-0">
-        <button type="button" id="btn-topo-entrar" onclick="abrirModalLogin()" class="px-3 py-2 rounded-xl border border-slate-300 hover:border-slate-900 bg-white text-slate-800 font-display font-bold text-xs sm:text-sm inline-flex items-center gap-1.5 transition">
-          <i data-lucide="lock" class="w-3.5 h-3.5 text-slate-500"></i>
+        <a id="btn-topo-contratar" href="#pacotes-secao" class="hidden sm:inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-zap-600 hover:bg-zap-700 text-white font-display font-bold text-xs sm:text-sm shadow-sm transition">
+          <span>Quero Clientes</span>
+        </a>
+
+        <button type="button" id="btn-topo-entrar" onclick="abrirModalLogin()" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-dark-900 hover:bg-slate-800 text-white font-display font-bold text-xs sm:text-sm shadow-sm transition">
+          <i data-lucide="lock" class="w-3.5 h-3.5 text-zap-400"></i>
           <span>Entrar</span>
         </button>
 
-        <button type="button" id="btn-topo-painel" onclick="alternarTela('admin')" class="hidden px-3 py-2 rounded-xl bg-dark-900 hover:bg-slate-800 text-white font-display font-bold text-xs sm:text-sm items-center gap-1.5 transition">
-          <i data-lucide="layout-dashboard" class="w-3.5 h-3.5 text-zap-400"></i>
+        <button type="button" id="btn-topo-painel" onclick="alternarTela('admin')" class="hidden items-center gap-1.5 px-3.5 py-2 rounded-xl bg-zap-600 hover:bg-zap-700 text-white font-display font-bold text-xs sm:text-sm shadow-sm transition">
+          <i data-lucide="layout-dashboard" class="w-3.5 h-3.5"></i>
           <span>Painel</span>
         </button>
 
-        <button type="button" id="btn-topo-sair" onclick="fazerLogoutAdmin()" title="Sair do Painel" class="hidden p-2 rounded-xl border border-slate-200 hover:bg-red-50 hover:text-red-600 text-slate-500 transition">
-          <i data-lucide="log-out" class="w-4 h-4"></i>
+        <button type="button" id="btn-topo-sair" onclick="fazerLogoutAdmin()" class="hidden items-center gap-1 px-2.5 py-2 rounded-xl border border-slate-300 hover:bg-slate-100 text-slate-700 font-display font-bold text-xs transition" title="Sair do Painel">
+          <i data-lucide="log-out" class="w-3.5 h-3.5"></i>
         </button>
-
-        <a href="#formulario-pedido" id="btn-topo-contratar" onclick="alternarTela('vendas')" class="hidden md:inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-zap-600 hover:bg-zap-700 text-white font-display font-bold text-sm shadow-sm transition">
-          <i data-lucide="message-circle" class="w-4 h-4"></i>
-          <span>Quero Clientes</span>
-        </a>
       </div>
     </div>
   </header>
 
-  <!-- ===================================================================== -->
-  <!-- TELA 1: PÁGINA DE VENDAS (FECHADA E PRESERVADA)                       -->
-  <!-- ===================================================================== -->
-  <main id="view-vendas" class="flex-1">
-    <section class="relative overflow-hidden bg-dark-900 text-white pt-10 pb-14 sm:pt-16 sm:pb-20">
-      <div class="max-w-4xl mx-auto px-4 sm:px-6 text-center">
-        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/15 text-zap-200 text-xs sm:text-sm font-semibold mb-6">
-          <span class="w-2 h-2 rounded-full bg-zap-500 animate-ping"></span>
-          <span>Belém • Ananindeua • Icoaraci • Mosqueiro • Marituba • Benevides • Benfica • Castanhal</span>
-        </div>
+  <main class="flex-1">
+    <!-- =================================================================== -->
+    <!-- TELA 1: PÁGINA DE VENDAS (FECHADA E INTACTA)                        -->
+    <!-- =================================================================== -->
+    <div id="view-vendas">
+      <!-- HERO DE ALTA CONVERSÃO -->
+      <section id="inicio" class="bg-dark-950 text-white pt-10 pb-14 sm:pt-14 sm:pb-20 px-4 sm:px-6 relative overflow-hidden">
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(16,185,129,0.18),transparent_55%)] pointer-events-none"></div>
 
-        <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight text-white mb-5">
-          Você foca no seu serviço.<br class="hidden sm:inline" />
-          <span class="text-zap-500">A gente coloca clientes chamando no seu WhatsApp.</span>
-        </h1>
-
-        <p class="text-base sm:text-xl text-slate-300 max-w-2xl mx-auto mb-8 font-normal">
-          Feito para mecânicos, diaristas, salões, técnicos de refrigeração, reformas, fretes e autônomos. Sem precisar entender de anúncios ou criar site: a gente monta sua página e leva moradores da sua região direto pro seu Zap.
-        </p>
-
-        <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 max-w-xl mx-auto">
-          <a href="#formulario-pedido" class="cta-pulse w-full sm:w-auto flex-1 inline-flex items-center justify-center gap-2.5 px-6 py-4 rounded-2xl bg-zap-500 hover:bg-zap-600 text-slate-950 font-display font-extrabold text-base sm:text-lg shadow-xl transition">
-            <i data-lucide="message-circle" class="w-5 h-5"></i>
-            <span>Quero Receber Clientes no Zap</span>
-          </a>
-          <button type="button" onclick="alternarTela('vitrine')" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-4 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/15 text-white font-display font-bold text-sm sm:text-base transition">
-            <i data-lucide="store" class="w-4 h-4 text-zap-400"></i>
-            <span>Ver Profissionais na Vitrine</span>
-          </button>
-        </div>
-
-        <div class="mt-8 pt-6 border-t border-white/10 grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs sm:text-sm text-slate-300 max-w-2xl mx-auto">
-          <div class="flex items-center justify-center gap-2">
-            <i data-lucide="check-circle-2" class="w-4 h-4 text-zap-500 shrink-0"></i>
-            <span>Clientes da sua região</span>
-          </div>
-          <div class="flex items-center justify-center gap-2">
-            <i data-lucide="check-circle-2" class="w-4 h-4 text-zap-500 shrink-0"></i>
-            <span>Página própria pronta pra você</span>
-          </div>
-          <div class="flex items-center justify-center gap-2">
-            <i data-lucide="check-circle-2" class="w-4 h-4 text-zap-500 shrink-0"></i>
-            <span>Sem contrato longo</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="py-12 sm:py-16 bg-white border-b border-slate-200">
-      <div class="max-w-5xl mx-auto px-4 sm:px-6">
-        <div class="text-center max-w-2xl mx-auto mb-10">
-          <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Como funciona na prática</h2>
-          <p class="text-slate-600 mt-2 text-base">Você não precisa estudar marketing nem mexer em ferramentas complicadas.</p>
-        </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-          <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200">
-            <div class="w-10 h-10 rounded-xl bg-zap-100 text-zap-700 font-display font-extrabold flex items-center justify-center mb-4">1</div>
-            <h3 class="font-display font-bold text-lg text-slate-900 mb-2">Você diz o que faz e onde atende</h3>
-            <p class="text-slate-600 text-sm sm:text-base">Escolha seu serviço, os bairros ou cidades que você atende e o pacote ideal para o seu momento.</p>
-          </div>
-          <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200">
-            <div class="w-10 h-10 rounded-xl bg-zap-100 text-zap-700 font-display font-extrabold flex items-center justify-center mb-4">2</div>
-            <h3 class="font-display font-bold text-lg text-slate-900 mb-2">A gente divulga e cria sua página</h3>
-            <p class="text-slate-600 text-sm sm:text-base">Montamos sua página exclusiva, colocamos seu perfil na Vitrine Regional e divulgamos seu serviço para quem procura.</p>
-          </div>
-          <div class="p-6 rounded-2xl bg-slate-50 border border-slate-200">
-            <div class="w-10 h-10 rounded-xl bg-zap-100 text-zap-700 font-display font-extrabold flex items-center justify-center mb-4">3</div>
-            <h3 class="font-display font-bold text-lg text-slate-900 mb-2">Você atende e fecha direto no Zap</h3>
-            <p class="text-slate-600 text-sm sm:text-base">O cliente chama no seu WhatsApp pedindo orçamento. Você combina preço, horário e recebe direto dele.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="py-12 sm:py-16 bg-slate-50 border-b border-slate-200">
-      <div class="max-w-3xl mx-auto px-4 sm:px-6">
-        <div class="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-sm">
-          <div class="text-center mb-6">
-            <span class="inline-block px-3 py-1 rounded-full bg-zap-50 text-zap-700 text-xs font-extrabold uppercase tracking-wider mb-2">Simulador Rápido</span>
-            <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Quanto volta pro seu bolso?</h2>
-            <p class="text-slate-600 text-sm sm:text-base mt-1">Arraste o valor médio de 1 serviço seu para ver como o investimento se paga rápido:</p>
-          </div>
-
-          <div class="mb-6">
-            <div class="flex items-center justify-between mb-2">
-              <label for="calc-range-servico" class="text-sm font-bold text-slate-700">Valor médio de 1 serviço seu:</label>
-              <span id="calc-valor-servico-label" class="font-display font-extrabold text-xl text-zap-700">R$ 150</span>
+        <div class="max-w-5xl mx-auto relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+          <!-- Coluna Esquerda: Copy Direta -->
+          <div class="lg:col-span-7 space-y-5 text-center lg:text-left">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/15 text-zap-300 text-xs sm:text-sm font-bold">
+              <span class="w-2 h-2 rounded-full bg-zap-400 animate-ping"></span>
+              <span>Belém • Ananindeua • Icoaraci • Mosqueiro • Marituba • Benevides • Castanhal</span>
             </div>
-            <input type="range" id="calc-range-servico" min="50" max="800" step="10" value="150" oninput="atualizarSimuladorBolso(this.value)" class="w-full accent-emerald-600 cursor-pointer" />
+
+            <h1 class="font-display font-extrabold text-3xl sm:text-5xl leading-[1.12] tracking-tight">
+              Você foca no seu serviço. A gente coloca clientes da sua região <span class="text-zap-400">chamando no seu WhatsApp.</span>
+            </h1>
+
+            <p class="text-base sm:text-lg text-slate-300 leading-relaxed max-w-2xl mx-auto lg:mx-0">
+              Feito para autônomos, prestadores de serviço e MEIs. Fazemos a captação ativa de quem já está procurando o seu trabalho — <strong class="text-white">sem comissão por serviço e sem contrato de fidelidade.</strong>
+            </p>
+
+            <div class="pt-1 flex flex-col sm:flex-row items-stretch sm:items-center justify-center lg:justify-start gap-3">
+              <a href="#pacotes-secao" class="cta-pulse py-4 px-7 rounded-2xl bg-zap-500 hover:bg-zap-600 text-white font-display font-extrabold text-base sm:text-lg shadow-xl flex items-center justify-center gap-2 transition">
+                <span>Quero Clientes no Meu Zap</span>
+                <i data-lucide="arrow-down" class="w-5 h-5"></i>
+              </a>
+              <a href="#simulador-lucro" class="py-4 px-5 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/15 text-white font-display font-bold text-sm sm:text-base flex items-center justify-center gap-2 transition">
+                <i data-lucide="calculator" class="w-4 h-4 text-zap-400"></i>
+                <span>Fazer a Conta no Bolso</span>
+              </a>
+            </div>
+
+            <div class="pt-3 flex flex-wrap items-center justify-center lg:justify-start gap-x-5 gap-y-2 text-xs text-slate-400 font-semibold">
+              <span class="flex items-center gap-1.5"><i data-lucide="check-circle-2" class="w-4 h-4 text-zap-400"></i> 100% do valor do serviço é seu</span>
+              <span class="flex items-center gap-1.5"><i data-lucide="check-circle-2" class="w-4 h-4 text-zap-400"></i> Você escolhe onde atender</span>
+              <span class="flex items-center gap-1.5"><i data-lucide="check-circle-2" class="w-4 h-4 text-zap-400"></i> Página profissional inclusa</span>
+            </div>
           </div>
 
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 text-center">
-              <p class="text-xs font-bold uppercase text-slate-500">Se você fechar só 2 clientes</p>
-              <p id="calc-faturamento-2" class="font-display font-extrabold text-2xl sm:text-3xl text-slate-900 mt-1">R$ 300</p>
-              <p class="text-xs text-zap-700 font-semibold mt-1">Já paga o pacote e sobra lucro</p>
-            </div>
-            <div class="p-4 rounded-2xl bg-zap-50 border border-zap-200 text-center">
-              <p class="text-xs font-bold uppercase text-zap-700">Se você fechar 5 clientes</p>
-              <p id="calc-faturamento-5" class="font-display font-extrabold text-2xl sm:text-3xl text-zap-700 mt-1">R$ 750</p>
-              <p class="text-xs text-slate-700 font-semibold mt-1">Dinheiro direto no seu bolso</p>
+          <!-- Coluna Direita: Simulação Visual de Pedido Chegando no WhatsApp -->
+          <div class="lg:col-span-5">
+            <div class="bg-slate-900/90 border border-white/15 rounded-3xl p-5 shadow-2xl space-y-3.5">
+              <div class="flex items-center justify-between pb-3 border-b border-white/10">
+                <div class="flex items-center gap-2.5">
+                  <div class="w-9 h-9 rounded-full bg-zap-500 flex items-center justify-center text-white font-display font-extrabold text-sm">
+                    <i data-lucide="message-circle" class="w-5 h-5"></i>
+                  </div>
+                  <div>
+                    <p class="font-display font-extrabold text-sm text-white leading-none">Seu WhatsApp Comercial</p>
+                    <p class="text-[11px] text-zap-400 mt-1">● Recebendo solicitações agora</p>
+                  </div>
+                </div>
+                <span class="px-2.5 py-1 rounded-lg bg-zap-500/20 text-zap-300 text-[11px] font-extrabold">Ao Vivo</span>
+              </div>
+
+              <!-- Notificação 1: Direto no Zap -->
+              <div class="bg-slate-800/90 rounded-2xl p-3.5 border border-white/10">
+                <div class="flex items-center justify-between text-[11px] text-slate-400 mb-1">
+                  <span class="font-bold text-zap-400">Novo Cliente • Bairro Próximo</span>
+                  <span>Agora</span>
+                </div>
+                <p class="text-xs sm:text-sm text-white font-medium leading-snug">
+                  "Olá! Vi seu contato no <strong>ClienteNoZap</strong>. Preciso de um orçamento para hoje aqui na Cidade Nova, você atende?"
+                </p>
+              </div>
+
+              <!-- Notificação 2: Agenda na Mão -->
+              <div class="bg-amber-500/10 rounded-2xl p-3.5 border border-amber-400/30">
+                <div class="flex items-center justify-between text-[11px] text-amber-300 mb-1">
+                  <span class="font-extrabold flex items-center gap-1"><i data-lucide="calendar-check" class="w-3.5 h-3.5"></i> Opção Agenda na Mão</span>
+                  <span>Pré-Agendado</span>
+                </div>
+                <p class="text-xs sm:text-sm text-slate-100 leading-snug">
+                  <strong>Cliente Triado:</strong> Marcos Souza • Serviço confirmado para <strong>Amanhã às 09h</strong>. Só ir lá e executar!
+                </p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <section id="pacotes" class="py-12 sm:py-16 bg-white border-b border-slate-200">
-      <div class="max-w-5xl mx-auto px-4 sm:px-6">
-        <div class="text-center max-w-2xl mx-auto mb-8">
-          <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Escolha como você quer receber clientes</h2>
-          <p class="text-slate-600 mt-2">Selecione abaixo se você mesmo responde no WhatsApp ou se prefere receber já pré-agendado.</p>
+      <!-- COMPARATIVO DOR VS. SOLUÇÃO -->
+      <section class="py-10 sm:py-14 px-4 sm:px-6 max-w-5xl mx-auto">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+          <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm">
+            <span class="inline-flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-wider text-red-600 mb-2">
+              <i data-lucide="x-circle" class="w-4 h-4"></i>
+              Sem o ClienteNoZap
+            </span>
+            <h2 class="font-display font-extrabold text-xl text-slate-900 mb-3">Depender só de indicação deixa sua agenda vazia</h2>
+            <ul class="space-y-2.5 text-sm text-slate-600">
+              <li class="flex items-start gap-2"><span class="text-red-500 font-bold">✕</span><span>Dias parados esperando alguém lembrar de indicar você</span></li>
+              <li class="flex items-start gap-2"><span class="text-red-500 font-bold">✕</span><span>Concorrente aparecendo primeiro quando o morador pesquisa</span></li>
+              <li class="flex items-start gap-2"><span class="text-red-500 font-bold">✕</span><span>Aplicativos que cobram comissão alta em cima do seu suor</span></li>
+            </ul>
+          </div>
+
+          <div class="bg-dark-900 text-white rounded-3xl p-6 border-2 border-zap-500 shadow-lg">
+            <span class="inline-flex items-center gap-1.5 text-xs font-extrabold uppercase tracking-wider text-zap-400 mb-2">
+              <i data-lucide="check-circle-2" class="w-4 h-4"></i>
+              Com o ClienteNoZap
+            </span>
+            <h2 class="font-display font-extrabold text-xl text-white mb-3">Clientes da sua área chamando direto no seu WhatsApp</h2>
+            <ul class="space-y-2.5 text-sm text-slate-200">
+              <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-zap-400 shrink-0 mt-0.5"></i><span>Captação ativa de pessoas já precisando do seu serviço hoje</span></li>
+              <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-zap-400 shrink-0 mt-0.5"></i><span>Você escolhe se quer atender só no bairro ou em toda a região</span></li>
+              <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-zap-400 shrink-0 mt-0.5"></i><span>Zero comissão: o cliente paga 100% direto no seu Pix</span></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- CALCULADORA INTERATIVA "FAÇA A CONTA NO SEU BOLSO" -->
+      <section id="simulador-lucro" class="py-8 sm:py-12 px-4 sm:px-6 max-w-4xl mx-auto">
+        <div class="bg-white rounded-3xl p-6 sm:p-8 border-2 border-slate-200 shadow-sm">
+          <div class="text-center max-w-2xl mx-auto mb-6">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zap-50 text-zap-700 text-xs font-extrabold uppercase tracking-wider">
+              <i data-lucide="calculator" class="w-3.5 h-3.5"></i>
+              Faça a Conta no Seu Bolso
+            </span>
+            <h2 class="font-display font-extrabold text-2xl sm:text-3xl text-slate-900 mt-2">
+              Quanto você cobra em média por 1 serviço?
+            </h2>
+            <p class="text-sm text-slate-600 mt-1">
+              Arraste a barra abaixo e veja como <strong>apenas 1 ou 2 clientes fechados</strong> já pagam o seu pacote inteiro:
+            </p>
+          </div>
+
+          <div class="max-w-xl mx-auto space-y-5">
+            <div class="flex items-center justify-between bg-slate-50 px-5 py-3.5 rounded-2xl border border-slate-200">
+              <span class="text-xs sm:text-sm font-bold text-slate-600">Valor médio de 1 serviço seu:</span>
+              <span id="calc-valor-servico-label" class="font-display font-extrabold text-2xl sm:text-3xl text-zap-600">R$ 150</span>
+            </div>
+
+            <input type="range" id="calc-range-servico" min="60" max="600" step="10" value="150" oninput="atualizarSimuladorBolso(this.value)" class="w-full h-3 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-emerald-600" />
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-2">
+              <div class="p-4 rounded-2xl bg-zap-50 border border-zap-200 text-center">
+                <p class="text-xs font-extrabold uppercase text-zap-800">Com apenas 2 serviços fechados</p>
+                <p id="calc-faturamento-2" class="font-display font-extrabold text-2xl sm:text-3xl text-slate-900 mt-1">R$ 300</p>
+                <p class="text-xs text-zap-700 font-semibold mt-0.5">Já pagou o pacote e sobrou lucro!</p>
+              </div>
+              <div class="p-4 rounded-2xl bg-dark-900 text-white text-center">
+                <p class="text-xs font-extrabold uppercase text-zap-400">Com 5 serviços fechados no ciclo</p>
+                <p id="calc-faturamento-5" class="font-display font-extrabold text-2xl sm:text-3xl text-white mt-1">R$ 750</p>
+                <p class="text-xs text-slate-300 font-semibold mt-0.5">100% direto no seu bolso / Pix</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SEÇÃO DE MODALIDADES, PACOTES E FORMULÁRIO DE ATIVAÇÃO -->
+      <section id="pacotes-secao" class="py-10 sm:py-14 px-4 sm:px-6 max-w-5xl mx-auto">
+        <div class="text-center max-w-2xl mx-auto mb-7">
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900 text-white text-xs font-extrabold uppercase tracking-wider">
+            Escolha como quer trabalhar
+          </span>
+          <h2 class="font-display font-extrabold text-2xl sm:text-4xl text-slate-900 mt-2">
+            Duas formas simples de encher sua agenda
+          </h2>
+          <p class="text-sm sm:text-base text-slate-600 mt-1.5">
+            Escolha se você prefere conversar direto com o cliente no Zap ou receber o serviço já pré-agendado.
+          </p>
         </div>
 
-        <div class="max-w-xl mx-auto bg-slate-100 p-1.5 rounded-2xl border border-slate-200 grid grid-cols-2 gap-1.5 mb-8">
+        <!-- Seletor de Modalidade -->
+        <div class="max-w-xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-2 bg-slate-200/80 p-1.5 rounded-2xl mb-8">
           <button type="button" id="btn-modo-1" onclick="trocarModo('M1')" class="py-3.5 px-4 rounded-xl font-display font-bold text-sm sm:text-base bg-dark-900 text-white shadow-sm transition flex items-center justify-center gap-2">
-            <span>Você Responde no Zap</span>
+            <i data-lucide="message-circle" class="w-4 h-4 text-zap-400"></i>
+            <span>1. Você Responde no Zap</span>
           </button>
           <button type="button" id="btn-modo-2" onclick="trocarModo('M2')" class="py-3.5 px-4 rounded-xl font-display font-bold text-sm sm:text-base text-slate-800 hover:bg-white/60 transition flex items-center justify-center gap-2">
-            <span>Agenda na Mão</span>
+            <i data-lucide="calendar-check" class="w-4 h-4 text-zap-600"></i>
+            <span>2. Agenda na Mão</span>
           </button>
         </div>
 
-        <div id="bloco-modo-1" class="grid grid-cols-1 md:grid-cols-3 gap-5">
-          <div id="card-7dias" onclick="escolherPacote('7dias')" class="pacote-card cursor-pointer rounded-3xl border-2 border-slate-200 hover:border-zap-500 p-6 flex flex-col justify-between transition bg-white">
+        <!-- BLOCO MODALIDADE 1: VOCÊ RESPONDE NO ZAP -->
+        <div id="bloco-modo-1" class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-10">
+          <!-- Card 7 Dias -->
+          <div id="card-7dias" onclick="escolherPacote('7dias')" class="pacote-card cursor-pointer bg-white rounded-3xl p-6 border-2 border-slate-200 hover:border-zap-500 transition flex flex-col justify-between">
             <div>
-              <span class="inline-block px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-extrabold uppercase">Para Testar</span>
-              <h3 class="font-display font-extrabold text-xl text-slate-900 mt-3">7 Dias de Divulgação</h3>
-              <p class="font-display font-extrabold text-3xl text-slate-900 mt-2">R$ 127 <span class="text-xs font-normal text-slate-500">único</span></p>
-              <ul class="mt-4 space-y-2 text-sm text-slate-600">
-                <li>✓ Página exclusiva criada pra você</li>
-                <li>✓ Perfil ativo na Vitrine Regional</li>
-                <li>✓ Clientes chamando direto no seu Zap</li>
+              <span class="text-xs font-extrabold uppercase tracking-wider text-slate-500">Para Testar</span>
+              <h3 class="font-display font-extrabold text-xl text-slate-900 mt-1">7 Dias para Testar</h3>
+              <div class="mt-3 flex items-baseline gap-1">
+                <span class="font-display font-extrabold text-3xl text-slate-900">R$ 127</span>
+                <span class="text-xs font-semibold text-slate-500">/ ciclo único</span>
+              </div>
+              <ul class="mt-4 space-y-2.5 text-sm text-slate-600">
+                <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-zap-600 shrink-0 mt-0.5"></i><span>Captação ativa na área escolhida por 7 dias</span></li>
+                <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-zap-600 shrink-0 mt-0.5"></i><span>Clientes chamando direto no seu WhatsApp</span></li>
+                <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-zap-600 shrink-0 mt-0.5"></i><span>Página comercial exclusiva inclusa</span></li>
               </ul>
             </div>
-            <button type="button" class="mt-6 w-full py-3 rounded-xl border-2 border-slate-900 text-slate-900 font-display font-extrabold text-sm hover:bg-slate-900 hover:text-white transition">
+            <button type="button" class="mt-6 w-full py-3 rounded-xl border-2 border-slate-900 text-slate-900 hover:bg-slate-900 hover:text-white font-display font-bold text-sm transition">
               Escolher 7 Dias
             </button>
           </div>
 
-          <div id="card-15dias" onclick="escolherPacote('15dias')" class="pacote-card cursor-pointer rounded-3xl border-2 border-zap-600 p-6 flex flex-col justify-between transition bg-zap-50/40 relative">
-            <span class="absolute -top-3 right-5 px-3 py-1 rounded-full bg-zap-600 text-white text-[11px] font-extrabold uppercase shadow-sm">Mais Escolhido</span>
+          <!-- Card 15 Dias (Mais Escolhido) -->
+          <div id="card-15dias" onclick="escolherPacote('15dias')" class="pacote-card cursor-pointer bg-dark-900 text-white rounded-3xl p-6 border-2 border-zap-500 shadow-xl relative flex flex-col justify-between">
+            <span class="absolute -top-3 right-5 px-3 py-1 rounded-full bg-zap-500 text-white text-[11px] font-extrabold uppercase tracking-wider shadow">
+              Mais Escolhido
+            </span>
             <div>
-              <span class="inline-block px-3 py-1 rounded-full bg-zap-100 text-zap-800 text-xs font-extrabold uppercase">Ritmo Ideal</span>
-              <h3 class="font-display font-extrabold text-xl text-slate-900 mt-3">15 Dias Direto</h3>
-              <p class="font-display font-extrabold text-3xl text-slate-900 mt-2">R$ 197 <span class="text-xs font-normal text-slate-500">/ 15 dias</span></p>
-              <ul class="mt-4 space-y-2 text-sm text-slate-700">
-                <li>✓ Página exclusiva com fotos do seu ramo</li>
-                <li>✓ Destaque na Vitrine da sua região</li>
-                <li>✓ Divulgação contínua por 15 dias</li>
-                <li>✓ Acompanhamento pelo WhatsApp</li>
+              <span class="text-xs font-extrabold uppercase tracking-wider text-zap-400">Melhor Custo-Benefício</span>
+              <h3 class="font-display font-extrabold text-xl text-white mt-1">15 Dias Direto</h3>
+              <div class="mt-3 flex items-baseline gap-1">
+                <span class="font-display font-extrabold text-4xl text-white">R$ 197</span>
+                <span class="text-xs font-semibold text-slate-400">/ 15 dias</span>
+              </div>
+              <ul class="mt-4 space-y-2.5 text-sm text-slate-200">
+                <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-zap-400 shrink-0 mt-0.5"></i><span>15 dias seguidos de captação na sua região</span></li>
+                <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-zap-400 shrink-0 mt-0.5"></i><span>Destaque na Vitrine Regional ClienteNoZap</span></li>
+                <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-zap-400 shrink-0 mt-0.5"></i><span>Página profissional exclusiva com link próprio</span></li>
               </ul>
             </div>
-            <button type="button" class="mt-6 w-full py-3 rounded-xl bg-zap-600 text-white font-display font-extrabold text-sm hover:bg-zap-700 shadow-sm transition">
+            <button type="button" class="mt-6 w-full py-3.5 rounded-xl bg-zap-500 hover:bg-zap-600 text-white font-display font-extrabold text-sm shadow transition">
               Escolher 15 Dias
             </button>
           </div>
 
-          <div id="card-30dias" onclick="escolherPacote('30dias')" class="pacote-card cursor-pointer rounded-3xl border-2 border-slate-200 hover:border-zap-500 p-6 flex flex-col justify-between transition bg-white">
+          <!-- Card 30 Dias -->
+          <div id="card-30dias" onclick="escolherPacote('30dias')" class="pacote-card cursor-pointer bg-white rounded-3xl p-6 border-2 border-slate-200 hover:border-zap-500 transition flex flex-col justify-between">
             <div>
-              <span class="inline-block px-3 py-1 rounded-full bg-slate-100 text-slate-700 text-xs font-extrabold uppercase">Mês Completo</span>
-              <h3 class="font-display font-extrabold text-xl text-slate-900 mt-3">30 Dias Mês Inteiro</h3>
-              <p class="font-display font-extrabold text-3xl text-slate-900 mt-2">R$ 347 <span class="text-xs font-normal text-slate-500">/ 30 dias</span></p>
-              <ul class="mt-4 space-y-2 text-sm text-slate-600">
-                <li>✓ Tudo do pacote de 15 dias</li>
-                <li>✓ Cobertura ampliada em mais bairros</li>
-                <li>✓ Prioridade no topo da Vitrine</li>
+              <span class="text-xs font-extrabold uppercase tracking-wider text-slate-500">Fluxo Contínuo</span>
+              <h3 class="font-display font-extrabold text-xl text-slate-900 mt-1">30 Dias Mês Inteiro</h3>
+              <div class="mt-3 flex items-baseline gap-1">
+                <span class="font-display font-extrabold text-3xl text-slate-900">R$ 347</span>
+                <span class="text-xs font-semibold text-slate-500">/ 30 dias</span>
+              </div>
+              <ul class="mt-4 space-y-2.5 text-sm text-slate-600">
+                <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-zap-600 shrink-0 mt-0.5"></i><span>Mês inteiro de captação ativa sem parar</span></li>
+                <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-zap-600 shrink-0 mt-0.5"></i><span>Cobertura ampliada (bairros ou cidades vizinhas)</span></li>
+                <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-zap-600 shrink-0 mt-0.5"></i><span>Prioridade máxima na Vitrine Regional</span></li>
               </ul>
             </div>
-            <button type="button" class="mt-6 w-full py-3 rounded-xl border-2 border-slate-900 text-slate-900 font-display font-extrabold text-sm hover:bg-slate-900 hover:text-white transition">
+            <button type="button" class="mt-6 w-full py-3 rounded-xl border-2 border-slate-900 text-slate-900 hover:bg-slate-900 hover:text-white font-display font-bold text-sm transition">
               Escolher 30 Dias
             </button>
           </div>
         </div>
 
-        <div id="bloco-modo-2" class="hidden max-w-xl mx-auto">
-          <div id="card-agenda" onclick="escolherPacote('agenda')" class="pacote-card cursor-pointer rounded-3xl border-2 border-zap-600 p-6 sm:p-8 bg-slate-900 text-white shadow-xl">
-            <span class="inline-block px-3 py-1 rounded-full bg-zap-500 text-slate-950 text-xs font-extrabold uppercase">Para Quem Não Pode Parar</span>
-            <h3 class="font-display font-extrabold text-2xl mt-3">Agenda na Mão — 15 Dias Pré-Agendado</h3>
-            <p class="font-display font-extrabold text-4xl text-zap-400 mt-2">R$ 397 <span class="text-xs font-normal text-slate-300">/ 15 dias</span></p>
-            <p class="text-sm text-slate-300 mt-3">Ideal para quem está na oficina, na obra ou atendendo cliente e não consegue responder o celular toda hora. A gente faz a triagem inicial e envia o cliente pronto para confirmar o horário.</p>
-            <button type="button" class="mt-6 w-full py-3.5 rounded-xl bg-zap-500 hover:bg-zap-600 text-slate-950 font-display font-extrabold text-sm sm:text-base transition">
-              Escolher Agenda na Mão
+        <!-- BLOCO MODALIDADE 2: AGENDA NA MÃO -->
+        <div id="bloco-modo-2" class="hidden max-w-2xl mx-auto mb-10">
+          <div id="card-agenda" onclick="escolherPacote('agenda')" class="pacote-card cursor-pointer bg-dark-900 text-white rounded-3xl p-6 sm:p-8 border-2 border-amber-400 shadow-xl">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+              <span class="px-3 py-1 rounded-full bg-amber-400 text-slate-950 text-xs font-extrabold uppercase tracking-wider">
+                Serviço Completo • Triagem + Agendamento
+              </span>
+              <span class="font-display font-extrabold text-3xl sm:text-4xl text-white">R$ 397 <span class="text-xs font-normal text-slate-400">/ 15 dias</span></span>
+            </div>
+            <h3 class="font-display font-extrabold text-2xl text-white">15 Dias Agenda na Mão</h3>
+            <p class="text-sm text-slate-300 mt-1.5">
+              Ideal para quem está na correria do dia a dia e não consegue parar o trabalho para ficar respondendo curiosos no celular:
+            </p>
+            <ul class="mt-4 space-y-2.5 text-sm text-slate-200">
+              <li class="flex items-start gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-amber-400 shrink-0 mt-0.5"></i><span>Nossa equipe atende o morador, faz a triagem do serviço e verifica o horário</span></li>
+              <li class="flex items-start gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-amber-400 shrink-0 mt-0.5"></i><span>Você recebe o contato já pré-agendado dentro da sua disponibilidade</span></li>
+              <li class="flex items-start gap-2"><i data-lucide="check-circle-2" class="w-4 h-4 text-amber-400 shrink-0 mt-0.5"></i><span>100% do valor do serviço continua sendo pago direto para você</span></li>
+            </ul>
+            <button type="button" class="mt-6 w-full py-3.5 rounded-xl bg-amber-400 hover:bg-amber-300 text-slate-950 font-display font-extrabold text-sm sm:text-base transition">
+              Quero o Agenda na Mão (15 Dias)
             </button>
           </div>
         </div>
-      </div>
-    </section>
 
-    <section id="formulario-pedido" class="py-12 sm:py-16 bg-slate-50">
-      <div class="max-w-xl mx-auto px-4 sm:px-6">
-        <div class="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 shadow-lg">
-          <div class="text-center mb-6">
-            <span id="resumo-pacote-badge" class="inline-block px-3.5 py-1.5 rounded-full bg-zap-100 text-zap-800 text-xs font-extrabold mb-3">
+        <!-- FORMULÁRIO DE ATIVAÇÃO RÁPIDA -->
+        <div id="formulario-pedido" class="max-w-2xl mx-auto bg-white rounded-3xl p-6 sm:p-8 border-2 border-zap-500 shadow-xl">
+          <div class="mb-5">
+            <span id="resumo-pacote-badge" class="inline-block px-3.5 py-1.5 rounded-xl bg-zap-50 border border-zap-200 text-zap-800 text-xs sm:text-sm font-extrabold">
               Opção escolhida: Você Responde no Zap — 15 Dias Direto (R$ 197)
             </span>
-            <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Ative sua captação hoje</h2>
-            <p class="text-slate-600 text-sm mt-1">Preencha em 30 segundos e finalize direto no nosso WhatsApp.</p>
+            <h3 class="font-display font-extrabold text-2xl text-slate-900 mt-3">
+              Preencha para ativar no seu WhatsApp
+            </h3>
+            <p class="text-xs sm:text-sm text-slate-600 mt-1">
+              Leva menos de 30 segundos. Você já fala direto com nosso atendimento para começar hoje.
+            </p>
           </div>
 
           <form onsubmit="enviarPedidoWhatsApp(event)" class="space-y-4">
-            <div>
-              <label for="campo-nome" class="block text-xs font-extrabold uppercase text-slate-700 mb-1">Seu Nome ou Nome do Negócio *</label>
-              <input type="text" id="campo-nome" required placeholder="Ex: Oficina do João / Maria Diarista" class="w-full px-4 py-3.5 rounded-xl border-2 border-slate-200 text-sm focus:outline-none focus:border-zap-600" />
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label for="campo-nome" class="block text-xs font-bold uppercase text-slate-700 mb-1">Seu Nome ou Nome do Negócio *</label>
+                <input type="text" id="campo-nome" required placeholder="Ex: Oficina do João" class="w-full px-4 py-3.5 rounded-xl border-2 border-slate-300 text-sm focus:outline-none focus:border-zap-600" />
+              </div>
+              <div>
+                <label for="campo-zap" class="block text-xs font-bold uppercase text-slate-700 mb-1">Seu WhatsApp (com DDD) *</label>
+                <input type="tel" id="campo-zap" required maxlength="15" oninput="mascaraTelefone(this)" placeholder="(91) 98888-7777" class="w-full px-4 py-3.5 rounded-xl border-2 border-slate-300 text-sm focus:outline-none focus:border-zap-600" />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label for="campo-servico" class="block text-xs font-bold uppercase text-slate-700 mb-1">Qual serviço você faz? *</label>
+                <input type="text" id="campo-servico" required placeholder="Ex: Mecânico, Diarista, Frete, Pedreiro..." class="w-full px-4 py-3.5 rounded-xl border-2 border-slate-300 text-sm focus:outline-none focus:border-zap-600" />
+              </div>
+              <div>
+                <label for="campo-local" class="block text-xs font-bold uppercase text-slate-700 mb-1">Onde você quer atender? *</label>
+                <input type="text" id="campo-local" required placeholder="Ex: Ananindeua e Belém, Castanhal..." class="w-full px-4 py-3.5 rounded-xl border-2 border-slate-300 text-sm focus:outline-none focus:border-zap-600" />
+              </div>
             </div>
 
             <div>
-              <label for="campo-zap" class="block text-xs font-extrabold uppercase text-slate-700 mb-1">Seu WhatsApp (com DDD) *</label>
-              <input type="tel" id="campo-zap" required maxlength="15" oninput="mascaraTelefone(this)" placeholder="(91) 98888-7777" class="w-full px-4 py-3.5 rounded-xl border-2 border-slate-200 text-sm focus:outline-none focus:border-zap-600" />
-            </div>
-
-            <div>
-              <label for="campo-servico" class="block text-xs font-extrabold uppercase text-slate-700 mb-1">Qual serviço você faz? *</label>
-              <input type="text" id="campo-servico" required placeholder="Ex: Mecânica, Ar-Condicionado, Personalizados, Diarista..." class="w-full px-4 py-3.5 rounded-xl border-2 border-slate-200 text-sm focus:outline-none focus:border-zap-600" />
-            </div>
-
-            <div>
-              <label for="campo-local" class="block text-xs font-extrabold uppercase text-slate-700 mb-1">Cidades ou Bairros onde você atende *</label>
-              <input type="text" id="campo-local" required placeholder="Ex: Belém (Marco, Pedreira) e Ananindeua" class="w-full px-4 py-3.5 rounded-xl border-2 border-slate-200 text-sm focus:outline-none focus:border-zap-600" />
-            </div>
-
-            <div>
-              <label for="campo-pacote" class="block text-xs font-extrabold uppercase text-slate-700 mb-1">Pacote escolhido *</label>
-              <select id="campo-pacote" onchange="sincronizarSelect(this.value)" class="w-full px-4 py-3.5 rounded-xl border-2 border-slate-200 text-sm bg-white focus:outline-none focus:border-zap-600">
+              <label for="campo-pacote" class="block text-xs font-bold uppercase text-slate-700 mb-1">Opção de Pacote *</label>
+              <select id="campo-pacote" onchange="sincronizarSelect(this.value)" class="w-full px-4 py-3.5 rounded-xl border-2 border-slate-300 bg-slate-50 font-semibold text-sm text-slate-900 focus:outline-none focus:border-zap-600">
                 <option value="7dias">Você Responde no Zap — 7 Dias para Testar (R$ 127)</option>
                 <option value="15dias" selected>Você Responde no Zap — 15 Dias Direto (R$ 197)</option>
                 <option value="30dias">Você Responde no Zap — 30 Dias Mês Inteiro (R$ 347)</option>
@@ -419,672 +508,646 @@
 
             <label class="flex items-start gap-2.5 text-xs text-slate-600 cursor-pointer pt-1">
               <input type="checkbox" required checked class="mt-0.5 rounded border-slate-300 text-zap-600 focus:ring-zap-500" />
-              <span>Li e concordo com os <button type="button" onclick="abrirModalJuridico('termos')" class="underline font-bold text-slate-800">Termos de Uso</button> e a <button type="button" onclick="abrirModalJuridico('lgpd')" class="underline font-bold text-slate-800">Política de Privacidade (LGPD)</button>.</span>
+              <span>
+                Li e concordo com os
+                <button type="button" onclick="abrirModalJuridico('termos')" class="font-bold text-zap-700 underline">Termos de Adesão</button>,
+                as <button type="button" onclick="abrirModalJuridico('agenda')" class="font-bold text-zap-700 underline">Regras do Agenda na Mão</button>
+                e a <button type="button" onclick="abrirModalJuridico('lgpd')" class="font-bold text-zap-700 underline">Política de Privacidade (LGPD)</button>.
+              </span>
             </label>
 
-            <button type="submit" class="w-full py-4 px-5 rounded-2xl bg-zap-600 hover:bg-zap-700 text-white font-display font-extrabold text-base shadow-lg transition flex items-center justify-center gap-2">
-              <i data-lucide="send" class="w-5 h-5"></i>
-              <span>Continuar no WhatsApp</span>
+            <button type="submit" class="w-full py-4 px-6 rounded-2xl bg-zap-600 hover:bg-zap-700 text-white font-display font-extrabold text-base sm:text-lg shadow-lg flex items-center justify-center gap-2 transition">
+              <i data-lucide="message-circle" class="w-5 h-5"></i>
+              <span>Ativar Meu WhatsApp Agora</span>
             </button>
           </form>
         </div>
-      </div>
-    </section>
-  </main>
+      </section>
 
-  <!-- ===================================================================== -->
-  <!-- TELA 2: VITRINE REGIONAL DE PROFISSIONAIS                             -->
-  <!-- ===================================================================== -->
-  <main id="view-vitrine" class="hidden flex-1 py-8 sm:py-12">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6">
-      <div class="text-center max-w-2xl mx-auto mb-8">
-        <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-zap-100 text-zap-800 text-xs font-extrabold uppercase tracking-wider mb-3">
-          <i data-lucide="shield-check" class="w-3.5 h-3.5"></i>
-          <span>Profissionais da Região</span>
-        </span>
-        <h1 class="text-2xl sm:text-4xl font-extrabold text-slate-900">Encontre quem resolve perto de você</h1>
-        <p class="text-slate-600 text-sm sm:text-base mt-2">Veja a página de cada profissional e peça seu orçamento direto no WhatsApp, sem intermediários.</p>
-      </div>
+      <!-- PROVA SOCIAL REAL & FAQ -->
+      <section class="py-10 sm:py-14 px-4 sm:px-6 max-w-5xl mx-auto">
+        <div class="text-center max-w-2xl mx-auto mb-8">
+          <span class="text-xs font-extrabold uppercase tracking-wider text-zap-700">Quem já usa na Grande Belém</span>
+          <h2 class="font-display font-extrabold text-2xl sm:text-3xl text-slate-900 mt-1">
+            Resultados reais de quem trabalha por conta própria
+          </h2>
+        </div>
 
-      <div class="bg-white rounded-3xl border border-slate-200 p-4 sm:p-5 shadow-sm mb-6 space-y-4">
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-3">
-          <div class="md:col-span-8 relative">
-            <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2"></i>
-            <input type="text" id="filtro-busca-vitrine" oninput="renderizarVitrine()" placeholder="Busque por serviço ou nome (ex: mecânico, ar-condicionado, personalizados, diarista...)" class="w-full pl-11 pr-4 py-3 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-zap-600" />
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mb-12">
+          <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm">
+            <div class="text-amber-400 text-sm font-extrabold mb-2">★★★★★</div>
+            <p class="text-sm text-slate-700 leading-relaxed">
+              "Logo no segundo dia já entrou serviço de revisão aqui na Cidade Nova que pagou os 15 dias e ainda sobrou lucro."
+            </p>
+            <p class="font-display font-extrabold text-xs text-slate-900 mt-4">João M. • Oficina Mecânica (Ananindeua)</p>
           </div>
-          <div class="md:col-span-4">
-            <select id="filtro-regiao-vitrine" onchange="renderizarVitrine()" class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm bg-white focus:outline-none focus:border-zap-600">
-              <option value="">Todas as cidades e bairros</option>
-              <option value="belém">Belém</option>
-              <option value="ananindeua">Ananindeua</option>
-              <option value="icoaraci">Icoaraci</option>
-              <option value="mosqueiro">Mosqueiro</option>
-              <option value="marituba">Marituba</option>
-              <option value="benevides">Benevides</option>
-              <option value="benfica">Benfica</option>
-              <option value="castanhal">Castanhal</option>
+
+          <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm">
+            <div class="text-amber-400 text-sm font-extrabold mb-2">★★★★★</div>
+            <p class="text-sm text-slate-700 leading-relaxed">
+              "Peguei o Agenda na Mão porque fico em cima da escada limpando Split e não consigo responder na hora. Funciona demais!"
+            </p>
+            <p class="font-display font-extrabold text-xs text-slate-900 mt-4">ClimaFrio • Refrigeração (Belém e Icoaraci)</p>
+          </div>
+
+          <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm">
+            <div class="text-amber-400 text-sm font-extrabold mb-2">★★★★★</div>
+            <p class="text-sm text-slate-700 leading-relaxed">
+              "Não entendo nada de internet, só passo meu WhatsApp e atendo as clientes que chamam aqui em Castanhal."
+            </p>
+            <p class="font-display font-extrabold text-xs text-slate-900 mt-4">Studio Camila • Beleza (Castanhal)</p>
+          </div>
+        </div>
+
+        <!-- FAQ Quebra-Objeções -->
+        <div id="faq-secao" class="max-w-3xl mx-auto bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-sm space-y-4">
+          <h3 class="font-display font-extrabold text-xl sm:text-2xl text-slate-900">Dúvidas Frequentes</h3>
+
+          <details class="group border-b border-slate-100 pb-3" open>
+            <summary class="cursor-pointer font-display font-bold text-sm sm:text-base text-slate-900 flex items-center justify-between">
+              <span>Vocês cobram comissão em cima dos serviços que eu fechar?</span>
+              <i data-lucide="chevron-down" class="w-4 h-4 text-slate-500"></i>
+            </summary>
+            <p class="text-sm text-slate-600 mt-2">
+              <strong>Zero comissão.</strong> Você paga apenas o valor fechado do pacote escolhido e 100% do dinheiro dos serviços vai direto para o seu bolso ou Pix.
+            </p>
+          </details>
+
+          <details class="group border-b border-slate-100 pb-3">
+            <summary class="cursor-pointer font-display font-bold text-sm sm:text-base text-slate-900 flex items-center justify-between">
+              <span>Tem contrato de fidelidade ou multa se eu quiser parar?</span>
+              <i data-lucide="chevron-down" class="w-4 h-4 text-slate-500"></i>
+            </summary>
+            <p class="text-sm text-slate-600 mt-2">
+              Não existe fidelidade. Você contrata por ciclo (7, 15 ou 30 dias) e só renova quando quiser continuar recebendo novos clientes.
+            </p>
+          </details>
+
+          <details class="group">
+            <summary class="cursor-pointer font-display font-bold text-sm sm:text-base text-slate-900 flex items-center justify-between">
+              <span>Qual a diferença entre "Você Responde no Zap" e "Agenda na Mão"?</span>
+              <i data-lucide="chevron-down" class="w-4 h-4 text-slate-500"></i>
+            </summary>
+            <p class="text-sm text-slate-600 mt-2">
+              Na opção <strong>Você Responde no Zap</strong>, os moradores interessados chamam direto no seu WhatsApp para pedir orçamento. Já no <strong>Agenda na Mão</strong>, nossa equipe faz a triagem inicial e repassa o cliente já pré-agendado nos dias e horários que você informou.
+            </p>
+          </details>
+        </div>
+      </section>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- TELA 2: VITRINE DE PROFISSIONAIS DA REGIÃO                          -->
+    <!-- =================================================================== -->
+    <div id="view-vitrine" class="hidden py-8 sm:py-12 px-4 sm:px-6 max-w-5xl mx-auto">
+      <div class="text-center max-w-2xl mx-auto mb-8">
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zap-100 text-zap-800 text-xs font-extrabold uppercase tracking-wider">
+          <i data-lucide="badge-check" class="w-3.5 h-3.5 text-zap-600"></i>
+          Guia Oficial Grande Belém &amp; Castanhal
+        </span>
+        <h1 class="font-display font-extrabold text-2xl sm:text-4xl text-slate-900 mt-2">
+          Encontre profissionais verificados perto de você
+        </h1>
+        <p class="text-sm sm:text-base text-slate-600 mt-1.5">
+          Compare serviços, veja a página completa de cada profissional e peça orçamento direto no WhatsApp.
+        </p>
+      </div>
+
+      <!-- Barra de Busca e Filtros -->
+      <div class="bg-white rounded-3xl p-4 sm:p-5 border border-slate-200 shadow-sm mb-6 space-y-3">
+        <div class="grid grid-cols-1 sm:grid-cols-12 gap-3">
+          <div class="sm:col-span-8 relative">
+            <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-4 top-1/2 -translate-y-1/2"></i>
+            <input type="text" id="filtro-busca-vitrine" oninput="renderizarVitrine()" placeholder="Buscar por serviço, nome ou bairro (ex: mecânico, diarista, ar-condicionado...)" class="w-full pl-11 pr-4 py-3 rounded-xl border-2 border-slate-200 text-sm focus:outline-none focus:border-zap-600" />
+          </div>
+          <div class="sm:col-span-4">
+            <select id="filtro-regiao-vitrine" onchange="renderizarVitrine()" class="w-full px-4 py-3 rounded-xl border-2 border-slate-200 bg-slate-50 font-semibold text-sm text-slate-800 focus:outline-none focus:border-zap-600">
+              <option value="">Todas as Cidades / Distritos</option>
+              <option value="Belém">Belém</option>
+              <option value="Ananindeua">Ananindeua</option>
+              <option value="Icoaraci">Icoaraci</option>
+              <option value="Mosqueiro">Mosqueiro</option>
+              <option value="Marituba">Marituba</option>
+              <option value="Benevides">Benevides</option>
+              <option value="Benfica">Benfica</option>
+              <option value="Castanhal">Castanhal</option>
             </select>
           </div>
         </div>
 
-        <div class="flex flex-wrap items-center gap-2">
-          <button type="button" onclick="filtrarRapido('')" class="px-3 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold transition">Todos</button>
-          <button type="button" onclick="filtrarRapido('Mecânica')" class="px-3 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold transition">Mecânica</button>
-          <button type="button" onclick="filtrarRapido('Ar-Condicionado')" class="px-3 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold transition">Refrigeração</button>
-          <button type="button" onclick="filtrarRapido('Personalizados')" class="px-3 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold transition">Personalizados &amp; Festas</button>
-          <button type="button" onclick="filtrarRapido('Diarista')" class="px-3 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold transition">Diarista &amp; Limpeza</button>
-          <button type="button" onclick="filtrarRapido('Reformas')" class="px-3 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold transition">Reformas</button>
-          <button type="button" onclick="filtrarRapido('Beleza')" class="px-3 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold transition">Beleza</button>
-          <button type="button" onclick="filtrarRapido('Frete')" class="px-3 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold transition">Fretes</button>
-          <span id="contador-vitrine" class="ml-auto text-xs font-bold text-slate-500"></span>
+        <!-- Atalhos Rápidos -->
+        <div class="flex flex-wrap items-center gap-2 pt-1">
+          <button type="button" onclick="filtrarRapido('')" class="px-3 py-1.5 rounded-xl bg-slate-900 text-white text-xs font-bold">Todos</button>
+          <button type="button" onclick="filtrarRapido('Mecânica')" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold">Mecânica</button>
+          <button type="button" onclick="filtrarRapido('Ar-Condicionado')" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold">Ar-Condicionado</button>
+          <button type="button" onclick="filtrarRapido('Diarista')" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold">Diarista</button>
+          <button type="button" onclick="filtrarRapido('Reformas')" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold">Reformas</button>
+          <button type="button" onclick="filtrarRapido('Beleza')" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold">Beleza</button>
+          <button type="button" onclick="filtrarRapido('Frete')" class="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold">Fretes</button>
         </div>
       </div>
 
-      <div id="grid-vitrine" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+      <p id="contador-vitrine" class="text-xs font-bold text-slate-500 mb-4">Carregando profissionais...</p>
 
-      <div id="vitrine-vazia" class="hidden bg-white rounded-3xl border border-slate-200 p-10 text-center">
-        <p class="font-display font-extrabold text-lg text-slate-900">Nenhum profissional encontrado com esse filtro</p>
-        <p class="text-sm text-slate-500 mt-1">Tente limpar a busca ou escolher outra região.</p>
-        <button type="button" onclick="filtrarRapido('')" class="mt-4 px-5 py-2.5 rounded-xl bg-zap-600 text-white font-display font-bold text-sm">Ver Todos</button>
-      </div>
-    </div>
-  </main>
+      <div id="grid-vitrine" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"></div>
 
-  <!-- ===================================================================== -->
-  <!-- TELA 3: PAINEL ADMINISTRATIVO                                         -->
-  <!-- ===================================================================== -->
-  <main id="view-admin" class="hidden flex-1 py-8 sm:py-10">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 space-y-6">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <div class="flex flex-wrap items-center gap-2">
-            <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900">Painel de Controle</h1>
-            <span id="badge-status-nuvem" class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800 text-[11px] font-extrabold">
-              <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
-              <span>Aguardando Chaves Supabase</span>
-            </span>
-          </div>
-          <p class="text-sm text-slate-600 mt-1">Gerencie seus clientes ativos, crie páginas exclusivas com IA e acompanhe os contatos entregues.</p>
+      <div id="vitrine-vazia" class="hidden bg-white rounded-3xl border border-slate-200 p-8 sm:p-12 text-center max-w-2xl mx-auto space-y-4">
+        <div class="w-14 h-14 rounded-2xl bg-zap-50 text-zap-600 mx-auto flex items-center justify-center">
+          <i data-lucide="sparkles" class="w-7 h-7"></i>
         </div>
-
-        <div class="flex flex-wrap items-center gap-2">
-          <button type="button" onclick="abrirModalCriarComPrompt()" class="px-4 py-2.5 rounded-xl bg-zap-600 hover:bg-zap-700 text-white font-display font-extrabold text-xs sm:text-sm inline-flex items-center gap-1.5 shadow-sm transition">
-            <i data-lucide="sparkles" class="w-4 h-4"></i>
-            <span>+ Criar Página Exclusiva</span>
+        <h2 id="vitrine-vazia-titulo" class="font-display font-extrabold text-xl sm:text-2xl text-slate-900">
+          Estamos selecionando os primeiros profissionais da região!
+        </h2>
+        <p id="vitrine-vazia-desc" class="text-sm text-slate-600 leading-relaxed">
+          Em breve você poderá encontrar aqui prestadores verificados em Belém, Ananindeua, Icoaraci, Mosqueiro, Marituba, Benevides e Castanhal.
+        </p>
+        <div class="pt-2 flex flex-wrap items-center justify-center gap-3">
+          <button type="button" id="btn-vitrine-limpar-filtro" onclick="filtrarRapido('')" class="hidden px-5 py-3 rounded-xl border-2 border-slate-300 text-slate-800 font-display font-bold text-sm">
+            Limpar Filtros
           </button>
-          <button type="button" onclick="simularPassagemDeDia()" class="px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white hover:bg-slate-50 text-slate-800 font-display font-bold text-xs sm:text-sm inline-flex items-center gap-1.5 transition" title="Simular avanço de 1 dia nos ciclos">
-            <i data-lucide="fast-forward" class="w-4 h-4 text-amber-600"></i>
-            <span>Simular +1 Dia</span>
-          </button>
+          <a href="#pacotes-secao" onclick="alternarTela('vendas')" class="px-6 py-3.5 rounded-xl bg-zap-600 hover:bg-zap-700 text-white font-display font-extrabold text-sm shadow transition">
+            Sou Profissional • Quero Aparecer Aqui
+          </a>
         </div>
-      </div>
-
-      <div id="alerta-renovacao-admin" class="hidden"></div>
-
-      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
-          <span class="text-xs font-bold uppercase text-slate-500">Faturamento Ativo</span>
-          <p id="kpi-faturamento" class="font-display font-extrabold text-2xl sm:text-3xl text-slate-900 mt-1">R$ 0</p>
-        </div>
-        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
-          <span class="text-xs font-bold uppercase text-slate-500">Na Vitrine Agora</span>
-          <p id="kpi-ativos" class="font-display font-extrabold text-2xl sm:text-3xl text-zap-600 mt-1">0</p>
-        </div>
-        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
-          <span class="text-xs font-bold uppercase text-slate-500">Novos Interessados</span>
-          <p id="kpi-interessados" class="font-display font-extrabold text-2xl sm:text-3xl text-amber-600 mt-1">0</p>
-        </div>
-        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
-          <span class="text-xs font-bold uppercase text-slate-500">Clientes Entregues</span>
-          <p id="kpi-entregas" class="font-display font-extrabold text-2xl sm:text-3xl text-slate-900 mt-1">0</p>
-        </div>
-      </div>
-
-      <div class="bg-slate-200/70 p-1.5 rounded-2xl flex flex-wrap gap-1.5">
-        <button type="button" id="tab-admin-interessados" onclick="trocarAbaAdmin('interessados')" class="flex-1 min-w-[140px] py-2.5 px-4 rounded-xl font-display font-bold text-xs sm:text-sm bg-dark-900 text-white shadow-sm transition">
-          1. Interessados (<span id="badge-tab-interessados">0</span>)
-        </button>
-        <button type="button" id="tab-admin-ativos" onclick="trocarAbaAdmin('ativos')" class="flex-1 min-w-[140px] py-2.5 px-4 rounded-xl font-display font-bold text-xs sm:text-sm text-slate-700 hover:bg-white/60 transition">
-          2. Ativos na Vitrine (<span id="badge-tab-ativos">0</span>)
-        </button>
-        <button type="button" id="tab-admin-entregas" onclick="trocarAbaAdmin('entregas')" class="flex-1 min-w-[140px] py-2.5 px-4 rounded-xl font-display font-bold text-xs sm:text-sm text-slate-700 hover:bg-white/60 transition">
-          3. Clientes Entregues (<span id="badge-tab-entregas">0</span>)
-        </button>
-        <button type="button" id="tab-admin-config" onclick="trocarAbaAdmin('config')" class="flex-1 min-w-[140px] py-2.5 px-4 rounded-xl font-display font-bold text-xs sm:text-sm text-slate-700 hover:bg-white/60 transition">
-          4. Configurações &amp; Banco
-        </button>
-      </div>
-
-      <div id="painel-aba-interessados" class="space-y-4">
-        <div id="lista-admin-interessados" class="space-y-3"></div>
-      </div>
-
-      <div id="painel-aba-ativos" class="hidden">
-        <div id="lista-admin-ativos" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
-      </div>
-
-      <div id="painel-aba-entregas" class="hidden space-y-4">
-        <div class="bg-white p-4 rounded-2xl border border-slate-200">
-          <input type="text" id="busca-admin-entregas" oninput="renderizarPainelAdmin()" placeholder="Filtrar por nome do cliente, telefone ou profissional..." class="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-sm focus:outline-none focus:border-zap-600" />
-        </div>
-        <div id="lista-admin-entregas" class="bg-white rounded-2xl border border-slate-200 overflow-hidden"></div>
-      </div>
-
-      <div id="painel-aba-config" class="hidden">
-        <form onsubmit="salvarConfiguracoesAdmin(event)" class="bg-white rounded-3xl border border-slate-200 p-6 sm:p-8 space-y-6 max-w-3xl">
-          <!-- Conexão Supabase -->
-          <div class="p-5 rounded-2xl bg-emerald-50/70 border border-emerald-200 space-y-4">
-            <div class="flex flex-wrap items-center justify-between gap-2">
-              <div>
-                <h3 class="font-display font-extrabold text-base text-slate-900 flex items-center gap-2">
-                  <i data-lucide="database" class="w-4 h-4 text-zap-600"></i>
-                  <span>Banco de Dados em Nuvem (Supabase)</span>
-                </h3>
-                <p class="text-xs text-slate-600 mt-0.5">Cole a Project URL e a Anon Key do seu projeto Supabase. Elas ficam codificadas contra leitura direta.</p>
-              </div>
-              <button type="button" onclick="copiarSqlSupabase()" class="px-3 py-1.5 rounded-xl bg-white border border-emerald-300 hover:border-slate-900 text-slate-800 font-display font-bold text-xs inline-flex items-center gap-1.5 transition">
-                <i data-lucide="copy" class="w-3.5 h-3.5 text-zap-600"></i>
-                <span>Copiar SQL das Tabelas</span>
-              </button>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-              <div>
-                <label for="config-supabase-url" class="block text-xs font-extrabold uppercase text-slate-700 mb-1">Supabase Project URL</label>
-                <input type="text" id="config-supabase-url" placeholder="https://seuprojeto.supabase.co" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 bg-white text-sm focus:outline-none focus:border-zap-600" />
-              </div>
-              <div>
-                <label for="config-supabase-key" class="block text-xs font-extrabold uppercase text-slate-700 mb-1">Supabase Anon Public Key</label>
-                <div class="relative">
-                  <input type="password" id="config-supabase-key" placeholder="eyJhbGci..." class="w-full pl-3.5 pr-10 py-2.5 rounded-xl border border-slate-300 bg-white text-sm focus:outline-none focus:border-zap-600" />
-                  <button type="button" onclick="alternarVisibilidadeChaveSb()" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700">
-                    <i id="icone-olho-chave-sb" data-lucide="eye" class="w-4 h-4"></i>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Conexão API de IA -->
-          <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-3">
-            <div class="flex items-center justify-between gap-2">
-              <div>
-                <h3 class="font-display font-extrabold text-base text-slate-900 flex items-center gap-2">
-                  <i data-lucide="sparkles" class="w-4 h-4 text-zap-600"></i>
-                  <span>Chave da API de IA (Google Gemini — Opcional)</span>
-                </h3>
-                <p class="text-xs text-slate-600 mt-0.5">Se preenchida, o botão "Gerar Página com IA" cria textos exclusivos via Gemini. Sem chave, o motor local funciona normalmente.</p>
-              </div>
-              <span id="badge-status-chave-ia" class="px-2.5 py-0.5 rounded-full text-[11px] font-extrabold bg-slate-200 text-slate-700">Motor Local Ativo</span>
-            </div>
-
-            <div class="relative">
-              <input type="password" id="config-gemini-key" placeholder="AIzaSy..." class="w-full pl-4 pr-11 py-3 rounded-xl border border-slate-300 bg-white text-sm focus:outline-none focus:border-zap-600" />
-              <button type="button" onclick="alternarVisibilidadeChaveIA()" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700">
-                <i id="icone-olho-chave-ia" data-lucide="eye" class="w-4 h-4"></i>
-              </button>
-            </div>
-          </div>
-
-          <!-- Operação & Acesso -->
-          <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <div>
-              <label for="config-zap-gestor" class="block text-xs font-extrabold uppercase text-slate-700 mb-1">Seu WhatsApp Comercial</label>
-              <input type="text" id="config-zap-gestor" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:border-zap-600" />
-            </div>
-            <div>
-              <label for="config-admin-email" class="block text-xs font-extrabold uppercase text-slate-700 mb-1">E-mail de Acesso</label>
-              <input type="email" id="config-admin-email" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:border-zap-600" />
-            </div>
-            <div>
-              <label for="config-admin-senha" class="block text-xs font-extrabold uppercase text-slate-700 mb-1">Senha do Painel</label>
-              <input type="text" id="config-admin-senha" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:border-zap-600" />
-            </div>
-          </div>
-
-          <div class="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-slate-100">
-            <button type="submit" class="px-6 py-3 rounded-xl bg-zap-600 hover:bg-zap-700 text-white font-display font-extrabold text-sm shadow-sm transition">
-              Salvar e Conectar Agora
-            </button>
-            <button type="button" onclick="restaurarDadosDemonstracao()" class="px-4 py-3 rounded-xl border border-slate-300 hover:bg-slate-50 text-slate-700 font-display font-bold text-xs transition">
-              Restaurar Exemplos Iniciais
-            </button>
-          </div>
-        </form>
       </div>
     </div>
-  </main>
-
-  <!-- ===================================================================== -->
-  <!-- RODAPÉ INSTITUCIONAL                                                  -->
-  <!-- ===================================================================== -->
-  <footer class="bg-dark-950 text-slate-400 py-8 border-t border-slate-800 mt-auto">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs">
-      <div class="text-center sm:text-left">
-        <p class="font-display font-extrabold text-white text-sm">ClienteNoZap • Grupo Vitally</p>
-        <p class="mt-0.5 text-slate-400">Captação de clientes e páginas exclusivas pela <strong class="text-slate-200">Vitally Studio</strong>.</p>
-      </div>
-      <div class="flex flex-wrap items-center justify-center gap-4">
-        <button type="button" onclick="abrirModalJuridico('termos')" class="hover:text-white underline transition">Termos de Uso</button>
-        <button type="button" onclick="abrirModalJuridico('agenda')" class="hover:text-white underline transition">Regras Agenda na Mão</button>
-        <button type="button" onclick="abrirModalJuridico('lgpd')" class="hover:text-white underline transition">Privacidade &amp; LGPD</button>
-      </div>
-    </div>
-  </footer>
-
-  <!-- ===================================================================== -->
-  <!-- MODAIS DO SISTEMA                                                     -->
-  <!-- ===================================================================== -->
-
-  <!-- Modal 1: Confirmação de Redirecionamento WhatsApp -->
-  <div id="modal-confirmacao" class="hidden fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm items-center justify-center p-4">
-    <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 text-center shadow-2xl">
-      <div class="w-14 h-14 rounded-2xl bg-zap-100 text-zap-600 flex items-center justify-center mx-auto mb-4">
-        <i data-lucide="check-circle-2" class="w-8 h-8"></i>
-      </div>
-      <h3 class="font-display font-extrabold text-xl text-slate-900">Tudo pronto para conversar!</h3>
-      <p id="texto-confirmacao" class="text-sm text-slate-600 mt-2 mb-6"></p>
-      <a id="link-whatsapp-final" href="#" target="_blank" rel="noopener noreferrer" onclick="fecharModal()" class="w-full py-4 px-5 rounded-2xl bg-zap-600 hover:bg-zap-700 text-white font-display font-extrabold text-base shadow-lg inline-flex items-center justify-center gap-2 transition">
-        <i data-lucide="message-circle" class="w-5 h-5"></i>
-        <span>Abrir WhatsApp Agora</span>
-      </a>
-      <button type="button" onclick="fecharModal()" class="mt-3 text-xs font-bold text-slate-500 hover:text-slate-800">Fechar janela</button>
-    </div>
+    <div id="conteudo-pagina-profissional"></div>
   </div>
 
-  <!-- Modal 2: Visualizador da Landing Page Exclusiva do Profissional -->
-  <div id="modal-pagina-profissional" class="hidden fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-sm overflow-y-auto p-2 sm:p-5">
-    <div class="max-w-5xl mx-auto bg-white rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl my-2">
-      <div class="bg-dark-900 text-white px-4 py-3 flex items-center justify-between gap-2 border-b border-white/10">
-        <span class="text-xs font-bold text-slate-300 flex items-center gap-1.5">
-          <i data-lucide="sparkles" class="w-3.5 h-3.5 text-zap-400"></i>
-          <span>Página Exclusiva • Vitally Studio</span>
-        </span>
-        <div class="flex items-center gap-2">
-          <button type="button" onclick="copiarLinkPaginaAtual()" class="px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white text-xs font-bold inline-flex items-center gap-1 transition">
-            <i data-lucide="share-2" class="w-3.5 h-3.5"></i>
-            <span>Copiar Link</span>
-          </button>
-          <button type="button" onclick="fecharPaginaProfissional()" class="px-3 py-1.5 rounded-lg bg-red-500/90 hover:bg-red-600 text-white text-xs font-extrabold transition">
-            ✕ Fechar
-          </button>
-        </div>
-      </div>
-      <div id="conteudo-pagina-profissional"></div>
-    </div>
-  </div>
-
-  <!-- Modal 3: Ponte Rastreada -->
-  <div id="modal-ponte-rastreada" class="hidden fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm items-center justify-center p-4">
-    <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-7 shadow-2xl">
-      <div class="flex items-start justify-between gap-3 mb-4">
+  <!-- Modal 3: Ponte Rastreada (Captura antes do Zap) -->
+  <div id="modal-ponte-rastreada" class="hidden fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm p-4 items-center justify-center">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-7 shadow-2xl border border-slate-200">
+      <div class="flex items-start justify-between gap-2 mb-4">
         <div>
-          <span class="text-[11px] font-extrabold uppercase tracking-wider text-zap-700">Orçamento Direto no Zap</span>
-          <h3 id="ponte-titulo-pro" class="font-display font-extrabold text-xl text-slate-900">Falar com Profissional</h3>
+          <span class="text-[11px] font-extrabold uppercase tracking-wider text-zap-700">Contato Direto no WhatsApp</span>
+          <h3 id="ponte-titulo-pro" class="font-display font-extrabold text-xl text-slate-900 mt-0.5">Falar com Profissional</h3>
           <p id="ponte-subtitulo-pro" class="text-xs text-slate-500 mt-0.5"></p>
         </div>
-        <button type="button" onclick="fecharPonteRastreada()" class="p-2 rounded-xl text-slate-400 hover:text-slate-700">✕</button>
+        <button type="button" onclick="fecharPonteRastreada()" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-700">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
       </div>
 
       <form onsubmit="confirmarPonteRastreada(event)" class="space-y-3.5">
         <input type="hidden" id="ponte-pro-id" />
         <div>
           <label for="ponte-nome-cliente" class="block text-xs font-bold uppercase text-slate-700 mb-1">Seu Nome *</label>
-          <input type="text" id="ponte-nome-cliente" required placeholder="Ex: Carlos Eduardo" class="w-full px-4 py-3 rounded-xl border-2 border-slate-200 text-sm focus:outline-none focus:border-zap-600" />
+          <input type="text" id="ponte-nome-cliente" required placeholder="Ex: Maria Silva" class="w-full px-4 py-3 rounded-xl border-2 border-slate-300 text-sm focus:outline-none focus:border-zap-600" />
         </div>
         <div>
-          <label for="ponte-zap-cliente" class="block text-xs font-bold uppercase text-slate-700 mb-1">Seu WhatsApp *</label>
-          <input type="tel" id="ponte-zap-cliente" required maxlength="15" oninput="mascaraTelefone(this)" placeholder="(91) 98888-7777" class="w-full px-4 py-3 rounded-xl border-2 border-slate-200 text-sm focus:outline-none focus:border-zap-600" />
+          <label for="ponte-zap-cliente" class="block text-xs font-bold uppercase text-slate-700 mb-1">Seu WhatsApp (com DDD) *</label>
+          <input type="tel" id="ponte-zap-cliente" required maxlength="15" oninput="mascaraTelefone(this)" placeholder="(91) 98888-7777" class="w-full px-4 py-3 rounded-xl border-2 border-slate-300 text-sm focus:outline-none focus:border-zap-600" />
         </div>
         <div>
-          <label for="ponte-pedido-cliente" class="block text-xs font-bold uppercase text-slate-700 mb-1">O que você precisa? *</label>
-          <input type="text" id="ponte-pedido-cliente" required placeholder="Descreva rapidamente o serviço..." class="w-full px-4 py-3 rounded-xl border-2 border-slate-200 text-sm focus:outline-none focus:border-zap-600" />
+          <label for="ponte-pedido-cliente" class="block text-xs font-bold uppercase text-slate-700 mb-1">O que você precisa? (Opcional)</label>
+          <input type="text" id="ponte-pedido-cliente" placeholder="Ex: Orçamento para hoje..." class="w-full px-4 py-3 rounded-xl border-2 border-slate-300 text-sm focus:outline-none focus:border-zap-600" />
         </div>
-        <button type="submit" class="w-full py-3.5 px-5 rounded-xl bg-zap-600 hover:bg-zap-700 text-white font-display font-extrabold text-sm shadow-md transition">
-          Iniciar Conversa no WhatsApp
+        <label class="flex items-start gap-2 text-[11px] text-slate-600 cursor-pointer pt-1">
+          <input type="checkbox" required checked class="mt-0.5 rounded border-slate-300 text-zap-600" />
+          <span>Concordo em compartilhar meu contato com o profissional selecionado para receber meu orçamento (LGPD).</span>
+        </label>
+        <button type="submit" class="w-full py-3.5 px-5 rounded-2xl bg-zap-600 hover:bg-zap-700 text-white font-display font-extrabold text-sm shadow-lg flex items-center justify-center gap-2 transition">
+          <i data-lucide="message-circle" class="w-4 h-4"></i>
+          <span>Continuar para o WhatsApp</span>
         </button>
       </form>
     </div>
   </div>
 
   <!-- Modal 4: Login Administrativo -->
-  <div id="modal-login-admin" class="hidden fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm items-center justify-center p-4">
-    <div class="bg-white rounded-3xl max-w-sm w-full p-6 sm:p-7 shadow-2xl">
+  <div id="modal-login-admin" class="hidden fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm p-4 items-center justify-center">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-8 shadow-2xl border border-slate-200">
       <div class="flex items-center justify-between mb-4">
-        <h3 class="font-display font-extrabold text-xl text-slate-900">Acesso ao Painel</h3>
-        <button type="button" onclick="fecharModalLogin()" class="p-1.5 text-slate-400 hover:text-slate-700">✕</button>
+        <div class="flex items-center gap-2.5">
+          <div class="w-10 h-10 rounded-xl bg-dark-900 text-zap-400 flex items-center justify-center">
+            <i data-lucide="shield-check" class="w-5 h-5"></i>
+          </div>
+          <div>
+            <h3 class="font-display font-extrabold text-lg text-slate-900">Acesso do Gestor</h3>
+            <p class="text-xs text-slate-500">Painel de Controle ClienteNoZap</p>
+          </div>
+        </div>
+        <button type="button" onclick="fecharModalLogin()" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-700">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
       </div>
 
-      <div id="login-erro-box" class="hidden mb-3 p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs font-bold">
-        E-mail ou senha incorretos.
+      <div id="login-erro-box" class="hidden mb-4 p-3 rounded-xl bg-red-50 border border-red-200 text-xs font-bold text-red-700">
+        E-mail ou senha incorretos. Verifique os dados e tente novamente.
       </div>
 
-      <form onsubmit="processarLoginAdmin(event)" class="space-y-3.5">
+      <form onsubmit="processarLoginAdmin(event)" class="space-y-4">
         <div>
-          <label for="login-email" class="block text-xs font-bold uppercase text-slate-700 mb-1">E-mail</label>
-          <input type="email" id="login-email" required class="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm focus:outline-none focus:border-zap-600" />
+          <label for="login-email" class="block text-xs font-bold uppercase text-slate-700 mb-1">E-mail de Acesso</label>
+          <input type="email" id="login-email" required autocomplete="username" placeholder="Digite seu e-mail de gestor" class="w-full px-4 py-3 rounded-xl border-2 border-slate-300 text-sm focus:outline-none focus:border-zap-600" />
         </div>
         <div>
           <label for="login-senha" class="block text-xs font-bold uppercase text-slate-700 mb-1">Senha</label>
           <div class="relative">
-            <input type="password" id="login-senha" required class="w-full pl-4 pr-10 py-3 rounded-xl border border-slate-300 text-sm focus:outline-none focus:border-zap-600" />
+            <input type="password" id="login-senha" required autocomplete="current-password" placeholder="••••••••" class="w-full pl-4 pr-11 py-3 rounded-xl border-2 border-slate-300 text-sm focus:outline-none focus:border-zap-600" />
             <button type="button" onclick="alternarVisibilidadeSenha()" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700">
               <i id="icone-olho-senha" data-lucide="eye" class="w-4 h-4"></i>
             </button>
           </div>
         </div>
-        <button type="submit" class="w-full py-3.5 rounded-xl bg-dark-900 hover:bg-slate-800 text-white font-display font-extrabold text-sm transition">
+        <button type="submit" class="w-full py-3.5 rounded-xl bg-dark-900 hover:bg-slate-800 text-white font-display font-extrabold text-sm shadow transition">
           Entrar no Painel
         </button>
       </form>
     </div>
   </div>
 
-  <!-- Modal 5: Criar / Editar Página Exclusiva do Profissional -->
-  <div id="modal-editar-profissional" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm overflow-y-auto p-3 sm:p-6">
-    <div class="max-w-3xl mx-auto bg-white rounded-3xl p-6 sm:p-8 shadow-2xl my-4">
+  <!-- Modal 5: Criar / Editar Página de Vendas com IA ou Upload HTML -->
+  <div id="modal-editar-profissional" class="hidden fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm p-3 sm:p-6 overflow-y-auto">
+    <div class="bg-white rounded-3xl max-w-3xl mx-auto p-6 sm:p-8 shadow-2xl border border-slate-200 my-4">
       <div class="flex items-center justify-between gap-3 pb-4 mb-5 border-b border-slate-200">
         <div>
-          <span class="text-[11px] font-extrabold uppercase tracking-wider text-zap-700">Construtor Vitally Studio</span>
-          <h3 id="titulo-modal-editor-pro" class="font-display font-extrabold text-xl text-slate-900">Criar Nova Página de Vendas</h3>
+          <span class="text-xs font-extrabold uppercase tracking-wider text-zap-700">Vitally Studio • Construtor de Páginas</span>
+          <h3 id="titulo-modal-editor-pro" class="font-display font-extrabold text-xl text-slate-900 mt-0.5">Criar / Editar Página de Vendas</h3>
         </div>
-        <button type="button" onclick="fecharModalEditarPro()" class="p-2 rounded-xl text-slate-400 hover:text-slate-700">✕</button>
+        <button type="button" onclick="fecharModalEditarPro()" class="p-2 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
       </div>
 
-      <!-- Bloco Gerador 1 Clique com IA + Upload HTML -->
-      <div class="p-4 sm:p-5 rounded-2xl bg-emerald-50/70 border border-emerald-200 mb-6 space-y-3">
-        <div class="flex flex-wrap items-center justify-between gap-2">
-          <p class="font-display font-extrabold text-sm text-slate-900">1. Preencha Nome, Ofício e Região abaixo e clique para gerar a página única:</p>
-          <button type="button" onclick="copiarPromptExternoPadrao()" class="text-xs font-bold text-zap-700 hover:underline">Copiar Prompt Editorial</button>
-        </div>
-
-        <input type="text" id="prompt-ia-pagina" placeholder="Detalhes opcionais (ex: atende domingos, 10 anos de experiência, aceita cartão...)" class="w-full px-3.5 py-2.5 rounded-xl border border-emerald-300 bg-white text-xs sm:text-sm focus:outline-none focus:border-zap-600" />
-
-        <div class="flex flex-wrap items-center gap-2">
-          <button type="button" id="btn-gerar-ia-pagina" onclick="gerarPaginaPorPromptIA()" class="px-4 py-2.5 rounded-xl bg-zap-600 hover:bg-zap-700 text-white font-display font-extrabold text-xs sm:text-sm inline-flex items-center gap-1.5 shadow-sm transition">
-            <i data-lucide="sparkles" class="w-4 h-4"></i>
+      <!-- Bloco de Geração Rápida por IA -->
+      <div class="bg-zap-50/80 border-2 border-zap-200 rounded-2xl p-4 mb-5 space-y-3">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+          <div>
+            <p class="font-display font-extrabold text-sm text-slate-900 flex items-center gap-1.5">
+              <i data-lucide="sparkles" class="w-4 h-4 text-zap-600"></i>
+              <span>Gerar Página Exclusiva em 1 Clique</span>
+            </p>
+            <p class="text-xs text-slate-600">Preencha Nome, Ofício e Região abaixo (ou escreva detalhes extras) e clique para gerar.</p>
+          </div>
+          <button type="button" id="btn-gerar-ia-pagina" onclick="gerarPaginaPorPromptIA()" class="px-4 py-2.5 rounded-xl bg-zap-600 hover:bg-zap-700 text-white font-display font-extrabold text-xs inline-flex items-center justify-center gap-1.5 shadow-sm shrink-0 transition">
+            <i data-lucide="wand-2" class="w-4 h-4"></i>
             <span>Gerar Página com IA Agora</span>
           </button>
+        </div>
+        <input type="text" id="prompt-ia-pagina" placeholder="Opcional: detalhes extras (ex: atende 24h, especialista em Split Inverter, kits festa infantil...)" class="w-full px-3.5 py-2.5 rounded-xl border border-zap-300 bg-white text-xs sm:text-sm focus:outline-none focus:border-zap-600" />
+      </div>
 
-          <label class="cursor-pointer px-3.5 py-2.5 rounded-xl bg-white border border-slate-300 hover:border-slate-900 text-slate-800 font-display font-bold text-xs inline-flex items-center gap-1.5 transition">
+      <!-- Bloco de Upload de Arquivo HTML Externo -->
+      <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 mb-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div>
+          <p class="font-display font-bold text-xs text-slate-900">Ou suba um arquivo .HTML pronto deste cliente</p>
+          <p id="status-html-externo" class="hidden text-xs font-extrabold text-zap-700 mt-1"></p>
+        </div>
+        <div class="flex flex-wrap items-center gap-2 shrink-0">
+          <label class="cursor-pointer px-3 py-2 rounded-xl bg-white border border-slate-300 hover:border-slate-900 text-slate-800 font-display font-bold text-xs inline-flex items-center gap-1.5 transition">
             <i data-lucide="upload" class="w-3.5 h-3.5 text-zap-600"></i>
-            <span>Subir .HTML Pronto</span>
+            <span>Subir .HTML</span>
             <input type="file" id="input-upload-html" accept=".html,.htm" onchange="carregarArquivoHtmlExterno(event)" class="hidden" />
           </label>
-
-          <button type="button" id="btn-remover-html-externo" onclick="removerHtmlExternoEditor()" class="hidden px-3 py-2 rounded-xl bg-red-50 text-red-700 text-xs font-bold">
-            Remover HTML
+          <button type="button" onclick="copiarPromptExternoPadrao()" class="px-3 py-2 rounded-xl bg-white border border-slate-300 hover:border-slate-900 text-slate-800 font-display font-bold text-xs inline-flex items-center gap-1.5 transition" title="Copiar prompt padrão para gerar HTML externo">
+            <i data-lucide="copy" class="w-3.5 h-3.5 text-slate-600"></i>
+            <span>Copiar Prompt</span>
+          </button>
+          <button type="button" id="btn-remover-html-externo" onclick="removerHtmlExternoEditor()" class="hidden px-2.5 py-2 rounded-xl bg-red-50 text-red-600 font-bold text-xs">
+            Remover
           </button>
         </div>
-        <p id="status-html-externo" class="hidden text-xs font-bold text-zap-700"></p>
       </div>
 
       <form onsubmit="salvarEdicaoPro(event)" class="space-y-4">
         <input type="hidden" id="edit-pro-id" />
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
           <div>
-            <label for="edit-pro-nome" class="block text-xs font-bold uppercase text-slate-700 mb-1">Nome do Profissional / Negócio *</label>
-            <input type="text" id="edit-pro-nome" required placeholder="Ex: Atelier Encanto Festas" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm" />
+            <label for="edit-pro-nome" class="block text-xs font-bold uppercase text-slate-700 mb-1">Nome do Negócio *</label>
+            <input type="text" id="edit-pro-nome" required placeholder="Ex: Oficina J&M" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-300 text-sm focus:outline-none focus:border-zap-600" />
           </div>
           <div>
-            <label for="edit-pro-zap" class="block text-xs font-bold uppercase text-slate-700 mb-1">WhatsApp (com DDD) *</label>
-            <input type="text" id="edit-pro-zap" required placeholder="5591988887777" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm" />
-          </div>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <label for="edit-pro-oficio" class="block text-xs font-bold uppercase text-slate-700 mb-1">Ofício / Especialidade *</label>
-            <input type="text" id="edit-pro-oficio" required placeholder="Ex: Personalizados para Festas" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm" />
+            <label for="edit-pro-oficio" class="block text-xs font-bold uppercase text-slate-700 mb-1">Serviço / Ofício *</label>
+            <input type="text" id="edit-pro-oficio" required placeholder="Ex: Personalizados para Festa" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-300 text-sm focus:outline-none focus:border-zap-600" />
           </div>
           <div>
-            <label for="edit-pro-regiao" class="block text-xs font-bold uppercase text-slate-700 mb-1">Cidades / Bairros Atendidos *</label>
-            <input type="text" id="edit-pro-regiao" required placeholder="Ex: Belém e Ananindeua" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm" />
+            <label for="edit-pro-zap" class="block text-xs font-bold uppercase text-slate-700 mb-1">WhatsApp (55 + DDD) *</label>
+            <input type="text" id="edit-pro-zap" required placeholder="5591988887777" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-300 text-sm focus:outline-none focus:border-zap-600" />
           </div>
         </div>
 
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div class="grid grid-cols-1 sm:grid-cols-4 gap-3.5">
+          <div class="sm:col-span-2">
+            <label for="edit-pro-regiao" class="block text-xs font-bold uppercase text-slate-700 mb-1">Região Atendida *</label>
+            <input type="text" id="edit-pro-regiao" required placeholder="Ex: Belém e Ananindeua" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-300 text-sm focus:outline-none focus:border-zap-600" />
+          </div>
+          <div>
+            <label for="edit-pro-valor" class="block text-xs font-bold uppercase text-slate-700 mb-1">Valor Ciclo (R$)</label>
+            <input type="number" id="edit-pro-valor" value="197" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-300 text-sm focus:outline-none focus:border-zap-600" />
+          </div>
+          <div>
+            <label for="edit-pro-dias-restantes" class="block text-xs font-bold uppercase text-slate-700 mb-1">Dias Restantes</label>
+            <input type="number" id="edit-pro-dias-restantes" value="15" min="0" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-300 text-sm focus:outline-none focus:border-zap-600" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
           <div>
             <label for="edit-pro-template" class="block text-xs font-bold uppercase text-slate-700 mb-1">Estilo Visual</label>
-            <select id="edit-pro-template" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm bg-white">
-              <option value="editorial-dark">Editorial Contraste</option>
-              <option value="clean-studio">Clean Studio Claro</option>
-              <option value="bold-pro">Alto Impacto Escuro</option>
-              <option value="soft-craft">Minimalista Acolhedor</option>
+            <select id="edit-pro-template" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-300 bg-white text-sm focus:outline-none focus:border-zap-600">
+              <option value="editorial-dark">1. Editorial Contraste</option>
+              <option value="clean-studio">2. Clean Studio Claro</option>
+              <option value="bold-pro">3. Urbano Alto Impacto</option>
+              <option value="soft-craft">4. Minimalista Acolhedor</option>
             </select>
           </div>
           <div>
             <label for="edit-pro-paleta" class="block text-xs font-bold uppercase text-slate-700 mb-1">Paleta de Cor</label>
-            <select id="edit-pro-paleta" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 text-xs sm:text-sm bg-white">
+            <select id="edit-pro-paleta" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-300 bg-white text-sm focus:outline-none focus:border-zap-600">
               <option value="amber">Âmbar / Laranja</option>
               <option value="emerald">Esmeralda</option>
               <option value="sky">Azul Oceano</option>
-              <option value="rose">Rosé / Festa</option>
+              <option value="rose">Rosé</option>
               <option value="indigo">Índigo</option>
               <option value="gold">Ouro</option>
             </select>
           </div>
           <div>
-            <label for="edit-pro-valor" class="block text-xs font-bold uppercase text-slate-700 mb-1">Valor Pacote (R$)</label>
-            <input type="number" id="edit-pro-valor" value="197" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 text-sm" />
-          </div>
-          <div>
-            <label for="edit-pro-dias-restantes" class="block text-xs font-bold uppercase text-slate-700 mb-1">Dias Restantes</label>
-            <input type="number" id="edit-pro-dias-restantes" value="15" class="w-full px-3 py-2.5 rounded-xl border border-slate-300 text-sm" />
+            <label for="edit-pro-horario" class="block text-xs font-bold uppercase text-slate-700 mb-1">Horário</label>
+            <input type="text" id="edit-pro-horario" value="Seg a Sáb • 08h às 18h" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-300 text-sm focus:outline-none focus:border-zap-600" />
           </div>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
-          <div>
-            <label for="edit-pro-horario" class="block text-xs font-bold uppercase text-slate-700 mb-1">Horário de Atendimento</label>
-            <input type="text" id="edit-pro-horario" value="Seg a Sáb • 08h às 18h" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm" />
+        <!-- Galeria de Capas Temáticas -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between">
+            <label for="edit-pro-foto" class="text-xs font-bold uppercase text-slate-700">Foto de Capa (ou escolha na galeria abaixo)</label>
           </div>
-          <div>
-            <label for="edit-pro-foto" class="block text-xs font-bold uppercase text-slate-700 mb-1">URL da Foto de Capa</label>
-            <input type="text" id="edit-pro-foto" oninput="atualizarPreviewCapaEditor(this.value)" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm" />
+          <div class="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center">
+            <div class="sm:col-span-9">
+              <input type="url" id="edit-pro-foto" oninput="atualizarPreviewCapaEditor(this.value)" placeholder="https://..." class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-300 text-xs focus:outline-none focus:border-zap-600" />
+            </div>
+            <div class="sm:col-span-3 h-12 rounded-xl overflow-hidden border border-slate-300 bg-slate-100">
+              <img id="preview-capa-editor" src="" alt="Prévia" class="w-full h-full object-cover" />
+            </div>
           </div>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center bg-slate-50 p-3 rounded-2xl border border-slate-200">
-          <div class="sm:col-span-4">
-            <img id="preview-capa-editor" src="" alt="Preview Capa" class="w-full h-24 object-cover rounded-xl bg-slate-200" />
-          </div>
-          <div id="galeria-capas-editor" class="sm:col-span-8 grid grid-cols-4 gap-2"></div>
+          <div id="galeria-capas-editor" class="grid grid-cols-4 sm:grid-cols-8 gap-2 pt-1"></div>
         </div>
 
         <div>
-          <label for="edit-pro-headline" class="block text-xs font-bold uppercase text-slate-700 mb-1">Título Principal da Página (Headline) *</label>
-          <input type="text" id="edit-pro-headline" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm" />
+          <label for="edit-pro-headline" class="block text-xs font-bold uppercase text-slate-700 mb-1">Título Principal da Página *</label>
+          <input type="text" id="edit-pro-headline" required placeholder="Ex: Personalizados exclusivos que encantam seus convidados..." class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-300 text-sm focus:outline-none focus:border-zap-600" />
         </div>
 
         <div>
-          <label for="edit-pro-subheadline" class="block text-xs font-bold uppercase text-slate-700 mb-1">Subtítulo Explicativo</label>
-          <input type="text" id="edit-pro-subheadline" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm" />
+          <label for="edit-pro-subheadline" class="block text-xs font-bold uppercase text-slate-700 mb-1">Subtítulo / Chamada de Apoio</label>
+          <input type="text" id="edit-pro-subheadline" placeholder="Resumo claro do atendimento e região..." class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-300 text-sm focus:outline-none focus:border-zap-600" />
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+          <div>
+            <label for="edit-pro-servicos" class="block text-xs font-bold uppercase text-slate-700 mb-1">Lista de Serviços (1 por linha)</label>
+            <textarea id="edit-pro-servicos" rows="4" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-300 text-xs sm:text-sm focus:outline-none focus:border-zap-600"></textarea>
+          </div>
+          <div>
+            <label for="edit-pro-diferenciais" class="block text-xs font-bold uppercase text-slate-700 mb-1">3 Diferenciais (1 por linha)</label>
+            <textarea id="edit-pro-diferenciais" rows="4" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-300 text-xs sm:text-sm focus:outline-none focus:border-zap-600"></textarea>
+          </div>
         </div>
 
         <div>
-          <label for="edit-pro-descricao" class="block text-xs font-bold uppercase text-slate-700 mb-1">Texto de Apresentação</label>
-          <textarea id="edit-pro-descricao" rows="2" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-sm"></textarea>
+          <label for="edit-pro-descricao" class="block text-xs font-bold uppercase text-slate-700 mb-1">Sobre o Atendimento</label>
+          <textarea id="edit-pro-descricao" rows="2" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-300 text-xs sm:text-sm focus:outline-none focus:border-zap-600"></textarea>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
-            <label for="edit-pro-servicos" class="block text-xs font-bold uppercase text-slate-700 mb-1">Serviços (1 por linha)</label>
-            <textarea id="edit-pro-servicos" rows="4" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs sm:text-sm"></textarea>
-          </div>
-          <div>
-            <label for="edit-pro-diferenciais" class="block text-xs font-bold uppercase text-slate-700 mb-1">Diferenciais (1 por linha)</label>
-            <textarea id="edit-pro-diferenciais" rows="4" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs sm:text-sm"></textarea>
-          </div>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+          <div class="sm:col-span-2">
             <label for="edit-pro-depoimento-texto" class="block text-xs font-bold uppercase text-slate-700 mb-1">Depoimento de Cliente</label>
-            <input type="text" id="edit-pro-depoimento-texto" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm" />
+            <input type="text" id="edit-pro-depoimento-texto" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-300 text-xs sm:text-sm focus:outline-none focus:border-zap-600" />
           </div>
           <div>
-            <label for="edit-pro-depoimento-autor" class="block text-xs font-bold uppercase text-slate-700 mb-1">Autor / Bairro do Depoimento</label>
-            <input type="text" id="edit-pro-depoimento-autor" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm" />
+            <label for="edit-pro-depoimento-autor" class="block text-xs font-bold uppercase text-slate-700 mb-1">Autor / Bairro</label>
+            <input type="text" id="edit-pro-depoimento-autor" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-300 text-xs sm:text-sm focus:outline-none focus:border-zap-600" />
           </div>
         </div>
 
-        <div class="flex flex-wrap items-center justify-end gap-2 pt-4 border-t border-slate-200">
-          <button type="button" onclick="fecharModalEditarPro()" class="px-4 py-3 rounded-xl border border-slate-300 text-slate-700 font-display font-bold text-xs sm:text-sm">Cancelar</button>
-          <button type="submit" class="px-5 py-3 rounded-xl bg-dark-900 hover:bg-slate-800 text-white font-display font-extrabold text-xs sm:text-sm">Salvar na Vitrine</button>
-          <button type="button" onclick="salvarEVisualizarPro()" class="px-5 py-3 rounded-xl bg-zap-600 hover:bg-zap-700 text-white font-display font-extrabold text-xs sm:text-sm">Salvar e Ver Página</button>
+        <div class="flex flex-wrap items-center justify-end gap-2.5 pt-3 border-t border-slate-200">
+          <button type="button" onclick="fecharModalEditarPro()" class="px-4 py-2.5 rounded-xl border border-slate-300 text-slate-700 font-display font-bold text-xs sm:text-sm">
+            Cancelar
+          </button>
+          <button type="submit" class="px-5 py-2.5 rounded-xl bg-dark-900 hover:bg-slate-800 text-white font-display font-extrabold text-xs sm:text-sm">
+            Salvar Alterações
+          </button>
+          <button type="button" onclick="salvarEVisualizarPro()" class="px-5 py-2.5 rounded-xl bg-zap-600 hover:bg-zap-700 text-white font-display font-extrabold text-xs sm:text-sm shadow">
+            Salvar e Ver Página
+          </button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- Modal 6: Renovação de Ciclo -->
-  <div id="modal-renovar-profissional" class="hidden fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm items-center justify-center p-4">
-    <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-7 shadow-2xl">
-      <div class="flex items-start justify-between gap-2 mb-3">
+  <!-- Modal 6: Renovação de Ciclo do Profissional -->
+  <div id="modal-renovar-profissional" class="hidden fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm p-4 items-center justify-center">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-7 shadow-2xl border border-slate-200 space-y-4">
+      <div class="flex items-start justify-between gap-2">
         <div>
-          <span class="text-[11px] font-extrabold uppercase text-amber-700">Renovação de Ciclo</span>
-          <h3 id="renovar-titulo-pro" class="font-display font-extrabold text-xl text-slate-900">Renovar Profissional</h3>
-          <p id="renovar-info-ciclo" class="text-xs text-slate-500 mt-0.5"></p>
+          <span class="text-xs font-extrabold uppercase tracking-wider text-zap-700">Renovação de Ciclo</span>
+          <h3 id="renovar-titulo-pro" class="font-display font-extrabold text-xl text-slate-900 mt-0.5">Renovar Profissional</h3>
+          <p id="renovar-info-ciclo" class="text-xs text-slate-600 mt-0.5"></p>
         </div>
-        <button type="button" onclick="fecharModalRenovarPro()" class="p-1.5 text-slate-400 hover:text-slate-700">✕</button>
+        <button type="button" onclick="fecharModalRenovarPro()" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-700">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
       </div>
 
-      <div class="grid grid-cols-2 gap-2 my-4">
-        <a id="btn-zap-cobrar-pro" href="#" target="_blank" rel="noopener noreferrer" class="py-2.5 px-3 rounded-xl bg-zap-600 hover:bg-zap-700 text-white font-display font-bold text-xs text-center transition">
-          Cobrar no Zap Dele
+      <div class="grid grid-cols-2 gap-2">
+        <a id="btn-zap-cobrar-pro" href="#" target="_blank" rel="noopener noreferrer" class="py-2.5 px-3 rounded-xl bg-zap-50 border border-zap-300 text-zap-800 font-display font-bold text-xs flex items-center justify-center gap-1.5 hover:bg-zap-100 transition">
+          <i data-lucide="message-circle" class="w-4 h-4"></i>
+          <span>Cobrar no Zap Dele</span>
         </a>
-        <a id="btn-zap-avisar-gestor" href="#" target="_blank" rel="noopener noreferrer" class="py-2.5 px-3 rounded-xl border border-slate-300 hover:border-slate-900 text-slate-800 font-display font-bold text-xs text-center transition">
-          Enviar no Meu Zap
+        <a id="btn-zap-avisar-gestor" href="#" target="_blank" rel="noopener noreferrer" class="py-2.5 px-3 rounded-xl bg-amber-50 border border-amber-300 text-amber-900 font-display font-bold text-xs flex items-center justify-center gap-1.5 hover:bg-amber-100 transition">
+          <i data-lucide="bell" class="w-4 h-4"></i>
+          <span>Avisar Meu Zap</span>
         </a>
       </div>
 
-      <form onsubmit="confirmarRenovacaoPro(event)" class="space-y-4">
+      <form onsubmit="confirmarRenovacaoPro(event)" class="space-y-4 pt-2 border-t border-slate-100">
         <input type="hidden" id="renovar-pro-id" />
         <div>
-          <label for="renovar-pacote-select" class="block text-xs font-bold uppercase text-slate-700 mb-1">Novo Ciclo / Pacote</label>
-          <select id="renovar-pacote-select" class="w-full px-3.5 py-3 rounded-xl border border-slate-300 text-sm bg-white">
+          <label for="renovar-pacote-select" class="block text-xs font-bold uppercase text-slate-700 mb-1">Novo Ciclo Contratado</label>
+          <select id="renovar-pacote-select" class="w-full px-4 py-3 rounded-xl border-2 border-slate-300 bg-slate-50 font-semibold text-sm text-slate-900">
             <option value="7dias">7 Dias para Testar (R$ 127)</option>
             <option value="15dias">15 Dias Direto (R$ 197)</option>
             <option value="30dias">30 Dias Mês Inteiro (R$ 347)</option>
             <option value="agenda">Agenda na Mão — 15 Dias (R$ 397)</option>
           </select>
         </div>
-        <button type="submit" class="w-full py-3.5 rounded-xl bg-dark-900 hover:bg-slate-800 text-white font-display font-extrabold text-sm transition">
-          Confirmar Pagamento e Iniciar Novo Ciclo
+        <button type="submit" class="w-full py-3.5 rounded-xl bg-zap-600 hover:bg-zap-700 text-white font-display font-extrabold text-sm shadow">
+          Confirmar Renovação Agora
         </button>
       </form>
     </div>
   </div>
 
-  <!-- Modal 7: Auditoria de Clientes Entregues -->
-  <div id="modal-auditoria-profissional" class="hidden fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm overflow-y-auto p-4">
-    <div class="max-w-lg mx-auto bg-white rounded-3xl p-6 sm:p-7 shadow-2xl my-8">
-      <div class="flex items-center justify-between gap-2 mb-4">
-        <h3 id="auditoria-titulo-pro" class="font-display font-extrabold text-lg text-slate-900">Clientes Enviados</h3>
-        <button type="button" onclick="fecharModalAuditoriaPro()" class="p-1.5 text-slate-400 hover:text-slate-700">✕</button>
-      </div>
-      <div id="auditoria-lista-clientes" class="space-y-2.5 max-h-80 overflow-y-auto mb-4"></div>
-      <div class="flex items-center justify-between gap-2 pt-3 border-t border-slate-100">
-        <button type="button" id="btn-simular-entrega-pro" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-display font-bold text-xs">
-          + Registrar Teste
+  <!-- Modal 7: Auditoria de Clientes Entregues por Profissional -->
+  <div id="modal-auditoria-profissional" class="hidden fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm p-4 overflow-y-auto">
+    <div class="bg-white rounded-3xl max-w-2xl mx-auto p-6 sm:p-7 shadow-2xl border border-slate-200 my-6 space-y-4">
+      <div class="flex items-start justify-between gap-2 pb-3 border-b border-slate-200">
+        <div>
+          <span class="text-xs font-extrabold uppercase tracking-wider text-zap-700">Auditoria Nominal</span>
+          <h3 id="auditoria-titulo-pro" class="font-display font-extrabold text-xl text-slate-900 mt-0.5">Clientes Encaminhados</h3>
+        </div>
+        <button type="button" onclick="fecharModalAuditoriaPro()" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-700">
+          <i data-lucide="x" class="w-5 h-5"></i>
         </button>
-        <button type="button" onclick="fecharModalAuditoriaPro()" class="px-4 py-2 rounded-xl bg-dark-900 text-white font-display font-bold text-xs">Fechar</button>
+      </div>
+
+      <div id="auditoria-lista-clientes" class="space-y-2.5 max-h-[55vh] overflow-y-auto"></div>
+
+      <div class="flex items-center justify-between pt-3 border-t border-slate-200">
+        <button type="button" id="btn-simular-entrega-pro" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 font-display font-bold text-xs">
+          + Simular Cliente de Teste
+        </button>
+        <button type="button" onclick="fecharModalAuditoriaPro()" class="px-4 py-2 rounded-xl bg-dark-900 text-white font-display font-bold text-xs">
+          Fechar
+        </button>
       </div>
     </div>
   </div>
 
-  <!-- Modal 8: Termos de Uso, Agenda na Mão & LGPD -->
-  <div id="modal-juridico-lgpd" class="hidden fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm overflow-y-auto p-4">
-    <div class="max-w-2xl mx-auto bg-white rounded-3xl p-6 sm:p-8 shadow-2xl my-6">
-      <div class="flex items-center justify-between gap-2 mb-4">
-        <h3 class="font-display font-extrabold text-xl text-slate-900">Termos, Regras &amp; Privacidade (LGPD)</h3>
-        <button type="button" onclick="fecharModalJuridico()" class="p-1.5 text-slate-400 hover:text-slate-700">✕</button>
+  <!-- Modal 8: Termos de Adesão, Agenda na Mão & LGPD -->
+  <div id="modal-juridico-lgpd" class="hidden fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm p-4 overflow-y-auto">
+    <div class="bg-white rounded-3xl max-w-3xl mx-auto p-6 sm:p-8 shadow-2xl border border-slate-200 my-6 space-y-5">
+      <div class="flex items-start justify-between gap-3">
+        <div>
+          <span class="text-xs font-extrabold uppercase tracking-wider text-zap-700">Transparência &amp; Conformidade Legal</span>
+          <h3 class="font-display font-extrabold text-xl sm:text-2xl text-slate-900 mt-0.5">Termos de Uso, Agenda na Mão e Privacidade</h3>
+        </div>
+        <button type="button" onclick="fecharModalJuridico()" class="p-2 rounded-xl text-slate-400 hover:text-slate-700">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
       </div>
 
-      <div class="bg-slate-100 p-1 rounded-xl grid grid-cols-3 gap-1 mb-5">
-        <button type="button" id="tab-juridico-termos" onclick="abrirModalJuridico('termos')" class="py-2.5 px-3 rounded-xl font-display font-bold text-xs sm:text-sm bg-white text-slate-900 shadow-sm transition">Termos de Uso</button>
-        <button type="button" id="tab-juridico-agenda" onclick="abrirModalJuridico('agenda')" class="py-2.5 px-3 rounded-xl font-display font-bold text-xs sm:text-sm text-slate-600 hover:text-slate-900 transition">Agenda na Mão</button>
-        <button type="button" id="tab-juridico-lgpd" onclick="abrirModalJuridico('lgpd')" class="py-2.5 px-3 rounded-xl font-display font-bold text-xs sm:text-sm text-slate-600 hover:text-slate-900 transition">Privacidade LGPD</button>
+      <!-- Abas Jurídicas -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-1.5 bg-slate-100 p-1.5 rounded-2xl">
+        <button type="button" id="tab-juridico-termos" onclick="abrirModalJuridico('termos')" class="py-2.5 px-3 rounded-xl font-display font-bold text-xs sm:text-sm bg-white text-slate-900 shadow-sm transition">
+          1. Termos de Adesão
+        </button>
+        <button type="button" id="tab-juridico-agenda" onclick="abrirModalJuridico('agenda')" class="py-2.5 px-3 rounded-xl font-display font-bold text-xs sm:text-sm text-slate-600 hover:text-slate-900 transition">
+          2. Regras Agenda na Mão
+        </button>
+        <button type="button" id="tab-juridico-lgpd" onclick="abrirModalJuridico('lgpd')" class="py-2.5 px-3 rounded-xl font-display font-bold text-xs sm:text-sm text-slate-600 hover:text-slate-900 transition">
+          3. Privacidade &amp; LGPD
+        </button>
       </div>
 
-      <div id="conteudo-juridico-termos" class="space-y-3 text-sm text-slate-700 leading-relaxed">
-        <p><strong>1. Objeto do Serviço:</strong> O <strong>ClienteNoZap</strong> (serviço operado pelo <strong>Grupo Vitally</strong> e <strong>Vitally Studio</strong>) realiza divulgação local e criação de página de apresentação para conectar moradores interessados diretamente ao WhatsApp do profissional contratante.</p>
-        <p><strong>2. Autonomia e Negociação Direta:</strong> Não há vínculo empregatício ou sociedade. Cada profissional define seus próprios preços, horários e formas de recebimento diretamente com o cliente.</p>
-        <p><strong>3. Responsabilidade pelo Serviço Executado:</strong> O profissional responde integralmente pela qualidade, prazos e garantia do serviço prestado ao consumidor final.</p>
+      <!-- Conteúdo 1: Termos de Adesão -->
+      <div id="conteudo-juridico-termos" class="space-y-3 text-xs sm:text-sm text-slate-700 leading-relaxed max-h-[55vh] overflow-y-auto pr-1">
+        <p><strong>1. O que é o ClienteNoZap:</strong> O ClienteNoZap (serviço do Grupo Vitally) divulga o seu trabalho na região escolhida, disponibiliza uma página comercial exclusiva e direciona moradores interessados em contratar o seu serviço diretamente para o seu WhatsApp.</p>
+        <p><strong>2. Autonomia Total e Sem Vínculo Empregatício:</strong> Você atua como prestador de serviços autônomo ou MEI, com total liberdade de horários, preços e forma de trabalho, nos termos do Art. 442-B da CLT. Não há subordinação, exclusividade nem vínculo trabalhista entre você e o ClienteNoZap.</p>
+        <p><strong>3. Negociação e Pagamento 100% Diretos:</strong> O ClienteNoZap não cobra comissão nem intermedia valores de serviços. Todo orçamento, agendamento, execução e recebimento (Pix, dinheiro ou cartão) são combinados diretamente entre você e o cliente.</p>
+        <p><strong>4. Responsabilidade Técnica e Garantia:</strong> Você declara possuir capacidade técnica para exercer o serviço divulgado e responde integralmente pela qualidade, prazos, materiais e garantia legal perante o consumidor (Art. 26 do Código de Defesa do Consumidor).</p>
+        <p><strong>5. Ciclos Sem Fidelidade:</strong> A contratação funciona por ciclo fechado (7, 15 ou 30 dias), sem multa de cancelamento e sem renovação automática sem a sua autorização.</p>
       </div>
 
-      <div id="conteudo-juridico-agenda" class="hidden space-y-3 text-sm text-slate-700 leading-relaxed">
-        <p><strong>1. Como funciona o Agenda na Mão:</strong> Nesta modalidade, nossa equipe realiza a triagem inicial do pedido de orçamento do morador e encaminha o contato com os dados do serviço e preferência de horário para confirmação pelo profissional.</p>
-        <p><strong>2. Confirmação Rápida:</strong> O profissional compromete-se a confirmar ou ajustar o horário diretamente com o cliente no WhatsApp em tempo hábil para evitar perda do atendimento.</p>
+      <!-- Conteúdo 2: Regras do Agenda na Mão -->
+      <div id="conteudo-juridico-agenda" class="hidden space-y-3 text-xs sm:text-sm text-slate-700 leading-relaxed max-h-[55vh] overflow-y-auto pr-1">
+        <p><strong>1. Como funciona o Agenda na Mão:</strong> Nesta modalidade, nossa equipe realiza o primeiro atendimento do morador interessado, confirma o tipo de serviço necessário, o bairro e um horário compatível com a agenda que você informou previamente.</p>
+        <p><strong>2. Liberdade para Aceitar ou Reagendar:</strong> Ao receber o contato pré-agendado no seu WhatsApp, você tem total autonomia para confirmar o atendimento ou ajustar o horário diretamente com o morador caso surja algum imprevisto.</p>
+        <p><strong>3. Reposição de Contatos Inválidos:</strong> Caso algum contato repassado possua número de WhatsApp inexistente, trote evidente ou esteja fora da área de atendimento que você definiu, nossa equipe realiza a reposição sem custo adicional dentro do ciclo.</p>
+        <p><strong>4. Ausência do Consumidor (No-Show):</strong> Como o consumidor final é um terceiro independente, o ClienteNoZap atua na triagem e confirmação prévia, mas não responde por eventuais desistências de última hora do morador — recomendando sempre uma confirmação rápida por mensagem antes do deslocamento.</p>
       </div>
 
-      <div id="conteudo-juridico-lgpd" class="hidden space-y-3 text-sm text-slate-700 leading-relaxed">
-        <p><strong>1. Finalidade Específica (Lei nº 13.709/2018 — LGPD):</strong> Os dados informados pelo morador (nome, WhatsApp e descrição do serviço) são utilizados exclusivamente para encaminhar o pedido de orçamento ao profissional escolhido.</p>
-        <p><strong>2. Não Comercialização de Dados:</strong> O ClienteNoZap não vende listas de contatos para terceiros e permite a exclusão dos registros mediante solicitação pelo WhatsApp de atendimento.</p>
+      <!-- Conteúdo 3: Privacidade & LGPD -->
+      <div id="conteudo-juridico-lgpd" class="hidden space-y-3 text-xs sm:text-sm text-slate-700 leading-relaxed max-h-[55vh] overflow-y-auto pr-1">
+        <p><strong>1. Conformidade com a Lei nº 13.709/2018 (LGPD):</strong> Coletamos apenas os dados estritamente necessários (nome, telefone/WhatsApp, serviço desejado e região) para conectar o morador ao profissional escolhido.</p>
+        <p><strong>2. Base Legal e Finalidade Única:</strong> O compartilhamento do contato do consumidor com o profissional ocorre mediante consentimento expresso e para execução de procedimentos preliminares de orçamento solicitados pelo próprio titular (Art. 7º, incisos I e V da LGPD).</p>
+        <p><strong>3. Proibição de Revenda ou Spam:</strong> É terminantemente proibida a venda de listas de contatos ou o envio de mensagens em massa não solicitadas. Após o recebimento do contato, o profissional torna-se controlador independente daquele atendimento.</p>
+        <p><strong>4. Direitos do Titular (Art. 18 da LGPD):</strong> Qualquer morador ou profissional pode solicitar a confirmação, correção ou exclusão de seus dados cadastrais a qualquer momento pelo nosso canal oficial de atendimento no WhatsApp.</p>
       </div>
 
-      <div class="mt-6 pt-4 border-t border-slate-100 text-right">
-        <button type="button" onclick="fecharModalJuridico()" class="px-5 py-2.5 rounded-xl bg-dark-900 text-white font-display font-bold text-xs sm:text-sm">Entendi</button>
+      <div class="pt-3 border-t border-slate-200 flex justify-end">
+        <button type="button" onclick="fecharModalJuridico()" class="px-5 py-2.5 rounded-xl bg-dark-900 text-white font-display font-bold text-xs sm:text-sm">
+          Entendi e Fechar
+        </button>
       </div>
     </div>
   </div>
 
-  <!-- Toast Flutuante -->
-  <div id="toast-notificacao" class="hidden fixed bottom-5 right-5 z-50 bg-dark-900 text-white px-4 py-3 rounded-2xl shadow-xl border border-white/10 items-center gap-2.5 text-xs sm:text-sm font-semibold">
+  <!-- Modal 9: SQL de Criação da Tabela no Supabase -->
+  <div id="modal-sql-supabase" class="hidden fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm p-4 items-center justify-center">
+    <div class="bg-white rounded-3xl max-w-xl w-full p-6 sm:p-7 shadow-2xl border border-slate-200 space-y-4">
+      <div class="flex items-start justify-between gap-2">
+        <div>
+          <span class="text-xs font-extrabold uppercase tracking-wider text-zap-700">Configuração Rápida (10 segundos)</span>
+          <h3 class="font-display font-extrabold text-xl text-slate-900 mt-0.5">SQL da Tabela no Supabase</h3>
+          <p class="text-xs text-slate-600 mt-0.5">Cole este comando no <strong>SQL Editor</strong> do seu painel Supabase e clique em <strong>Run</strong>:</p>
+        </div>
+        <button type="button" onclick="fecharModalSqlSupabase()" class="p-1.5 rounded-lg text-slate-400 hover:text-slate-700">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <pre id="codigo-sql-supabase" class="bg-dark-950 text-zap-300 p-4 rounded-2xl text-xs overflow-x-auto leading-relaxed font-mono select-all">CREATE TABLE IF NOT EXISTS public.clientenozap_state (
+  id TEXT PRIMARY KEY,
+  payload JSONB NOT NULL,
+  updated_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+ALTER TABLE public.clientenozap_state DISABLE ROW LEVEL SECURITY;</pre>
+
+      <div class="flex items-center justify-end gap-2 pt-2">
+        <button type="button" onclick="copiarSqlSupabase()" class="px-4 py-2.5 rounded-xl bg-zap-600 hover:bg-zap-700 text-white font-display font-extrabold text-xs inline-flex items-center gap-1.5 shadow">
+          <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+          <span>Copiar SQL</span>
+        </button>
+        <button type="button" onclick="fecharModalSqlSupabase()" class="px-4 py-2.5 rounded-xl border border-slate-300 text-slate-700 font-display font-bold text-xs">
+          Fechar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast de Notificação Rápida -->
+  <div id="toast-notificacao" class="hidden fixed bottom-5 right-5 z-50 bg-dark-900 text-white px-4 py-3.5 rounded-2xl shadow-2xl border border-slate-700 items-center gap-2.5 max-w-sm">
     <i data-lucide="check-circle-2" class="w-4 h-4 text-zap-400 shrink-0"></i>
-    <span id="toast-mensagem"></span>
+    <span id="toast-mensagem" class="text-xs sm:text-sm font-semibold"></span>
   </div>
 
   <!-- ===================================================================== -->
-  <!-- SCRIPT PRINCIPAL DA APLICAÇÃO (CONECTADO AO SUPABASE + REALTIME)      -->
+  <!-- SCRIPT PRINCIPAL DA APLICAÇÃO                                         -->
   <!-- ===================================================================== -->
   <script type="module">
     const WHATSAPP_GESTOR = '5591980789170';
-
-    // Proteção contra varredura simples de robôs (chaves codificadas em Base64)
-    const SB_ENCODED_URL = '';
-    const SB_ENCODED_KEY = '';
-
-    function decodificarSegredo(b64) {
-      if (!b64 || typeof b64 !== 'string') return '';
-      try {
-        return atob(b64.trim());
-      } catch (_) {
-        return '';
-      }
-    }
-
-    function codificarSegredo(texto) {
-      if (!texto || typeof texto !== 'string') return '';
-      try {
-        return btoa(texto.trim());
-      } catch (_) {
-        return '';
-      }
-    }
-
-    const CACHE_SUPABASE_KEY = 'clientenozap_sb_cache_v1';
+    const STORAGE_KEY = 'clientenozap_db_v13_prod';
 
     let adminLogado = false;
-    let supabaseAtivo = false;
-    let supabaseUrlAtual = decodificarSegredo(SB_ENCODED_URL);
-    let supabaseKeyAtual = decodificarSegredo(SB_ENCODED_KEY);
-    let realtimeSocket = null;
-    let syncIntervalId = null;
-
     let telaAtual = 'vendas';
     let abaAdminAtual = 'interessados';
     let profissionalAtualId = null;
     let htmlExternoTemporario = '';
-    let proIdPendenteAbertura = null;
 
     const PACOTES = {
-      '7dias': { modo: 'M1', titulo: 'Você Responde no Zap — 7 Dias para Testar', preco: 'R$ 127', valorNumerico: 127, dias: 7 },
-      '15dias': { modo: 'M1', titulo: 'Você Responde no Zap — 15 Dias Direto', preco: 'R$ 197', valorNumerico: 197, dias: 15 },
-      '30dias': { modo: 'M1', titulo: 'Você Responde no Zap — 30 Dias Mês Inteiro', preco: 'R$ 347', valorNumerico: 347, dias: 30 },
-      'agenda': { modo: 'M2', titulo: 'Agenda na Mão — 15 Dias Pré-Agendado', preco: 'R$ 397', valorNumerico: 397, dias: 15 }
+      '7dias': {
+        modo: 'M1',
+        titulo: 'Você Responde no Zap — 7 Dias para Testar',
+        preco: 'R$ 127',
+        valorNumerico: 127,
+        dias: 7
+      },
+      '15dias': {
+        modo: 'M1',
+        titulo: 'Você Responde no Zap — 15 Dias Direto',
+        preco: 'R$ 197',
+        valorNumerico: 197,
+        dias: 15
+      },
+      '30dias': {
+        modo: 'M1',
+        titulo: 'Você Responde no Zap — 30 Dias Mês Inteiro',
+        preco: 'R$ 347',
+        valorNumerico: 347,
+        dias: 30
+      },
+      'agenda': {
+        modo: 'M2',
+        titulo: 'Agenda na Mão — 15 Dias Pré-Agendado',
+        preco: 'R$ 397',
+        valorNumerico: 397,
+        dias: 15
+      }
     };
 
     const TEMPLATES_VITALLY = ['editorial-dark', 'clean-studio', 'bold-pro', 'soft-craft'];
@@ -1462,315 +1525,274 @@
       config: {
         gestorWhatsapp: WHATSAPP_GESTOR,
         adminEmail: 'admin@clientenozap.com.br',
-        adminSenha: '123456',
+        adminSenha: 'Vitally@2026!',
         geminiApiKey: '',
-        supabaseUrlB64: SB_ENCODED_URL,
-        supabaseKeyB64: SB_ENCODED_KEY
+        supabaseUrl: '',
+        supabaseAnonKey: ''
       },
-      profissionais: JSON.parse(JSON.stringify(PROFISSIONAIS_INICIAIS)),
-      interessados: JSON.parse(JSON.stringify(INTERESSADOS_INICIAIS)),
-      entregas: JSON.parse(JSON.stringify(ENTREGAS_INICIAIS))
+      profissionais: [],
+      interessados: [],
+      entregas: []
     };
 
-    function salvarCacheLocal() {
-      try {
-        localStorage.setItem(CACHE_SUPABASE_KEY, JSON.stringify({
-          config: db.config,
-          profissionais: db.profissionais,
-          interessados: db.interessados,
-          entregas: db.entregas
-        }));
-      } catch (_) {}
+    let syncTimer = null;
+
+    function obterCredenciaisSupabase() {
+      const url = ((db.config && db.config.supabaseUrl) || '').trim().replace(/\/+$/, '');
+      const key = ((db.config && db.config.supabaseAnonKey) || '').trim();
+      return { url, key, ativo: Boolean(url && key) };
     }
 
-    function carregarCacheLocal() {
+    function atualizarIndicadoresNuvem(estado = 'local', detalhe = '') {
+      const badgeTopo = document.getElementById('badge-status-nuvem');
+      const badgeForm = document.getElementById('badge-status-supabase-form');
+
+      if (estado === 'conectado') {
+        if (badgeTopo) {
+          badgeTopo.className = 'cursor-pointer inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-zap-100 text-zap-800 text-[11px] font-extrabold transition';
+          badgeTopo.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-zap-600"></span><span>Supabase Sincronizado</span>`;
+        }
+        if (badgeForm) {
+          badgeForm.className = 'px-2.5 py-0.5 rounded-full text-[11px] font-extrabold bg-zap-100 text-zap-800';
+          badgeForm.textContent = '✓ Conectado na Nuvem';
+        }
+      } else if (estado === 'sincronizando') {
+        if (badgeTopo) {
+          badgeTopo.className = 'cursor-pointer inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800 text-[11px] font-extrabold transition';
+          badgeTopo.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-ping"></span><span>Sincronizando...</span>`;
+        }
+      } else if (estado === 'erro') {
+        if (badgeTopo) {
+          badgeTopo.className = 'cursor-pointer inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-red-100 text-red-700 text-[11px] font-extrabold transition';
+          badgeTopo.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-red-600"></span><span>Erro Supabase ${detalhe ? `(${detalhe})` : ''}</span>`;
+        }
+        if (badgeForm) {
+          badgeForm.className = 'px-2.5 py-0.5 rounded-full text-[11px] font-extrabold bg-red-100 text-red-700';
+          badgeForm.textContent = `✕ Falha (${detalhe || 'Verifique URL/Chave'})`;
+        }
+      } else {
+        if (badgeTopo) {
+          badgeTopo.className = 'cursor-pointer inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-slate-200 text-slate-700 text-[11px] font-extrabold transition';
+          badgeTopo.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-slate-500"></span><span>Armazenamento Local</span>`;
+        }
+        if (badgeForm) {
+          badgeForm.className = 'px-2.5 py-0.5 rounded-full text-[11px] font-extrabold bg-slate-200 text-slate-700';
+          badgeForm.textContent = 'Modo Local (Offline)';
+        }
+      }
+    }
+
+    async function enviarEstadoParaSupabase(notificarSucesso = false) {
+      const { url, key, ativo } = obterCredenciaisSupabase();
+      if (!ativo) {
+        atualizarIndicadoresNuvem('local');
+        return false;
+      }
+
+      atualizarIndicadoresNuvem('sincronizando');
+      const payloadSeguro = {
+        config: {
+          gestorWhatsapp: db.config.gestorWhatsapp || WHATSAPP_GESTOR,
+          adminEmail: db.config.adminEmail || 'admin@clientenozap.com.br',
+          adminSenha: db.config.adminSenha || '123456',
+          geminiApiKey: db.config.geminiApiKey || ''
+        },
+        profissionais: db.profissionais,
+        interessados: db.interessados,
+        entregas: db.entregas
+      };
+
       try {
-        const bruto = localStorage.getItem(CACHE_SUPABASE_KEY);
-        if (!bruto) return false;
-        const parsed = JSON.parse(bruto);
+        const resp = await fetch(`${url}/rest/v1/clientenozap_state?on_conflict=id`, {
+          method: 'POST',
+          headers: {
+            'apikey': key,
+            'Authorization': `Bearer ${key}`,
+            'Content-Type': 'application/json',
+            'Prefer': 'resolution=merge-duplicates,return=minimal'
+          },
+          body: JSON.stringify([{
+            id: 'main',
+            payload: payloadSeguro,
+            updated_at: new Date().toISOString()
+          }])
+        });
+
+        if (resp.ok) {
+          atualizarIndicadoresNuvem('conectado');
+          if (notificarSucesso) mostrarToast('Dados sincronizados com o Supabase!');
+          return true;
+        } else {
+          const errText = await resp.text().catch(() => '');
+          const motivo = resp.status === 404 ? 'Tabela não criada' : `HTTP ${resp.status}`;
+          atualizarIndicadoresNuvem('erro', motivo);
+          if (notificarSucesso) {
+            mostrarToast(resp.status === 404
+              ? 'Tabela "clientenozap_state" não encontrada. Clique em "Ver SQL da Tabela".'
+              : `Erro Supabase (${resp.status}): ${errText.slice(0, 60)}`);
+          }
+          return false;
+        }
+      } catch (_) {
+        atualizarIndicadoresNuvem('erro', 'Sem rede');
+        if (notificarSucesso) mostrarToast('Não foi possível alcançar a URL do Supabase.');
+        return false;
+      }
+    }
+
+    async function carregarEstadoDoSupabase(notificar = false) {
+      const { url, key, ativo } = obterCredenciaisSupabase();
+      if (!ativo) {
+        atualizarIndicadoresNuvem('local');
+        return false;
+      }
+
+      atualizarIndicadoresNuvem('sincronizando');
+      try {
+        const resp = await fetch(`${url}/rest/v1/clientenozap_state?id=eq.main&select=payload,updated_at`, {
+          method: 'GET',
+          headers: {
+            'apikey': key,
+            'Authorization': `Bearer ${key}`,
+            'Accept': 'application/json'
+          }
+        });
+
+        if (!resp.ok) {
+          const motivo = resp.status === 404 ? 'Tabela não criada' : `HTTP ${resp.status}`;
+          atualizarIndicadoresNuvem('erro', motivo);
+          if (notificar && resp.status === 404) {
+            mostrarToast('Crie a tabela no Supabase usando o botão "Ver SQL da Tabela".');
+          }
+          return false;
+        }
+
+        const rows = await resp.json();
+        if (Array.isArray(rows) && rows.length > 0 && rows[0].payload) {
+          const cloud = rows[0].payload;
+          if (cloud.config) {
+            db.config = {
+              ...db.config,
+              ...cloud.config,
+              supabaseUrl: url,
+              supabaseAnonKey: key
+            };
+          }
+          if (Array.isArray(cloud.profissionais)) db.profissionais = cloud.profissionais;
+          if (Array.isArray(cloud.interessados)) db.interessados = cloud.interessados;
+          if (Array.isArray(cloud.entregas)) db.entregas = cloud.entregas;
+
+          try { localStorage.setItem(STORAGE_KEY, JSON.stringify(db)); } catch (_) {}
+          atualizarIndicadoresNuvem('conectado');
+          renderizarVitrine();
+          if (telaAtual === 'admin') renderizarPainelAdmin();
+          if (notificar) mostrarToast('Conectado! Dados carregados do Supabase.');
+          return true;
+        } else {
+          return await enviarEstadoParaSupabase(notificar);
+        }
+      } catch (_) {
+        atualizarIndicadoresNuvem('erro', 'Rede');
+        return false;
+      }
+    }
+
+    function salvarBancoLocal(sincronizarNuvem = true) {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(db));
+      } catch (_) {}
+
+      if (sincronizarNuvem && obterCredenciaisSupabase().ativo) {
+        clearTimeout(syncTimer);
+        syncTimer = setTimeout(() => {
+          enviarEstadoParaSupabase(false);
+        }, 400);
+      }
+    }
+
+    function carregarBancoLocal() {
+      try {
+        const salvo = localStorage.getItem(STORAGE_KEY);
+        if (!salvo) {
+          salvarBancoLocal(false);
+          return;
+        }
+        const parsed = JSON.parse(salvo);
         if (parsed && Array.isArray(parsed.profissionais)) {
           db.config = { ...db.config, ...(parsed.config || {}) };
           db.profissionais = parsed.profissionais;
           db.interessados = Array.isArray(parsed.interessados) ? parsed.interessados : [];
           db.entregas = Array.isArray(parsed.entregas) ? parsed.entregas : [];
-          return true;
         }
       } catch (_) {}
-      return false;
     }
-
-    function atualizarBadgeNuvem(conectado) {
-      const badge = document.getElementById('badge-status-nuvem');
-      if (!badge) return;
-      if (conectado) {
-        badge.className = 'inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-zap-100 text-zap-800 text-[11px] font-extrabold';
-        badge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-zap-600"></span><span>Supabase Conectado</span>`;
-      } else {
-        badge.className = 'inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-800 text-[11px] font-extrabold';
-        badge.innerHTML = `<span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span><span>Aguardando Chaves Supabase</span>`;
-      }
-    }
-
-    // =====================================================================
-    // CAMADA DE PERSISTÊNCIA SUPABASE (REST + REALTIME WEBSOCKET)
-    // =====================================================================
-    function resolverCredenciaisSupabase() {
-      const urlCfg = decodificarSegredo(db.config?.supabaseUrlB64 || '');
-      const keyCfg = decodificarSegredo(db.config?.supabaseKeyB64 || '');
-      const url = (urlCfg || decodificarSegredo(SB_ENCODED_URL) || '').replace(/\/+$/, '');
-      const key = (keyCfg || decodificarSegredo(SB_ENCODED_KEY) || '').trim();
-      supabaseUrlAtual = url;
-      supabaseKeyAtual = key;
-      return Boolean(url && key);
-    }
-
-    async function sbRequest(tabela, method = 'GET', queryOrBody = null, extraHeaders = {}) {
-      if (!resolverCredenciaisSupabase()) return null;
-      let url = `${supabaseUrlAtual}/rest/v1/${tabela}`;
-      const headers = {
-        'apikey': supabaseKeyAtual,
-        'Authorization': `Bearer ${supabaseKeyAtual}`,
-        'Content-Type': 'application/json',
-        ...extraHeaders
-      };
-
-      const options = { method, headers };
-
-      if ((method === 'GET' || method === 'DELETE') && typeof queryOrBody === 'string') {
-        url += queryOrBody;
-      } else if ((method === 'POST' || method === 'PATCH') && queryOrBody !== null) {
-        options.body = JSON.stringify(queryOrBody);
-      }
-
-      const resp = await fetch(url, options);
-      if (!resp.ok) {
-        const erroTexto = await resp.text().catch(() => '');
-        throw new Error(`Supabase ${method} ${tabela} [${resp.status}]: ${erroTexto}`);
-      }
-      if (method === 'GET') {
-        return await resp.json();
-      }
-      return true;
-    }
-
-    async function sbUpsertRow(tabela, id, dadosObj, criadoEm = Date.now()) {
-      return await sbRequest(
-        tabela,
-        'POST',
-        { id, dados: dadosObj, criado_em: Number(criadoEm) || Date.now() },
-        { 'Prefer': 'resolution=merge-duplicates,return=minimal' }
-      );
-    }
-
-    async function sbDeleteRow(tabela, id) {
-      return await sbRequest(tabela, 'DELETE', `?id=eq.${encodeURIComponent(id)}`);
-    }
-
-    async function semearBancoInicialSupabase() {
-      if (!resolverCredenciaisSupabase()) return;
-      await sbUpsertRow('cnz_config', 'geral', {
-        gestorWhatsapp: db.config.gestorWhatsapp || WHATSAPP_GESTOR,
-        adminEmail: db.config.adminEmail || 'admin@clientenozap.com.br',
-        adminSenha: db.config.adminSenha || '123456',
-        geminiApiKey: db.config.geminiApiKey || ''
-      }, 1700000000);
-
-      for (const pro of PROFISSIONAIS_INICIAIS) {
-        await sbUpsertRow('cnz_profissionais', pro.id, pro, pro.criadoEm);
-      }
-      for (const item of INTERESSADOS_INICIAIS) {
-        await sbUpsertRow('cnz_interessados', item.id, item, item.criadoEm);
-      }
-      for (const ent of ENTREGAS_INICIAIS) {
-        await sbUpsertRow('cnz_entregas', ent.id, ent, ent.criadoEm);
+    function alternarVisibilidadeCampo(inputId, iconId) {
+      const input = document.getElementById(inputId);
+      const icone = document.getElementById(iconId);
+      if (!input) return;
+      const ehPassword = input.type === 'password';
+      input.type = ehPassword ? 'text' : 'password';
+      if (icone) {
+        icone.setAttribute('data-lucide', ehPassword ? 'eye-off' : 'eye');
+        atualizarIcones();
       }
     }
 
-    async function carregarTudoDoSupabase() {
-      if (!resolverCredenciaisSupabase()) {
-        supabaseAtivo = false;
-        atualizarBadgeNuvem(false);
-        return false;
+    function alternarVisibilidadeChaveIA() {
+      alternarVisibilidadeCampo('config-gemini-key', 'icone-olho-chave-ia');
+    }
+
+    async function testarESincronizarSupabase() {
+      const novaUrl = (document.getElementById('config-supabase-url')?.value || '').trim().replace(/\/+$/, '');
+      const novaKey = (document.getElementById('config-supabase-key')?.value || '').trim();
+
+      if (!novaUrl || !novaKey) {
+        mostrarToast('Preencha a Project URL e a Anon Public Key do Supabase.');
+        return;
       }
 
-      try {
-        const [rowsPro, rowsInt, rowsEnt, rowsCfg] = await Promise.all([
-          sbRequest('cnz_profissionais', 'GET', '?select=id,dados,criado_em'),
-          sbRequest('cnz_interessados', 'GET', '?select=id,dados,criado_em'),
-          sbRequest('cnz_entregas', 'GET', '?select=id,dados,criado_em'),
-          sbRequest('cnz_config', 'GET', '?id=eq.geral&select=id,dados')
-        ]);
+      db.config.supabaseUrl = novaUrl;
+      db.config.supabaseAnonKey = novaKey;
+      salvarBancoLocal(false);
 
-        const temDadosNoBanco =
-          (Array.isArray(rowsPro) && rowsPro.length > 0) ||
-          (Array.isArray(rowsCfg) && rowsCfg.length > 0);
+      const btn = document.getElementById('btn-testar-supabase');
+      const htmlOriginal = btn ? btn.innerHTML : '';
+      if (btn) {
+        btn.disabled = true;
+        btn.innerHTML = `<i data-lucide="loader-2" class="w-3.5 h-3.5 animate-spin"></i><span>Conectando...</span>`;
+        atualizarIcones();
+      }
 
-        if (!temDadosNoBanco) {
-          await semearBancoInicialSupabase();
-          supabaseAtivo = true;
-          atualizarBadgeNuvem(true);
-          salvarCacheLocal();
-          return true;
-        }
+      await carregarEstadoDoSupabase(true);
 
-        if (Array.isArray(rowsCfg) && rowsCfg[0] && rowsCfg[0].dados) {
-          db.config = {
-            ...db.config,
-            ...rowsCfg[0].dados,
-            supabaseUrlB64: db.config.supabaseUrlB64 || SB_ENCODED_URL,
-            supabaseKeyB64: db.config.supabaseKeyB64 || SB_ENCODED_KEY
-          };
-        }
-
-        if (Array.isArray(rowsPro)) {
-          db.profissionais = rowsPro
-            .map(r => ({ ...(r.dados || {}), id: r.id, criadoEm: (r.dados && r.dados.criadoEm) || r.criado_em || 0 }))
-            .sort((a, b) => (Number(b.criadoEm) || 0) - (Number(a.criadoEm) || 0));
-        }
-
-        if (Array.isArray(rowsInt)) {
-          db.interessados = rowsInt
-            .map(r => ({ ...(r.dados || {}), id: r.id, criadoEm: (r.dados && r.dados.criadoEm) || r.criado_em || 0 }))
-            .sort((a, b) => (Number(b.criadoEm) || 0) - (Number(a.criadoEm) || 0));
-        }
-
-        if (Array.isArray(rowsEnt)) {
-          db.entregas = rowsEnt
-            .map(r => ({ ...(r.dados || {}), id: r.id, criadoEm: (r.dados && r.dados.criadoEm) || r.criado_em || 0 }))
-            .sort((a, b) => (Number(b.criadoEm) || 0) - (Number(a.criadoEm) || 0));
-        }
-
-        supabaseAtivo = true;
-        atualizarBadgeNuvem(true);
-        salvarCacheLocal();
-        renderizarVitrine();
-        if (telaAtual === 'admin') renderizarPainelAdmin();
-        if (proIdPendenteAbertura) {
-          const alvo = proIdPendenteAbertura;
-          proIdPendenteAbertura = null;
-          abrirPaginaProfissional(alvo);
-        }
-        return true;
-      } catch (err) {
-        console.error('Erro ao sincronizar com Supabase:', err);
-        supabaseAtivo = false;
-        atualizarBadgeNuvem(false);
-        return false;
+      if (btn) {
+        btn.disabled = false;
+        btn.innerHTML = htmlOriginal;
+        atualizarIcones();
       }
     }
 
-    function iniciarRealtimeSupabase() {
-      if (realtimeSocket) {
-        try { realtimeSocket.close(); } catch (_) {}
-        realtimeSocket = null;
-      }
-      if (syncIntervalId) {
-        clearInterval(syncIntervalId);
-        syncIntervalId = null;
-      }
-
-      if (!resolverCredenciaisSupabase()) return;
-
-      syncIntervalId = setInterval(() => {
-        if (!document.hidden && resolverCredenciaisSupabase()) {
-          carregarTudoDoSupabase().catch(() => {});
-        }
-      }, 12000);
-
-      try {
-        const wsBase = supabaseUrlAtual.replace(/^https?:\/\//i, 'wss://');
-        const wsUrl = `${wsBase}/realtime/v1/websocket?apikey=${encodeURIComponent(supabaseKeyAtual)}&vsn=1.0.0`;
-        const ws = new WebSocket(wsUrl);
-        realtimeSocket = ws;
-
-        ws.onopen = () => {
-          ['cnz_profissionais', 'cnz_interessados', 'cnz_entregas', 'cnz_config'].forEach((tbl, idx) => {
-            ws.send(JSON.stringify({
-              topic: `realtime:public:${tbl}`,
-              event: 'phx_join',
-              payload: { config: { broadcast: { self: false }, presence: { key: '' } } },
-              ref: String(idx + 1)
-            }));
-          });
-        };
-
-        ws.onmessage = (event) => {
-          try {
-            const msg = JSON.parse(event.data);
-            if (msg && (msg.event === 'INSERT' || msg.event === 'UPDATE' || msg.event === 'DELETE' || msg.event === 'postgres_changes')) {
-              carregarTudoDoSupabase().catch(() => {});
-            }
-          } catch (_) {}
-        };
-      } catch (_) {}
-    }
-
-    async function salvarProfissionalCloud(proObj) {
-      const idx = db.profissionais.findIndex(p => p.id === proObj.id);
-      if (idx >= 0) db.profissionais[idx] = proObj;
-      else db.profissionais.unshift(proObj);
-      salvarCacheLocal();
-
-      if (resolverCredenciaisSupabase()) {
-        try {
-          await sbUpsertRow('cnz_profissionais', proObj.id, proObj, proObj.criadoEm || Date.now());
-          supabaseAtivo = true;
-          atualizarBadgeNuvem(true);
-        } catch (err) {
-          console.error('Erro ao salvar profissional no Supabase:', err);
-        }
+    function abrirModalSqlSupabase() {
+      const modal = document.getElementById('modal-sql-supabase');
+      if (modal) {
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        atualizarIcones();
       }
     }
 
-    async function removerProfissionalCloud(id) {
-      db.profissionais = db.profissionais.filter(p => p.id !== id);
-      salvarCacheLocal();
-      if (resolverCredenciaisSupabase()) {
-        try { await sbDeleteRow('cnz_profissionais', id); } catch (_) {}
+    function fecharModalSqlSupabase() {
+      const modal = document.getElementById('modal-sql-supabase');
+      if (modal) {
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
       }
     }
 
-    async function salvarInteressadoCloud(itemObj) {
-      db.interessados.unshift(itemObj);
-      salvarCacheLocal();
-      if (resolverCredenciaisSupabase()) {
-        try { await sbUpsertRow('cnz_interessados', itemObj.id, itemObj, itemObj.criadoEm || Date.now()); } catch (_) {}
-      }
-    }
-
-    async function removerInteressadoCloud(id) {
-      db.interessados = db.interessados.filter(i => i.id !== id);
-      salvarCacheLocal();
-      if (resolverCredenciaisSupabase()) {
-        try { await sbDeleteRow('cnz_interessados', id); } catch (_) {}
-      }
-    }
-
-    async function salvarEntregaCloud(entObj) {
-      db.entregas.unshift(entObj);
-      salvarCacheLocal();
-      if (resolverCredenciaisSupabase()) {
-        try { await sbUpsertRow('cnz_entregas', entObj.id, entObj, entObj.criadoEm || Date.now()); } catch (_) {}
-      }
-    }
-
-    async function salvarConfigCloud(cfgObj) {
-      db.config = { ...db.config, ...cfgObj };
-      salvarCacheLocal();
-      if (resolverCredenciaisSupabase()) {
-        try {
-          await sbUpsertRow('cnz_config', 'geral', {
-            gestorWhatsapp: db.config.gestorWhatsapp || WHATSAPP_GESTOR,
-            adminEmail: db.config.adminEmail || 'admin@clientenozap.com.br',
-            adminSenha: db.config.adminSenha || '123456',
-            geminiApiKey: db.config.geminiApiKey || ''
-          }, 1700000000);
-          supabaseAtivo = true;
-          atualizarBadgeNuvem(true);
-        } catch (err) {
-          console.error('Erro ao salvar config no Supabase:', err);
-        }
-      }
+    function copiarSqlSupabase() {
+      const sql = document.getElementById('codigo-sql-supabase')?.textContent || '';
+      copiarTextoParaClipboard(sql);
+      mostrarToast('Comando SQL copiado! Cole no SQL Editor do Supabase.');
     }
 
     function atualizarIcones() {
@@ -1865,12 +1887,30 @@
       });
 
       if (contador) {
-        contador.textContent = `${filtrados.length} ${filtrados.length === 1 ? 'profissional disponível' : 'profissionais disponíveis'} na região`;
+        contador.textContent = db.profissionais.length === 0
+          ? 'Vitrine em preparação • Vagas abertas para profissionais da região'
+          : `${filtrados.length} ${filtrados.length === 1 ? 'profissional disponível' : 'profissionais disponíveis'} na região`;
       }
 
       if (filtrados.length === 0) {
         grid.innerHTML = '';
-        if (vazia) vazia.classList.remove('hidden');
+        if (vazia) {
+          vazia.classList.remove('hidden');
+          const tituloVazia = document.getElementById('vitrine-vazia-titulo');
+          const descVazia = document.getElementById('vitrine-vazia-desc');
+          const btnLimpar = document.getElementById('btn-vitrine-limpar-filtro');
+
+          if (db.profissionais.length === 0) {
+            if (tituloVazia) tituloVazia.textContent = 'Estamos selecionando os primeiros profissionais da região!';
+            if (descVazia) descVazia.textContent = 'Em breve você poderá encontrar aqui prestadores verificados em Belém, Ananindeua, Icoaraci, Mosqueiro, Marituba, Benevides e Castanhal.';
+            if (btnLimpar) btnLimpar.classList.add('hidden');
+          } else {
+            if (tituloVazia) tituloVazia.textContent = 'Nenhum profissional encontrado com esse filtro';
+            if (descVazia) descVazia.textContent = 'Tente limpar a busca ou selecionar todas as cidades.';
+            if (btnLimpar) btnLimpar.classList.remove('hidden');
+          }
+        }
+        atualizarIcones();
         return;
       }
 
@@ -2034,7 +2074,7 @@
 
       if (p.customHtml && p.customHtml.trim().length > 50) {
         const htmlIntegrado = injetarPonteNoHtmlExterno(p.customHtml, p.id);
-        container.innerHTML = `<iframe id="iframe-lp-externa" title="Página de ${p.nome}" class="w-full h-[84vh] border-0 bg-white block"></iframe>`;
+        container.innerHTML = `<iframe id="iframe-lp-externa" title="Página de ${p.nome}" class="w-full h-[86vh] border-0 bg-white block"></iframe>`;
         const iframe = document.getElementById('iframe-lp-externa');
         if (iframe) iframe.srcdoc = htmlIntegrado;
         const modal = document.getElementById('modal-pagina-profissional');
@@ -2684,7 +2724,7 @@
       }
     }
 
-    async function confirmarPonteRastreada(e) {
+    function confirmarPonteRastreada(e) {
       e.preventDefault();
       const id = document.getElementById('ponte-pro-id').value;
       const p = db.profissionais.find(item => item.id === id);
@@ -2694,7 +2734,7 @@
       const zapCliente = document.getElementById('ponte-zap-cliente').value.trim();
       const pedido = document.getElementById('ponte-pedido-cliente').value.trim();
 
-      await salvarEntregaCloud({
+      db.entregas.unshift({
         id: 'LED-' + Date.now(),
         profissionalId: p.id,
         profissionalNome: p.nome,
@@ -2704,6 +2744,7 @@
         dataHora: new Date().toLocaleString('pt-BR'),
         criadoEm: Date.now()
       });
+      salvarBancoLocal();
       fecharPonteRastreada();
 
       const textoZap = encodeURIComponent(
@@ -2725,7 +2766,7 @@
       atualizarIcones();
     }
 
-    async function enviarConversaoDiretaLP(e, id) {
+    function enviarConversaoDiretaLP(e, id) {
       e.preventDefault();
       const p = db.profissionais.find(item => item.id === id);
       if (!p) return;
@@ -2734,7 +2775,7 @@
       const zapCliente = document.getElementById('lp-inline-zap').value.trim();
       const pedido = document.getElementById('lp-inline-pedido').value.trim();
 
-      await salvarEntregaCloud({
+      db.entregas.unshift({
         id: 'LED-' + Date.now(),
         profissionalId: p.id,
         profissionalNome: p.nome,
@@ -2744,6 +2785,7 @@
         dataHora: new Date().toLocaleString('pt-BR'),
         criadoEm: Date.now()
       });
+      salvarBancoLocal();
       fecharPaginaProfissional();
 
       const textoZap = encodeURIComponent(
@@ -2833,7 +2875,7 @@
       }
     }
 
-    async function enviarPedidoWhatsApp(e) {
+    function enviarPedidoWhatsApp(e) {
       e.preventDefault();
       const nome = document.getElementById('campo-nome').value.trim();
       const zap = document.getElementById('campo-zap').value.trim();
@@ -2842,7 +2884,7 @@
       const chave = document.getElementById('campo-pacote').value;
       const info = PACOTES[chave];
 
-      await salvarInteressadoCloud({
+      db.interessados.unshift({
         id: 'INT-' + Date.now(),
         nome,
         whatsapp: zap,
@@ -2856,6 +2898,7 @@
         status: 'novo',
         criadoEm: Date.now()
       });
+      salvarBancoLocal();
 
       const zapDestino = (db.config && db.config.gestorWhatsapp) ? db.config.gestorWhatsapp : WHATSAPP_GESTOR;
 
@@ -2921,8 +2964,8 @@
       }
       const erroBox = document.getElementById('login-erro-box');
       if (erroBox) erroBox.classList.add('hidden');
-      document.getElementById('login-email').value = (db.config && db.config.adminEmail) || 'admin@clientenozap.com.br';
-      document.getElementById('login-senha').value = (db.config && db.config.adminSenha) || '123456';
+      document.getElementById('login-email').value = '';
+      document.getElementById('login-senha').value = '';
       const modal = document.getElementById('modal-login-admin');
       if (modal) {
         modal.classList.remove('hidden');
@@ -2951,37 +2994,13 @@
       }
     }
 
-    function alternarVisibilidadeChaveSb() {
-      const input = document.getElementById('config-supabase-key');
-      const icone = document.getElementById('icone-olho-chave-sb');
-      if (!input) return;
-      const ehPassword = input.type === 'password';
-      input.type = ehPassword ? 'text' : 'password';
-      if (icone) {
-        icone.setAttribute('data-lucide', ehPassword ? 'eye-off' : 'eye');
-        atualizarIcones();
-      }
-    }
-
-    function alternarVisibilidadeChaveIA() {
-      const input = document.getElementById('config-gemini-key');
-      const icone = document.getElementById('icone-olho-chave-ia');
-      if (!input) return;
-      const ehPassword = input.type === 'password';
-      input.type = ehPassword ? 'text' : 'password';
-      if (icone) {
-        icone.setAttribute('data-lucide', ehPassword ? 'eye-off' : 'eye');
-        atualizarIcones();
-      }
-    }
-
     function processarLoginAdmin(e) {
       e.preventDefault();
       const emailDigitado = (document.getElementById('login-email').value || '').trim().toLowerCase();
       const senhaDigitada = (document.getElementById('login-senha').value || '').trim();
 
       const emailValido = ((db.config && db.config.adminEmail) || 'admin@clientenozap.com.br').trim().toLowerCase();
-      const senhaValida = ((db.config && db.config.adminSenha) || '123456').trim();
+      const senhaValida = ((db.config && db.config.adminSenha) || 'Vitally@2026!').trim();
 
       if (emailDigitado === emailValido && senhaDigitada === senhaValida) {
         adminLogado = true;
@@ -3076,7 +3095,17 @@
 
       // Aba 2: Profissionais Ativos
       const listaAtivos = document.getElementById('lista-admin-ativos');
-      listaAtivos.innerHTML = db.profissionais.map(p => {
+      if (db.profissionais.length === 0) {
+        listaAtivos.className = 'space-y-4';
+        listaAtivos.innerHTML = `
+          <div class="bg-white rounded-2xl border border-slate-200 p-8 text-center space-y-3">
+            <p class="font-display font-bold text-slate-800">Nenhum profissional publicado na Vitrine ainda</p>
+            <p class="text-sm text-slate-500 max-w-md mx-auto">Clique em <strong>"+ Criar Página com IA"</strong> no topo do painel ou aprove um pedido na aba <strong>"Novos Pedidos"</strong> para publicar seu primeiro cliente real.</p>
+          </div>
+        `;
+      } else {
+        listaAtivos.className = 'grid grid-cols-1 md:grid-cols-2 gap-4';
+        listaAtivos.innerHTML = db.profissionais.map(p => {
         const qtdEntregas = db.entregas.filter(e => e.profissionalId === p.id).length;
         const ciclo = Number(p.ciclo) || 1;
         const diasRestantes = typeof p.diasRestantes === 'number' ? p.diasRestantes : 10;
@@ -3146,6 +3175,7 @@
           </div>
         `;
       }).join('');
+      }
 
       // Aba 3: Clientes Entregues
       const filtroEntregas = (document.getElementById('busca-admin-entregas')?.value || '').toLowerCase().trim();
@@ -3182,13 +3212,12 @@
         `;
       }
 
-      // Aba 4: Configurações, Supabase & Chave IA
-      const urlDecodificada = decodificarSegredo(db.config?.supabaseUrlB64 || '') || decodificarSegredo(SB_ENCODED_URL);
-      const keyDecodificada = decodificarSegredo(db.config?.supabaseKeyB64 || '') || decodificarSegredo(SB_ENCODED_KEY);
+      // Aba 4: Configurações, Supabase e Chave IA
       const inputSbUrl = document.getElementById('config-supabase-url');
       const inputSbKey = document.getElementById('config-supabase-key');
-      if (inputSbUrl) inputSbUrl.value = urlDecodificada;
-      if (inputSbKey) inputSbKey.value = keyDecodificada;
+      if (inputSbUrl) inputSbUrl.value = (db.config && db.config.supabaseUrl) || '';
+      if (inputSbKey) inputSbKey.value = (db.config && db.config.supabaseAnonKey) || '';
+      atualizarIndicadoresNuvem(obterCredenciaisSupabase().ativo ? 'conectado' : 'local');
 
       const chaveSalva = (db.config && db.config.geminiApiKey) || '';
       const inputChaveIA = document.getElementById('config-gemini-key');
@@ -3206,12 +3235,12 @@
 
       document.getElementById('config-zap-gestor').value = (db.config && db.config.gestorWhatsapp) || WHATSAPP_GESTOR;
       document.getElementById('config-admin-email').value = (db.config && db.config.adminEmail) || 'admin@clientenozap.com.br';
-      document.getElementById('config-admin-senha').value = (db.config && db.config.adminSenha) || '123456';
+      document.getElementById('config-admin-senha').value = (db.config && db.config.adminSenha) || 'Vitally@2026!';
 
       atualizarIcones();
     }
 
-    async function ativarInteressado(id) {
+    function ativarInteressado(id) {
       const idx = db.interessados.findIndex(i => i.id === id);
       if (idx === -1) return;
       const item = db.interessados[idx];
@@ -3255,15 +3284,17 @@
         criadoEm: Date.now()
       };
 
-      await salvarProfissionalCloud(novoPro);
-      await removerInteressadoCloud(item.id);
+      db.profissionais.unshift(novoPro);
+      db.interessados = db.interessados.filter(i => i.id !== item.id);
+      salvarBancoLocal();
       renderizarPainelAdmin();
       renderizarVitrine();
       mostrarToast(`${novoPro.nome} ativado e publicado na Vitrine!`);
     }
 
-    async function removerInteressado(id) {
-      await removerInteressadoCloud(id);
+    function removerInteressado(id) {
+      db.interessados = db.interessados.filter(i => i.id !== id);
+      salvarBancoLocal();
       renderizarPainelAdmin();
       mostrarToast('Pedido removido da fila.');
     }
@@ -3653,31 +3684,62 @@
       document.getElementById('edit-pro-depoimento-autor').value = p.depoimentoAutor || '';
       document.getElementById('edit-pro-servicos').value = (p.servicos || []).join('\n');
 
-      const temaAtual = detectarCapaPorTexto(p.oficio);
-      const capaAtual = p.fotoUrl || temaAtual.fotoUrl;
-      document.getElementById('edit-pro-template').value = p.templateEstilo || 'editorial-dark';
-      document.getElementById('edit-pro-paleta').value = p.paletaCor || temaAtual.paletaCor || 'amber';
-      document.getElementById('edit-pro-foto').value = capaAtual;
-      document.getElementById('edit-pro-foto').dataset.corCapa = p.corCapa || temaAtual.corCapa;
-      atualizarPreviewCapaEditor(capaAtual);
-      renderizarGaleriaCapasEditor(capaAtual);
+      const tema = detectarCapaPorTexto(`${p.oficio} ${p.nome}`);
+      const fotoInicial = p.fotoUrl || tema.fotoUrl;
+      document.getElementById('edit-pro-template').value = p.templateEstilo || tema.templateEstilo || 'editorial-dark';
+      document.getElementById('edit-pro-paleta').value = p.paletaCor || tema.paletaCor || 'amber';
+      document.getElementById('edit-pro-foto').value = fotoInicial;
+      document.getElementById('edit-pro-foto').dataset.corCapa = p.corCapa || tema.corCapa;
+      atualizarPreviewCapaEditor(fotoInicial);
+      renderizarGaleriaCapasEditor(fotoInicial);
 
       document.getElementById('modal-editar-profissional').classList.remove('hidden');
       atualizarIcones();
     }
 
-    function atualizarStatusHtmlExternoEditor(texto) {
+    function atualizarStatusHtmlExternoEditor(textoStatus) {
       const statusEl = document.getElementById('status-html-externo');
-      const btnRem = document.getElementById('btn-remover-html-externo');
-      if (!statusEl || !btnRem) return;
-      if (texto) {
-        statusEl.textContent = `✓ ${texto}`;
-        statusEl.classList.remove('hidden');
-        btnRem.classList.remove('hidden');
+      const btnRemover = document.getElementById('btn-remover-html-externo');
+      if (statusEl) {
+        if (textoStatus) {
+          statusEl.textContent = textoStatus;
+          statusEl.classList.remove('hidden');
+        } else {
+          statusEl.textContent = '';
+          statusEl.classList.add('hidden');
+        }
+      }
+      if (btnRemover) {
+        btnRemover.classList.toggle('hidden', !textoStatus);
+      }
+    }
+
+    async function salvarConfiguracoesAdmin(e) {
+      e.preventDefault();
+      const novaSbUrl = (document.getElementById('config-supabase-url')?.value || '').trim().replace(/\/+$/, '');
+      const novaSbKey = (document.getElementById('config-supabase-key')?.value || '').trim();
+      const novaChaveIA = (document.getElementById('config-gemini-key')?.value || '').trim();
+      const novoZap = document.getElementById('config-zap-gestor').value.replace(/\D/g, '');
+      const novoEmail = document.getElementById('config-admin-email').value.trim();
+      const novaSenha = document.getElementById('config-admin-senha').value.trim();
+
+      db.config = {
+        ...db.config,
+        supabaseUrl: novaSbUrl,
+        supabaseAnonKey: novaSbKey,
+        geminiApiKey: novaChaveIA,
+        gestorWhatsapp: novoZap || WHATSAPP_GESTOR,
+        adminEmail: novoEmail || 'admin@clientenozap.com.br',
+        adminSenha: novaSenha || '123456'
+      };
+      salvarBancoLocal(false);
+      renderizarPainelAdmin();
+
+      if (novaSbUrl && novaSbKey) {
+        await enviarEstadoParaSupabase(true);
       } else {
-        statusEl.textContent = '';
-        statusEl.classList.add('hidden');
-        btnRem.classList.add('hidden');
+        atualizarIndicadoresNuvem('local');
+        mostrarToast('Configurações salvas!');
       }
     }
 
@@ -3721,56 +3783,11 @@ Estrutura obrigatória da página (padrão Vitally Studio):
       mostrarToast('Prompt Editorial padrão copiado!');
     }
 
-    function copiarSqlSupabase() {
-      const sqlScript = `-- Execute este SQL no SQL Editor do seu projeto Supabase:
-create table if not exists public.cnz_profissionais (
-  id text primary key,
-  dados jsonb not null,
-  criado_em bigint not null default 0
-);
-
-create table if not exists public.cnz_interessados (
-  id text primary key,
-  dados jsonb not null,
-  criado_em bigint not null default 0
-);
-
-create table if not exists public.cnz_entregas (
-  id text primary key,
-  dados jsonb not null,
-  criado_em bigint not null default 0
-);
-
-create table if not exists public.cnz_config (
-  id text primary key,
-  dados jsonb not null
-);
-
-alter table public.cnz_profissionais enable row level security;
-alter table public.cnz_interessados enable row level security;
-alter table public.cnz_entregas enable row level security;
-alter table public.cnz_config enable row level security;
-
-drop policy if exists "acesso_publico_pro" on public.cnz_profissionais;
-create policy "acesso_publico_pro" on public.cnz_profissionais for all using (true) with check (true);
-
-drop policy if exists "acesso_publico_int" on public.cnz_interessados;
-create policy "acesso_publico_int" on public.cnz_interessados for all using (true) with check (true);
-
-drop policy if exists "acesso_publico_ent" on public.cnz_entregas;
-create policy "acesso_publico_ent" on public.cnz_entregas for all using (true) with check (true);
-
-drop policy if exists "acesso_publico_cfg" on public.cnz_config;
-create policy "acesso_publico_cfg" on public.cnz_config for all using (true) with check (true);`;
-      copiarTextoParaClipboard(sqlScript);
-      mostrarToast('SQL das 4 tabelas Supabase copiado! Cole no SQL Editor do Supabase e clique em Run.');
-    }
-
     function fecharModalEditarPro() {
       document.getElementById('modal-editar-profissional').classList.add('hidden');
     }
 
-    async function persistirDadosFormularioPro() {
+    function persistirDadosFormularioPro() {
       const id = document.getElementById('edit-pro-id').value;
       const nome = document.getElementById('edit-pro-nome').value.trim();
       const whatsapp = '55' + document.getElementById('edit-pro-zap').value.replace(/\D/g, '').replace(/^55/, '');
@@ -3823,7 +3840,7 @@ create policy "acesso_publico_cfg" on public.cnz_config for all using (true) wit
         p.corCapa = corCapa;
         p.accentHex = accentHex;
         p.customHtml = htmlExternoTemporario || '';
-        await salvarProfissionalCloud(p);
+        salvarBancoLocal();
         return p.id;
       } else {
         const novoId = 'PRO-' + Date.now();
@@ -3859,24 +3876,25 @@ create policy "acesso_publico_cfg" on public.cnz_config for all using (true) wit
           customHtml: htmlExternoTemporario || '',
           criadoEm: Date.now()
         };
-        await salvarProfissionalCloud(novoObj);
+        db.profissionais.unshift(novoObj);
+        salvarBancoLocal();
         return novoId;
       }
     }
 
-    async function salvarEdicaoPro(e) {
+    function salvarEdicaoPro(e) {
       e.preventDefault();
-      await persistirDadosFormularioPro();
+      persistirDadosFormularioPro();
       fecharModalEditarPro();
       renderizarPainelAdmin();
       renderizarVitrine();
       mostrarToast('Página de vendas salva!');
     }
 
-    async function salvarEVisualizarPro() {
+    function salvarEVisualizarPro() {
       const form = document.querySelector('#modal-editar-profissional form');
       if (form && !form.reportValidity()) return;
-      const proId = await persistirDadosFormularioPro();
+      const proId = persistirDadosFormularioPro();
       fecharModalEditarPro();
       renderizarPainelAdmin();
       renderizarVitrine();
@@ -3927,7 +3945,7 @@ create policy "acesso_publico_cfg" on public.cnz_config for all using (true) wit
       modal.classList.remove('flex');
     }
 
-    async function confirmarRenovacaoPro(e) {
+    function confirmarRenovacaoPro(e) {
       e.preventDefault();
       const id = document.getElementById('renovar-pro-id').value;
       const p = db.profissionais.find(item => item.id === id);
@@ -3943,14 +3961,15 @@ create policy "acesso_publico_cfg" on public.cnz_config for all using (true) wit
       p.diasTotais = info.dias;
       p.diasRestantes = info.dias;
 
-      await salvarProfissionalCloud(p);
+      salvarBancoLocal();
       fecharModalRenovarPro();
       renderizarPainelAdmin();
       mostrarToast(`Renovação confirmada! ${p.nome} iniciou o Ciclo #${p.ciclo} (${info.dias} dias).`);
     }
 
-    async function removerProfissional(id) {
-      await removerProfissionalCloud(id);
+    function removerProfissional(id) {
+      db.profissionais = db.profissionais.filter(p => p.id !== id);
+      salvarBancoLocal();
       renderizarPainelAdmin();
       renderizarVitrine();
       mostrarToast('Profissional removido da Vitrine.');
@@ -3993,14 +4012,14 @@ create policy "acesso_publico_cfg" on public.cnz_config for all using (true) wit
       document.getElementById('modal-auditoria-profissional').classList.add('hidden');
     }
 
-    async function registrarEntregaManual(proId) {
+    function registrarEntregaManual(proId) {
       const p = db.profissionais.find(item => item.id === proId);
       if (!p) return;
       const nomesTeste = ['João Pereira', 'Carla Mendes', 'Roberto Lima', 'Fernanda Souza', 'Paulo Henrique'];
       const nomeAleatorio = nomesTeste[Math.floor(Math.random() * nomesTeste.length)];
       const numAleatorio = `(91) 98${Math.floor(100 + Math.random() * 899)}-${Math.floor(1000 + Math.random() * 8999)}`;
 
-      await salvarEntregaCloud({
+      db.entregas.unshift({
         id: 'LED-' + Date.now(),
         profissionalId: p.id,
         profissionalNome: p.nome,
@@ -4010,55 +4029,17 @@ create policy "acesso_publico_cfg" on public.cnz_config for all using (true) wit
         dataHora: new Date().toLocaleString('pt-BR'),
         criadoEm: Date.now()
       });
+      salvarBancoLocal();
       abrirAuditoriaPro(proId);
       renderizarPainelAdmin();
       mostrarToast('Cliente de teste registrado!');
     }
 
-    async function salvarConfiguracoesAdmin(e) {
-      e.preventDefault();
-      const novaSbUrl = (document.getElementById('config-supabase-url')?.value || '').trim().replace(/\/+$/, '');
-      const novaSbKey = (document.getElementById('config-supabase-key')?.value || '').trim();
-      const novaChaveIA = (document.getElementById('config-gemini-key')?.value || '').trim();
-      const novoZap = document.getElementById('config-zap-gestor').value.replace(/\D/g, '');
-      const novoEmail = document.getElementById('config-admin-email').value.trim();
-      const novaSenha = document.getElementById('config-admin-senha').value.trim();
-
-      const novoUrlB64 = novaSbUrl ? codificarSegredo(novaSbUrl) : (db.config.supabaseUrlB64 || '');
-      const novoKeyB64 = novaSbKey ? codificarSegredo(novaSbKey) : (db.config.supabaseKeyB64 || '');
-
-      await salvarConfigCloud({
-        supabaseUrlB64: novoUrlB64,
-        supabaseKeyB64: novoKeyB64,
-        geminiApiKey: novaChaveIA,
-        gestorWhatsapp: novoZap || WHATSAPP_GESTOR,
-        adminEmail: novoEmail || 'admin@clientenozap.com.br',
-        adminSenha: novaSenha || '123456'
-      });
-
-      if (resolverCredenciaisSupabase()) {
-        iniciarRealtimeSupabase();
-        const ok = await carregarTudoDoSupabase();
-        mostrarToast(ok ? 'Supabase conectado e sincronizado!' : 'Configurações salvas! Verifique se o SQL das tabelas foi executado no Supabase.');
-      } else {
-        mostrarToast('Configurações salvas!');
-      }
-      renderizarPainelAdmin();
-    }
-
-    async function restaurarDadosDemonstracao() {
-      if (resolverCredenciaisSupabase()) {
-        for (const p of db.profissionais) await sbDeleteRow('cnz_profissionais', p.id).catch(() => {});
-        for (const i of db.interessados) await sbDeleteRow('cnz_interessados', i.id).catch(() => {});
-        for (const ent of db.entregas) await sbDeleteRow('cnz_entregas', ent.id).catch(() => {});
-        await semearBancoInicialSupabase();
-        await carregarTudoDoSupabase();
-      } else {
-        db.profissionais = JSON.parse(JSON.stringify(PROFISSIONAIS_INICIAIS));
-        db.interessados = JSON.parse(JSON.stringify(INTERESSADOS_INICIAIS));
-        db.entregas = JSON.parse(JSON.stringify(ENTREGAS_INICIAIS));
-        salvarCacheLocal();
-      }
+    function restaurarDadosDemonstracao() {
+      db.profissionais = JSON.parse(JSON.stringify(PROFISSIONAIS_INICIAIS));
+      db.interessados = JSON.parse(JSON.stringify(INTERESSADOS_INICIAIS));
+      db.entregas = JSON.parse(JSON.stringify(ENTREGAS_INICIAIS));
+      salvarBancoLocal();
       renderizarPainelAdmin();
       renderizarVitrine();
       mostrarToast('Dados iniciais restaurados!');
@@ -4088,12 +4069,12 @@ create policy "acesso_publico_cfg" on public.cnz_config for all using (true) wit
       copiarLinkPaginaProfissional(profissionalAtualId);
     }
 
-    async function simularPassagemDeDia() {
+    function simularPassagemDeDia() {
       for (const p of db.profissionais) {
         const atual = typeof p.diasRestantes === 'number' ? p.diasRestantes : 10;
         p.diasRestantes = Math.max(0, atual - 1);
-        await salvarProfissionalCloud(p);
       }
+      salvarBancoLocal();
       renderizarPainelAdmin();
       const vencendo = db.profissionais.filter(p => (typeof p.diasRestantes === 'number' ? p.diasRestantes : 10) <= 2).length;
       mostrarToast(`+1 dia simulado! ${vencendo} ${vencendo === 1 ? 'profissional está' : 'profissionais estão'} no período de renovação.`);
@@ -4223,33 +4204,39 @@ create policy "acesso_publico_cfg" on public.cnz_config for all using (true) wit
         fecharModalRenovarPro();
         fecharModalAuditoriaPro();
         fecharModalJuridico();
+        fecharModalSqlSupabase();
       }
     });
 
     document.addEventListener('DOMContentLoaded', async () => {
-      carregarCacheLocal();
+      carregarBancoLocal();
+
+      const params = new URLSearchParams(window.location.search);
+      const sbUrlParam = params.get('sb_url');
+      const sbKeyParam = params.get('sb_key');
+      if (sbUrlParam && sbKeyParam) {
+        db.config.supabaseUrl = sbUrlParam.trim().replace(/\/+$/, '');
+        db.config.supabaseAnonKey = sbKeyParam.trim();
+        salvarBancoLocal(false);
+      }
+
       escolherPacote('15dias', false);
       atualizarSimuladorBolso(150);
       renderizarVitrine();
       atualizarBotoesTopoAdmin();
 
-      const params = new URLSearchParams(window.location.search);
-      const proParam = params.get('pro');
-      if (proParam) {
-        alternarTela('vitrine');
-        if (db.profissionais.some(p => p.id === proParam)) {
-          abrirPaginaProfissional(proParam);
-        } else {
-          proIdPendenteAbertura = proParam;
-        }
+      if (obterCredenciaisSupabase().ativo) {
+        await carregarEstadoDoSupabase(false);
+      } else {
+        atualizarIndicadoresNuvem('local');
       }
 
-      if (resolverCredenciaisSupabase()) {
-        await carregarTudoDoSupabase();
-        iniciarRealtimeSupabase();
-      } else {
-        atualizarBadgeNuvem(false);
+      const proParam = params.get('pro');
+      if (proParam && db.profissionais.some(p => p.id === proParam)) {
+        alternarTela('vitrine');
+        abrirPaginaProfissional(proParam);
       }
+
       atualizarIcones();
     });
 
@@ -4271,8 +4258,11 @@ create policy "acesso_publico_cfg" on public.cnz_config for all using (true) wit
       trocarAbaAdmin,
       renderizarPainelAdmin,
       salvarConfiguracoesAdmin,
-      alternarVisibilidadeChaveSb,
+      alternarVisibilidadeCampo,
       alternarVisibilidadeChaveIA,
+      testarESincronizarSupabase,
+      abrirModalSqlSupabase,
+      fecharModalSqlSupabase,
       copiarSqlSupabase,
       restaurarDadosDemonstracao,
       fecharModal,
