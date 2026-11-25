@@ -1,0 +1,14 @@
+{
+  "name": "clientenozap",
+  "version": "4.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js",
+    "build": "echo 'Build successful'"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "name": "ClienteNoZap",
+  "description": "Captação de Clientes, Vitrine & Painel para Autônomos e MEIs na Grande Belém.",
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

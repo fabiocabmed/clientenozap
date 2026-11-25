@@ -219,7 +219,7 @@
               </a>
               <a href="#simulador-lucro" class="py-4 px-5 rounded-2xl bg-white/10 hover:bg-white/15 border border-white/15 text-white font-display font-bold text-sm sm:text-base flex items-center justify-center gap-2 transition">
                 <i data-lucide="calculator" class="w-4 h-4 text-zap-400"></i>
-                <span>Fazer a Conta no Bolso</span>
+                <span>Simular Seu Lucro</span>
               </a>
             </div>
 
@@ -1257,6 +1257,14 @@
           </div>
         </div>
 
+        <div>
+          <label for="edit-pro-slug" class="block text-xs font-bold uppercase text-slate-700 mb-1">Link / Slug da Página *</label>
+          <div class="flex items-center rounded-xl border-2 border-slate-300 bg-slate-50 overflow-hidden focus-within:border-zap-600">
+            <span class="bg-slate-200 px-3.5 py-2.5 text-xs text-slate-600 font-semibold select-none border-r border-slate-300">clientenozap.com/</span>
+            <input type="text" id="edit-pro-slug" required placeholder="nome-do-negocio" class="w-full px-3.5 py-2.5 bg-transparent text-sm focus:outline-none" />
+          </div>
+        </div>
+
         <div class="grid grid-cols-1 sm:grid-cols-4 gap-3.5">
           <div class="sm:col-span-2">
             <label for="edit-pro-regiao" class="block text-xs font-bold uppercase text-slate-700 mb-1">Região Atendida *</label>
@@ -1924,7 +1932,12 @@ ALTER TABLE public.clientenozap_state DISABLE ROW LEVEL SECURITY;</pre>
               supabaseAnonKey: key
             };
           }
-          if (Array.isArray(cloud.profissionais)) db.profissionais = cloud.profissionais;
+          if (Array.isArray(cloud.profissionais)) {
+            db.profissionais = cloud.profissionais.map(p => ({
+              ...p,
+              slug: p.slug || gerarSlugAmigavel(p.nome, p.id)
+            }));
+          }
           if (Array.isArray(cloud.interessados)) db.interessados = cloud.interessados;
           if (Array.isArray(cloud.entregas)) db.entregas = cloud.entregas;
 
@@ -1956,11 +1969,39 @@ ALTER TABLE public.clientenozap_state DISABLE ROW LEVEL SECURITY;</pre>
       }
     }
 
+    function gerarSlugAmigavel(texto, ignorarId = null) {
+      if (!texto) texto = 'profissional';
+      let slugBase = texto
+        .toString()
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-+|-+$/g, '')
+        .trim();
+
+      if (!slugBase) slugBase = 'profissional';
+
+      let slugFinal = slugBase;
+      let contador = 1;
+      while (
+        db.profissionais &&
+        db.profissionais.some(p => p.slug === slugFinal && p.id !== ignorarId)
+      ) {
+        contador++;
+        slugFinal = `${slugBase}-${contador}`;
+      }
+      return slugFinal;
+    }
+
     function carregarBancoLocal() {
       try {
         const salvo = localStorage.getItem(STORAGE_KEY);
         if (!salvo) {
-          db.profissionais = JSON.parse(JSON.stringify(PROFISSIONAIS_INICIAIS));
+          db.profissionais = JSON.parse(JSON.stringify(PROFISSIONAIS_INICIAIS)).map(p => ({
+            ...p,
+            slug: p.slug || gerarSlugAmigavel(p.nome, p.id)
+          }));
           db.interessados = JSON.parse(JSON.stringify(INTERESSADOS_INICIAIS));
           db.entregas = JSON.parse(JSON.stringify(ENTREGAS_INICIAIS));
           salvarBancoLocal(false);
@@ -1969,7 +2010,10 @@ ALTER TABLE public.clientenozap_state DISABLE ROW LEVEL SECURITY;</pre>
         const parsed = JSON.parse(salvo);
         if (parsed && Array.isArray(parsed.profissionais)) {
           db.config = { ...db.config, ...(parsed.config || {}) };
-          db.profissionais = parsed.profissionais;
+          db.profissionais = parsed.profissionais.map(p => ({
+            ...p,
+            slug: p.slug || gerarSlugAmigavel(p.nome, p.id)
+          }));
           db.interessados = Array.isArray(parsed.interessados) ? parsed.interessados : [];
           db.entregas = Array.isArray(parsed.entregas) ? parsed.entregas : [];
         }
@@ -3897,6 +3941,8 @@ ALTER TABLE public.clientenozap_state DISABLE ROW LEVEL SECURITY;</pre>
       );
     }
 
+    let slugEditadoManualmente = false;
+
     function abrirModalCriarComPrompt() {
       htmlExternoTemporario = '';
       atualizarStatusHtmlExternoEditor('');
@@ -3904,6 +3950,8 @@ ALTER TABLE public.clientenozap_state DISABLE ROW LEVEL SECURITY;</pre>
       document.getElementById('titulo-modal-editor-pro').textContent = 'Criar Nova Página de Vendas';
       document.getElementById('prompt-ia-pagina').value = '';
       document.getElementById('edit-pro-nome').value = '';
+      document.getElementById('edit-pro-slug').value = '';
+      slugEditadoManualmente = false;
       document.getElementById('edit-pro-zap').value = '';
       document.getElementById('edit-pro-oficio').value = '';
       document.getElementById('edit-pro-valor').value = 197;
@@ -3939,6 +3987,8 @@ ALTER TABLE public.clientenozap_state DISABLE ROW LEVEL SECURITY;</pre>
       document.getElementById('titulo-modal-editor-pro').textContent = `Editar Página: ${p.nome}`;
       document.getElementById('prompt-ia-pagina').value = '';
       document.getElementById('edit-pro-nome').value = p.nome;
+      document.getElementById('edit-pro-slug').value = p.slug || gerarSlugAmigavel(p.nome, p.id);
+      slugEditadoManualmente = true;
       document.getElementById('edit-pro-zap').value = p.whatsapp;
       document.getElementById('edit-pro-oficio').value = p.oficio;
       document.getElementById('edit-pro-valor').value = p.valorPacote || 197;
@@ -4059,6 +4109,8 @@ Estrutura obrigatória da página (padrão Vitally Studio):
     function persistirDadosFormularioPro() {
       const id = document.getElementById('edit-pro-id').value;
       const nome = document.getElementById('edit-pro-nome').value.trim();
+      const slugInput = document.getElementById('edit-pro-slug').value.trim();
+      const slug = gerarSlugAmigavel(slugInput || nome, id || null);
       const whatsapp = '55' + document.getElementById('edit-pro-zap').value.replace(/\D/g, '').replace(/^55/, '');
       const oficio = document.getElementById('edit-pro-oficio').value.trim();
       const valorPacote = Number(document.getElementById('edit-pro-valor').value) || 197;
@@ -4090,6 +4142,7 @@ Estrutura obrigatória da página (padrão Vitally Studio):
         const p = db.profissionais.find(item => item.id === id);
         if (!p) return null;
         p.nome = nome;
+        p.slug = slug;
         p.whatsapp = whatsapp;
         p.oficio = oficio;
         p.valorPacote = valorPacote;
@@ -4116,6 +4169,7 @@ Estrutura obrigatória da página (padrão Vitally Studio):
         const novoObj = {
           id: novoId,
           nome,
+          slug,
           oficio,
           regiao,
           whatsapp,
@@ -4327,10 +4381,14 @@ Estrutura obrigatória da página (padrão Vitally Studio):
 
     function copiarLinkPaginaProfissional(id) {
       const p = db.profissionais.find(item => item.id === id);
-      const baseUrl = window.location.href.split('?')[0].split('#')[0];
-      const linkDireto = `${baseUrl}?pro=${id}`;
+      if (!p) return;
+      if (!p.slug) {
+        p.slug = gerarSlugAmigavel(p.nome, p.id);
+      }
+      const baseUrl = window.location.origin;
+      const linkDireto = `${baseUrl}/${p.slug}`;
       copiarTextoParaClipboard(linkDireto);
-      mostrarToast(`Link da página de ${p ? p.nome : 'profissional'} copiado!`);
+      mostrarToast(`Link da página de ${p.nome} copiado!`);
     }
 
     function copiarLinkPaginaAtual() {
@@ -4674,6 +4732,20 @@ Estrutura obrigatória da página (padrão Vitally Studio):
       renderizarVitrine();
       atualizarBotoesTopoAdmin();
 
+      const inputNome = document.getElementById('edit-pro-nome');
+      const inputSlug = document.getElementById('edit-pro-slug');
+      if (inputNome && inputSlug) {
+        inputNome.addEventListener('input', (e) => {
+          if (!slugEditadoManualmente) {
+            const currentId = document.getElementById('edit-pro-id')?.value || null;
+            inputSlug.value = gerarSlugAmigavel(e.target.value, currentId);
+          }
+        });
+        inputSlug.addEventListener('input', () => {
+          slugEditadoManualmente = true;
+        });
+      }
+
       if (obterCredenciaisSupabase().ativo) {
         await carregarEstadoDoSupabase(false);
       } else {
@@ -4685,9 +4757,18 @@ Estrutura obrigatória da página (padrão Vitally Studio):
       }
 
       const proParam = params.get('pro');
-      if (proParam && db.profissionais.some(p => p.id === proParam)) {
+      const pathname = window.location.pathname.replace(/^\/+|\/+$/g, '');
+
+      let proEncontrado = null;
+      if (proParam) {
+        proEncontrado = db.profissionais.find(p => p.id === proParam);
+      } else if (pathname && pathname !== 'index.html' && pathname !== '') {
+        proEncontrado = db.profissionais.find(p => p.slug === pathname || p.id === pathname);
+      }
+
+      if (proEncontrado) {
         alternarTela('vitrine');
-        abrirPaginaProfissional(proParam);
+        abrirPaginaProfissional(proEncontrado.id);
       }
 
       atualizarIcones();
@@ -4755,7 +4836,8 @@ Estrutura obrigatória da página (padrão Vitally Studio):
       abrirModalEditarPro,
       abrirAuditoriaPro,
       removerProfissional,
-      selecionarUrlCapaGaleria
+      selecionarUrlCapaGaleria,
+      gerarSlugAmigavel
     });
   </script>
 </body>
