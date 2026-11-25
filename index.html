@@ -2294,10 +2294,32 @@ ALTER TABLE public.clientenozap_state DISABLE ROW LEVEL SECURITY;</pre>
 
     window.addEventListener('message', function(event) {
       if (event && event.data && event.data.type === 'CLIENTENOZAP_ORCAMENTO') {
-        const alvoId = event.data.proId || profissionalAtualId;
-        if (alvoId) {
-          fecharPaginaProfissional();
-          abrirPonteRastreada(alvoId, event.data.servico || '');
+        const alvoId = event.data.proId || profissionalPaginaAtualId || profissionalAtualId;
+        if (event.data.direto === true) {
+          const pro = db.profissionais.find(item => item.id === alvoId);
+          if (pro) {
+            pro.cliques = (pro.cliques || 0) + 1;
+            db.entregas.unshift({
+              id: 'LED-' + Date.now(),
+              profissionalId: pro.id,
+              profissionalNome: pro.nome,
+              clienteNome: event.data.nome,
+              clienteWhatsapp: event.data.whatsapp,
+              servico: event.data.servico,
+              origem: 'Página Exclusiva Direta',
+              data: new Date().toISOString(),
+              dataHora: new Date().toLocaleString('pt-BR'),
+              criadoEm: Date.now()
+            });
+            salvarBancoLocal(true);
+            if (telaAtual === 'admin') renderizarPainelAdmin();
+            renderizarVitrine();
+          }
+        } else {
+          if (alvoId) {
+            fecharPaginaProfissional();
+            abrirPonteRastreada(alvoId, event.data.servico || '');
+          }
         }
       }
     });
