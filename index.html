@@ -4488,16 +4488,17 @@ Estrutura obrigatória da página (padrão Vitally Studio):
     }
 
     function copiarLinkPaginaProfissional(id) {
-      const p = db.profissionais.find(item => item.id === id);
-      if (!p) return;
-      if (!p.slug) {
-        p.slug = gerarSlugAmigavel(p.nome, p.id);
-      }
-      const baseUrl = window.location.origin;
-      const linkDireto = `${baseUrl}/${p.slug}`;
-      copiarTextoParaClipboard(linkDireto);
-      mostrarToast(`Link da página de ${p.nome} copiado!`);
-    }
+  const p = db.profissionais.find(item => item.id === id);
+  if (!p) return;
+  if (!p.slug) {
+    p.slug = gerarSlugAmigavel(p.nome, p.id);
+    if (typeof salvarBancoLocal === 'function') salvarBancoLocal(true);
+  }
+  const baseUrl = window.location.origin;
+  const linkDireto = `${baseUrl}/${p.slug}?v=2`;
+  copiarTextoParaClipboard(linkDireto);
+  mostrarToast(`Link da página de ${p.nome} copiado!`);
+}
 
     function copiarLinkPaginaAtual() {
       if (!profissionalAtualId) return;
