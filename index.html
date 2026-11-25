@@ -723,7 +723,7 @@
         <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 shadow-sm">
           <p class="text-xs font-bold uppercase text-slate-500">Profissionais Ativos</p>
           <p id="kpi-ativos" class="font-display font-extrabold text-2xl sm:text-3xl text-slate-900 mt-1">0</p>
-          <p class="text-[11px] text-slate-500 font-semibold mt-1">Publicados na Vitrine</p>
+          <p id="kpi-ativos-sub" class="text-[11px] text-slate-500 font-semibold mt-1">Publicados na Vitrine</p>
         </div>
         <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 shadow-sm">
           <p class="text-xs font-bold uppercase text-slate-500">Novos Pedidos</p>
@@ -1265,6 +1265,13 @@
           </div>
         </div>
 
+        <div class="flex items-center gap-2.5 p-3.5 rounded-2xl bg-amber-50 border border-amber-200">
+          <input type="checkbox" id="edit-pro-is-voucher" class="w-4 h-4 rounded border-amber-300 text-amber-600 focus:ring-amber-500" />
+          <label for="edit-pro-is-voucher" class="text-xs font-bold text-amber-900 cursor-pointer">
+            Cliente Voucher / Cortesia (Não contabilizar na Receita em Ciclo)
+          </label>
+        </div>
+
         <div class="grid grid-cols-1 sm:grid-cols-4 gap-3.5">
           <div class="sm:col-span-2">
             <label for="edit-pro-regiao" class="block text-xs font-bold uppercase text-slate-700 mb-1">Região Atendida *</label>
@@ -1615,6 +1622,13 @@ ALTER TABLE public.clientenozap_state DISABLE ROW LEVEL SECURITY;</pre>
           </div>
         </div>
 
+        <div class="flex items-center gap-2.5 p-3.5 rounded-2xl bg-amber-50 border border-amber-200">
+          <input type="checkbox" id="adm-emp-is-voucher" class="w-4 h-4 rounded border-amber-300 text-amber-600 focus:ring-amber-500" />
+          <label for="adm-emp-is-voucher" class="text-xs font-bold text-amber-900 cursor-pointer">
+            Cliente Voucher / Cortesia (Não contabilizar na Receita em Ciclo)
+          </label>
+        </div>
+
         <div class="flex flex-wrap items-center justify-end gap-2.5 pt-3 border-t border-slate-200">
           <button type="button" onclick="fecharModalCadastroEmpresa()" class="px-4 py-2.5 rounded-xl border border-slate-300 text-slate-700 font-display font-bold text-xs sm:text-sm">
             Cancelar
@@ -1771,7 +1785,60 @@ ALTER TABLE public.clientenozap_state DISABLE ROW LEVEL SECURITY;</pre>
       }
     ];
 
-    const PROFISSIONAIS_INICIAIS = [];
+    const PROFISSIONAIS_INICIAIS = [
+      {
+        id: 'PRO-FABIANE',
+        nome: 'Fabiane Personalizados',
+        slug: 'fabiane-personalizados',
+        oficio: 'Personalizados & Festas',
+        regiao: 'Belém e Ananindeua',
+        whatsapp: '5591988880001',
+        modalidade: 'Atende direto no Zap',
+        pacoteChave: '15dias',
+        valorPacote: 197,
+        ciclo: 1,
+        diasTotais: 15,
+        diasRestantes: 14,
+        isVoucher: true,
+        templateEstilo: 'clean-studio',
+        paletaCor: 'rose',
+        headline: 'Personalizados exclusivos para encantar sua festa em Belém!',
+        subheadline: 'Caixinhas, topos de bolo e papelaria criativa com acabamento impecável.',
+        descricao: 'Papelaria personalizada e kits para festas e eventos com entrega na Grande Belém.',
+        diferenciais: ['Arte exclusiva no tema da sua festa', 'Papelaria de alta gramatura', 'Atendimento direto no WhatsApp'],
+        servicos: ['Kits de caixinhas personalizadas', 'Topos de bolo em camadas', 'Lembrancinhas para eventos'],
+        horario: 'Seg a Sáb • 09h às 18h',
+        fotoUrl: 'fabiane-kit-serie.jpeg',
+        corCapa: '#EC4899',
+        criadoEm: Date.now() - 86400000
+      },
+      {
+        id: 'PRO-BARBEARIA',
+        nome: 'Barbearia dos Manos',
+        slug: 'barbearia-dos-manos',
+        oficio: 'Barbearia & Estética',
+        regiao: 'Ananindeua (Cidade Nova)',
+        whatsapp: '5591988880002',
+        modalidade: 'Atende direto no Zap',
+        pacoteChave: '30dias',
+        valorPacote: 347,
+        ciclo: 1,
+        diasTotais: 30,
+        diasRestantes: 25,
+        isVoucher: true,
+        templateEstilo: 'editorial-dark',
+        paletaCor: 'amber',
+        headline: 'Corte moderno, barba alinhada e ambiente exclusivo na Cidade Nova.',
+        subheadline: 'Agende seu horário direto no WhatsApp e renove seu visual sem fila.',
+        descricao: 'Barbearia tradicional e moderna com profissionais especializados e atendimento de excelência.',
+        diferenciais: ['Ambiente climatizado e confortável', 'Profissionais especializados', 'Agendamento rápido no WhatsApp'],
+        servicos: ['Corte degradê e tesoura', 'Barba com toalha quente', 'Combo cabelo e barba'],
+        horario: 'Ter a Sáb • 09h às 20h',
+        fotoUrl: 'fabiane-sacolinhas.jpeg',
+        corCapa: '#F59E0B',
+        criadoEm: Date.now() - 172800000
+      }
+    ];
     const INTERESSADOS_INICIAIS = [];
     const ENTREGAS_INICIAIS = [];
 
@@ -3355,9 +3422,12 @@ ALTER TABLE public.clientenozap_state DISABLE ROW LEVEL SECURITY;</pre>
     }
 
     function renderizarPainelAdmin() {
-      const faturamento = db.profissionais.reduce((acc, p) => acc + (Number(p.valorPacote) || 197), 0);
+      const pagantes = db.profissionais.filter(p => !p.isVoucher);
+      const vouchers = db.profissionais.filter(p => p.isVoucher);
+      const faturamento = pagantes.reduce((acc, p) => acc + (Number(p.valorPacote) || 197), 0);
       document.getElementById('kpi-faturamento').textContent = `R$ ${faturamento.toLocaleString('pt-BR')}`;
       document.getElementById('kpi-ativos').textContent = db.profissionais.length;
+      document.getElementById('kpi-ativos-sub').textContent = `${pagantes.length} pagantes • ${vouchers.length} vouchers`;
       document.getElementById('kpi-interessados').textContent = db.interessados.length;
       document.getElementById('kpi-entregas').textContent = db.entregas.length;
 
@@ -3457,15 +3527,23 @@ ALTER TABLE public.clientenozap_state DISABLE ROW LEVEL SECURITY;</pre>
                <span>Renovar (${diasRestantes}d)</span>
              </button>`;
 
+        const badgeVoucher = p.isVoucher
+          ? `<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-lg bg-amber-100 text-amber-900 text-[11px] font-extrabold ml-1.5">VOUCHER • CORTESIA</span>`
+          : '';
+        const valorExibido = p.isVoucher
+          ? `<span class="font-display font-extrabold text-xs text-amber-900 bg-amber-50 border border-amber-200 px-2.5 py-1 rounded-xl">R$ 0,00 (Voucher)</span>`
+          : `<span class="font-display font-extrabold text-base text-slate-900 bg-slate-100 px-3 py-1 rounded-xl">R$ ${p.valorPacote || 197}</span>`;
+
         return `
           <div class="bg-white rounded-2xl border ${podeRenovar ? 'border-amber-300 ring-2 ring-amber-400/20' : 'border-slate-200'} p-5 shadow-sm flex flex-col justify-between gap-4">
             <div>
               <div class="flex items-start justify-between gap-2">
                 <div>
                   <span class="inline-block px-2.5 py-0.5 rounded-lg bg-zap-50 text-zap-700 text-xs font-extrabold">${p.oficio}</span>
+                  ${badgeVoucher}
                   <h3 class="font-display font-extrabold text-lg text-slate-900 mt-1">${p.nome}</h3>
                 </div>
-                <span class="font-display font-extrabold text-base text-slate-900 bg-slate-100 px-3 py-1 rounded-xl">R$ ${p.valorPacote || 197}</span>
+                ${valorExibido}
               </div>
               <p class="text-xs text-slate-600 mt-2"><strong>Atende em:</strong> ${p.regiao}</p>
               <p class="text-xs text-slate-600 mt-0.5"><strong>WhatsApp:</strong> ${p.whatsapp} • <strong>Modo:</strong> ${p.modalidade || 'Atende direto no Zap'}</p>
@@ -3591,9 +3669,12 @@ ALTER TABLE public.clientenozap_state DISABLE ROW LEVEL SECURITY;</pre>
             'Compromisso com qualidade e pontualidade'
           ];
 
+      const slug = gerarSlugAmigavel(item.nome);
       const novoPro = {
         id: 'PRO-' + Date.now(),
         nome: item.nome,
+        slug,
+        isVoucher: false,
         responsavel: item.responsavel || '',
         oficio: item.servico,
         regiao: item.local,
@@ -3974,6 +4055,7 @@ ALTER TABLE public.clientenozap_state DISABLE ROW LEVEL SECURITY;</pre>
       document.getElementById('edit-pro-nome').value = '';
       document.getElementById('edit-pro-slug').value = '';
       slugEditadoManualmente = false;
+      document.getElementById('edit-pro-is-voucher').checked = false;
       document.getElementById('edit-pro-zap').value = '';
       document.getElementById('edit-pro-oficio').value = '';
       document.getElementById('edit-pro-valor').value = 197;
@@ -4011,6 +4093,7 @@ ALTER TABLE public.clientenozap_state DISABLE ROW LEVEL SECURITY;</pre>
       document.getElementById('edit-pro-nome').value = p.nome;
       document.getElementById('edit-pro-slug').value = p.slug || gerarSlugAmigavel(p.nome, p.id);
       slugEditadoManualmente = true;
+      document.getElementById('edit-pro-is-voucher').checked = !!p.isVoucher;
       document.getElementById('edit-pro-zap').value = p.whatsapp;
       document.getElementById('edit-pro-oficio').value = p.oficio;
       document.getElementById('edit-pro-valor').value = p.valorPacote || 197;
@@ -4133,6 +4216,7 @@ Estrutura obrigatória da página (padrão Vitally Studio):
       const nome = document.getElementById('edit-pro-nome').value.trim();
       const slugInput = document.getElementById('edit-pro-slug').value.trim();
       const slug = gerarSlugAmigavel(slugInput || nome, id || null);
+      const isVoucher = document.getElementById('edit-pro-is-voucher')?.checked || false;
       const whatsapp = '55' + document.getElementById('edit-pro-zap').value.replace(/\D/g, '').replace(/^55/, '');
       const oficio = document.getElementById('edit-pro-oficio').value.trim();
       const valorPacote = Number(document.getElementById('edit-pro-valor').value) || 197;
@@ -4165,6 +4249,7 @@ Estrutura obrigatória da página (padrão Vitally Studio):
         if (!p) return null;
         p.nome = nome;
         p.slug = slug;
+        p.isVoucher = isVoucher;
         p.whatsapp = whatsapp;
         p.oficio = oficio;
         p.valorPacote = valorPacote;
@@ -4192,6 +4277,7 @@ Estrutura obrigatória da página (padrão Vitally Studio):
           id: novoId,
           nome,
           slug,
+          isVoucher,
           oficio,
           regiao,
           whatsapp,
