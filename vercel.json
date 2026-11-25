@@ -1,7 +1,15 @@
 {
+  "headers": [
+    {
+      "source": "/index.html",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }
+      ]
+    }
+  ],
   "rewrites": [
     {
-      "source": "/((?!index\\.html|vercel\\.json|assets/|favicon\\.ico).*)",
+      "source": "/:slug([^.]+)",
       "destination": "/index.html"
     }
   ]
