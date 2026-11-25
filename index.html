@@ -671,6 +671,435 @@
         </div>
       </div>
     </div>
+
+    <!-- =================================================================== -->
+    <!-- TELA 3: PAINEL ADMINISTRATIVO DO GESTOR                             -->
+    <!-- =================================================================== -->
+    <div id="view-admin" class="hidden py-8 sm:py-10 px-4 sm:px-6 max-w-6xl mx-auto space-y-6">
+      <!-- Cabeçalho Executivo -->
+      <div class="bg-white rounded-3xl p-5 sm:p-6 border border-slate-200 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+        <div>
+          <div class="flex flex-wrap items-center gap-2 mb-1">
+            <span class="text-xs font-extrabold uppercase tracking-wider text-zap-700">Gestão Operacional</span>
+            <span id="badge-status-nuvem" onclick="trocarAbaAdmin('config')" title="Clique para configurar sincronização na nuvem" class="cursor-pointer inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-slate-200 text-slate-700 text-[11px] font-extrabold transition">
+              <span class="w-1.5 h-1.5 rounded-full bg-slate-500"></span>
+              <span>Armazenamento Local</span>
+            </span>
+          </div>
+          <h1 class="font-display font-extrabold text-2xl sm:text-3xl text-slate-900">Painel de Controle ClienteNoZap</h1>
+          <p class="text-xs sm:text-sm text-slate-600 mt-0.5">Gerencie pedidos, crie páginas exclusivas com IA, audite clientes entregues e acompanhe renovações.</p>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-2.5">
+          <button type="button" onclick="copiarLinkFormularioCadastro()" class="px-4 py-2.5 rounded-xl bg-dark-900 hover:bg-slate-800 text-white font-display font-bold text-xs sm:text-sm inline-flex items-center gap-1.5 shadow-sm transition" title="Copia o link direto do formulário para enviar ao cliente pelo WhatsApp">
+            <i data-lucide="share-2" class="w-4 h-4 text-zap-400"></i>
+            <span>Link de Cadastro</span>
+          </button>
+          <button type="button" onclick="abrirModalCadastroEmpresa()" class="px-4 py-2.5 rounded-xl bg-zap-600 hover:bg-zap-700 text-white font-display font-extrabold text-xs sm:text-sm inline-flex items-center gap-1.5 shadow transition">
+            <i data-lucide="building-2" class="w-4 h-4"></i>
+            <span>+ Cadastrar Empresa</span>
+          </button>
+          <button type="button" onclick="abrirModalCriarComPrompt()" class="px-4 py-2.5 rounded-xl border-2 border-zap-600 text-zap-700 hover:bg-zap-50 font-display font-extrabold text-xs sm:text-sm inline-flex items-center gap-1.5 transition">
+            <i data-lucide="sparkles" class="w-4 h-4"></i>
+            <span>+ Página com IA</span>
+          </button>
+          <button type="button" onclick="simularPassagemDeDia()" class="px-3.5 py-2.5 rounded-xl border-2 border-slate-200 hover:border-slate-900 text-slate-800 font-display font-bold text-xs sm:text-sm inline-flex items-center gap-1.5 transition" title="Avança 1 dia no ciclo de todos os profissionais para testar alertas de renovação">
+            <i data-lucide="fast-forward" class="w-4 h-4 text-amber-600"></i>
+            <span>+1 Dia</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Alertas Automáticos de Renovação -->
+      <div id="alerta-renovacao-admin" class="hidden"></div>
+
+      <!-- 4 KPIs Principais -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4">
+        <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 shadow-sm">
+          <p class="text-xs font-bold uppercase text-slate-500">Receita em Ciclos Ativos</p>
+          <p id="kpi-faturamento" class="font-display font-extrabold text-2xl sm:text-3xl text-slate-900 mt-1">R$ 0</p>
+          <p class="text-[11px] text-zap-700 font-semibold mt-1">100% direto no seu caixa</p>
+        </div>
+        <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 shadow-sm">
+          <p class="text-xs font-bold uppercase text-slate-500">Profissionais Ativos</p>
+          <p id="kpi-ativos" class="font-display font-extrabold text-2xl sm:text-3xl text-slate-900 mt-1">0</p>
+          <p class="text-[11px] text-slate-500 font-semibold mt-1">Publicados na Vitrine</p>
+        </div>
+        <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 shadow-sm">
+          <p class="text-xs font-bold uppercase text-slate-500">Novos Pedidos</p>
+          <p id="kpi-interessados" class="font-display font-extrabold text-2xl sm:text-3xl text-amber-600 mt-1">0</p>
+          <p class="text-[11px] text-slate-500 font-semibold mt-1">Aguardando ativação</p>
+        </div>
+        <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 shadow-sm">
+          <p class="text-xs font-bold uppercase text-slate-500">Clientes Entregues</p>
+          <p id="kpi-entregas" class="font-display font-extrabold text-2xl sm:text-3xl text-zap-600 mt-1">0</p>
+          <p class="text-[11px] text-slate-500 font-semibold mt-1">Contatos rastreados no Zap</p>
+        </div>
+      </div>
+
+      <!-- Navegação por Abas do Painel -->
+      <div class="flex flex-wrap gap-2 bg-slate-200/80 p-1.5 rounded-2xl">
+        <button type="button" id="tab-admin-interessados" onclick="trocarAbaAdmin('interessados')" class="flex-1 min-w-[140px] py-2.5 px-4 rounded-xl font-display font-bold text-xs sm:text-sm bg-dark-900 text-white shadow-sm transition">
+          Novos Pedidos (<span id="badge-tab-interessados">0</span>)
+        </button>
+        <button type="button" id="tab-admin-ativos" onclick="trocarAbaAdmin('ativos')" class="flex-1 min-w-[140px] py-2.5 px-4 rounded-xl font-display font-bold text-xs sm:text-sm text-slate-700 hover:bg-white/60 transition">
+          Profissionais Ativos (<span id="badge-tab-ativos">0</span>)
+        </button>
+        <button type="button" id="tab-admin-entregas" onclick="trocarAbaAdmin('entregas')" class="flex-1 min-w-[140px] py-2.5 px-4 rounded-xl font-display font-bold text-xs sm:text-sm text-slate-700 hover:bg-white/60 transition">
+          Clientes Entregues (<span id="badge-tab-entregas">0</span>)
+        </button>
+        <button type="button" id="tab-admin-config" onclick="trocarAbaAdmin('config')" class="flex-1 min-w-[140px] py-2.5 px-4 rounded-xl font-display font-bold text-xs sm:text-sm text-slate-700 hover:bg-white/60 transition">
+          Nuvem, IA &amp; Config
+        </button>
+      </div>
+
+      <!-- Conteúdo Aba 1: Novos Pedidos -->
+      <div id="painel-aba-interessados" class="space-y-3.5">
+        <div id="lista-admin-interessados" class="space-y-3.5"></div>
+      </div>
+
+      <!-- Conteúdo Aba 2: Profissionais Ativos -->
+      <div id="painel-aba-ativos" class="hidden">
+        <div id="lista-admin-ativos" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+      </div>
+
+      <!-- Conteúdo Aba 3: Clientes Entregues -->
+      <div id="painel-aba-entregas" class="hidden space-y-4">
+        <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm">
+          <div class="relative">
+            <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+            <input type="text" id="busca-admin-entregas" oninput="renderizarPainelAdmin()" placeholder="Filtrar por nome do cliente, WhatsApp, profissional ou serviço..." class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:border-zap-600" />
+          </div>
+        </div>
+        <div id="lista-admin-entregas" class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden"></div>
+      </div>
+
+      <!-- Conteúdo Aba 4: Configurações, Supabase e API Gemini -->
+      <div id="painel-aba-config" class="hidden">
+        <form onsubmit="salvarConfiguracoesAdmin(event)" class="space-y-5">
+          <!-- Card 1: Sincronização na Nuvem (Supabase) -->
+          <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-4">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <div>
+                <h3 class="font-display font-extrabold text-lg text-slate-900 flex items-center gap-2">
+                  <i data-lucide="database" class="w-5 h-5 text-zap-600"></i>
+                  <span>Sincronização em Nuvem (Supabase)</span>
+                </h3>
+                <p class="text-xs text-slate-600 mt-0.5">Conecte seu projeto Supabase gratuito para salvar clientes e páginas em qualquer navegador ou celular.</p>
+              </div>
+              <span id="badge-status-supabase-form" class="px-2.5 py-0.5 rounded-full text-[11px] font-extrabold bg-slate-200 text-slate-700">
+                Modo Local (Offline)
+              </span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label for="config-supabase-url" class="block text-xs font-bold uppercase text-slate-700 mb-1">Supabase Project URL</label>
+                <input type="url" id="config-supabase-url" placeholder="https://seu-projeto.supabase.co" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-300 text-sm focus:outline-none focus:border-zap-600" />
+              </div>
+              <div>
+                <label for="config-supabase-key" class="block text-xs font-bold uppercase text-slate-700 mb-1">Supabase Anon Public Key</label>
+                <input type="password" id="config-supabase-key" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6..." class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-300 text-sm focus:outline-none focus:border-zap-600" />
+              </div>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-2.5 pt-1">
+              <button type="button" id="btn-testar-supabase" onclick="testarESincronizarSupabase()" class="px-4 py-2.5 rounded-xl bg-zap-600 hover:bg-zap-700 text-white font-display font-bold text-xs inline-flex items-center gap-1.5 shadow-sm transition">
+                <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
+                <span>Conectar e Sincronizar Agora</span>
+              </button>
+              <button type="button" onclick="abrirModalSqlSupabase()" class="px-4 py-2.5 rounded-xl border border-slate-300 hover:border-slate-900 text-slate-800 font-display font-bold text-xs inline-flex items-center gap-1.5 transition">
+                <i data-lucide="code" class="w-3.5 h-3.5 text-slate-600"></i>
+                <span>Ver SQL da Tabela</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Card 2: Inteligência Artificial (Google Gemini API) -->
+          <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-4">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <div>
+                <h3 class="font-display font-extrabold text-lg text-slate-900 flex items-center gap-2">
+                  <i data-lucide="sparkles" class="w-5 h-5 text-zap-600"></i>
+                  <span>Chave de IA (Google Gemini API — Opcional)</span>
+                </h3>
+                <p class="text-xs text-slate-600 mt-0.5">Se informada, usa o modelo Gemini para escrever textos exclusivos; sem chave, usa nosso motor local inteligente automaticamente.</p>
+              </div>
+              <span id="badge-status-chave-ia" class="px-2.5 py-0.5 rounded-full text-[11px] font-extrabold bg-slate-200 text-slate-700">
+                Motor Local Ativo
+              </span>
+            </div>
+
+            <div class="relative">
+              <input type="password" id="config-gemini-key" placeholder="AIzaSy..." class="w-full pl-4 pr-11 py-3 rounded-xl border-2 border-slate-300 text-sm focus:outline-none focus:border-zap-600" />
+              <button type="button" onclick="alternarVisibilidadeChaveIA()" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700">
+                <i id="icone-olho-chave-ia" data-lucide="eye" class="w-4 h-4"></i>
+              </button>
+            </div>
+          </div>
+
+          <!-- Card 3: WhatsApp Comercial & Credenciais do Painel -->
+          <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-4">
+            <h3 class="font-display font-extrabold text-lg text-slate-900 flex items-center gap-2">
+              <i data-lucide="shield" class="w-5 h-5 text-zap-600"></i>
+              <span>Atendimento &amp; Acesso Administrativo</span>
+            </h3>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label for="config-zap-gestor" class="block text-xs font-bold uppercase text-slate-700 mb-1">Seu WhatsApp Comercial (55 + DDD)</label>
+                <input type="text" id="config-zap-gestor" required placeholder="5591980789170" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-300 text-sm focus:outline-none focus:border-zap-600" />
+              </div>
+              <div>
+                <label for="config-admin-email" class="block text-xs font-bold uppercase text-slate-700 mb-1">E-mail de Login do Gestor</label>
+                <input type="email" id="config-admin-email" required class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-300 text-sm focus:outline-none focus:border-zap-600" />
+              </div>
+              <div>
+                <label for="config-admin-senha" class="block text-xs font-bold uppercase text-slate-700 mb-1">Senha de Login do Gestor</label>
+                <input type="text" id="config-admin-senha" required class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-300 text-sm focus:outline-none focus:border-zap-600" />
+              </div>
+            </div>
+
+            <div class="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-slate-100">
+              <button type="button" onclick="zerarBancoProducao()" class="px-4 py-2.5 rounded-xl border border-red-200 bg-red-50 hover:bg-red-100 text-red-700 font-display font-bold text-xs transition">
+                Zerar Todos os Dados (Modo Limpo)
+              </button>
+              <button type="submit" class="px-6 py-3 rounded-xl bg-dark-900 hover:bg-slate-800 text-white font-display font-extrabold text-sm shadow transition">
+                Salvar Todas as Configurações
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- =================================================================== -->
+    <!-- TELA 4: FORMULÁRIO PÚBLICO DE CADASTRO DE EMPRESA (VIA LINK ZAP)    -->
+    <!-- =================================================================== -->
+    <div id="view-cadastro-empresa" class="hidden py-8 sm:py-12 px-4 sm:px-6 max-w-2xl mx-auto">
+      <div class="bg-white rounded-3xl p-6 sm:p-8 border-2 border-zap-500 shadow-xl space-y-6">
+        <div class="text-center space-y-2 pb-4 border-b border-slate-100">
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-zap-50 text-zap-700 text-xs font-extrabold uppercase tracking-wider">
+            <i data-lucide="badge-check" class="w-3.5 h-3.5 text-zap-600"></i>
+            Ficha de Ativação • ClienteNoZap
+          </span>
+          <h1 class="font-display font-extrabold text-2xl sm:text-3xl text-slate-900">
+            Cadastre sua empresa para receber clientes no WhatsApp
+          </h1>
+          <p class="text-xs sm:text-sm text-slate-600 leading-relaxed">
+            Preencha os dados abaixo em 1 minuto. Nossa equipe usa essas informações para montar sua página comercial exclusiva e ativar sua divulgação na região.
+          </p>
+        </div>
+
+        <form id="form-publico-empresa" onsubmit="enviarFormularioPublicoEmpresa(event)" class="space-y-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label for="pub-emp-nome" class="block text-xs font-bold uppercase text-slate-700 mb-1">Nome da Empresa ou Profissional *</label>
+              <input type="text" id="pub-emp-nome" required placeholder="Ex: Oficina Mecânica J&M" class="w-full px-4 py-3 rounded-xl border-2 border-slate-300 text-sm focus:outline-none focus:border-zap-600" />
+            </div>
+            <div>
+              <label for="pub-emp-responsavel" class="block text-xs font-bold uppercase text-slate-700 mb-1">Seu Nome (Responsável) *</label>
+              <input type="text" id="pub-emp-responsavel" required placeholder="Ex: João Marcos" class="w-full px-4 py-3 rounded-xl border-2 border-slate-300 text-sm focus:outline-none focus:border-zap-600" />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label for="pub-emp-zap" class="block text-xs font-bold uppercase text-slate-700 mb-1">WhatsApp Comercial (com DDD) *</label>
+              <input type="tel" id="pub-emp-zap" required maxlength="15" oninput="mascaraTelefone(this)" placeholder="(91) 98888-7777" class="w-full px-4 py-3 rounded-xl border-2 border-slate-300 text-sm focus:outline-none focus:border-zap-600" />
+            </div>
+            <div>
+              <label for="pub-emp-oficio" class="block text-xs font-bold uppercase text-slate-700 mb-1">Ramo / Serviço Principal *</label>
+              <input type="text" id="pub-emp-oficio" required placeholder="Ex: Mecânica, Refrigeração, Diarista..." class="w-full px-4 py-3 rounded-xl border-2 border-slate-300 text-sm focus:outline-none focus:border-zap-600" />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label for="pub-emp-regiao" class="block text-xs font-bold uppercase text-slate-700 mb-1">Cidades / Bairros que Atende *</label>
+              <input type="text" id="pub-emp-regiao" required placeholder="Ex: Ananindeua, Belém e Marituba" class="w-full px-4 py-3 rounded-xl border-2 border-slate-300 text-sm focus:outline-none focus:border-zap-600" />
+            </div>
+            <div>
+              <label for="pub-emp-horario" class="block text-xs font-bold uppercase text-slate-700 mb-1">Horário de Atendimento</label>
+              <input type="text" id="pub-emp-horario" value="Seg a Sáb • 08h às 18h" class="w-full px-4 py-3 rounded-xl border-2 border-slate-300 text-sm focus:outline-none focus:border-zap-600" />
+            </div>
+          </div>
+      <!-- ABA 4: CONFIGURAÇÕES (INCLUINDO CHAVE API DA IA) -->
+      <div id="painel-aba-config" class="hidden bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 max-w-2xl space-y-5">
+        <div>
+          <h3 class="font-display font-extrabold text-lg sm:text-xl text-slate-900">Configurações Operacionais &amp; Conexão de IA</h3>
+          <p class="text-xs text-slate-500 mt-1">Os dados são sincronizados na nuvem em tempo real para todos os seus dispositivos.</p>
+        </div>
+
+        <form onsubmit="salvarConfiguracoesAdmin(event)" class="space-y-4">
+          <!-- Bloco de Chave API da IA -->
+          <div class="bg-slate-50 border-2 border-slate-200 rounded-2xl p-4 space-y-2.5">
+            <div class="flex items-center justify-between gap-2">
+              <label for="config-gemini-key" class="text-xs font-extrabold uppercase text-slate-800 flex items-center gap-1.5">
+                <i data-lucide="key-round" class="w-4 h-4 text-zap-600"></i>
+                <span>Chave da API da IA (Google Gemini API Key)</span>
+              </label>
+              <span id="badge-status-chave-ia" class="px-2.5 py-0.5 rounded-full text-[11px] font-extrabold bg-slate-200 text-slate-700">
+                Modo Offline / Padrão
+              </span>
+            </div>
+            <div class="relative">
+              <input type="password" id="config-gemini-key" placeholder="Cole sua chave AIzaSy... aqui para gerar páginas com IA real" class="w-full pl-4 pr-11 py-3 rounded-xl border-2 border-slate-300 bg-white text-sm focus:outline-none focus:border-zap-600" />
+              <button type="button" onclick="alternarVisibilidadeChaveIA()" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700" title="Mostrar/Ocultar chave">
+                <i id="icone-olho-chave-ia" data-lucide="eye" class="w-4 h-4"></i>
+              </button>
+            </div>
+            <p class="text-[11px] text-slate-500 leading-relaxed">
+              Quando preenchida, o botão <strong>"Gerar Página com IA Agora"</strong> conecta diretamente na API do Google Gemini para escrever copys exclusivas para cada cliente. Se estiver vazia, usa nosso motor inteligente local automaticamente.
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label for="config-zap-gestor" class="block text-xs font-bold uppercase text-slate-700 mb-1">WhatsApp do Gestor (55 + DDD)</label>
+              <input type="text" id="config-zap-gestor" required class="w-full px-4 py-3 rounded-xl border-2 border-slate-300 text-sm focus:outline-none focus:border-zap-600" />
+            </div>
+            <div>
+              <label for="config-admin-email" class="block text-xs font-bold uppercase text-slate-700 mb-1">E-mail de Acesso ao Painel</label>
+              <input type="email" id="config-admin-email" required class="w-full px-4 py-3 rounded-xl border-2 border-slate-300 text-sm focus:outline-none focus:border-zap-600" />
+            </div>
+          </div>
+
+          <div>
+            <label for="config-admin-senha" class="block text-xs font-bold uppercase text-slate-700 mb-1">Senha de Acesso ao Painel</label>
+            <input type="text" id="config-admin-senha" required class="w-full px-4 py-3 rounded-xl border-2 border-slate-300 text-sm focus:outline-none focus:border-zap-600" />
+          </div>
+
+          <div class="flex flex-wrap items-center gap-3 pt-2">
+            <button type="submit" class="px-5 py-3 rounded-xl bg-zap-600 hover:bg-zap-700 text-white font-display font-extrabold text-sm shadow transition">
+              Salvar Configurações
+            </button>
+            <button type="button" onclick="zerarBancoProducao()" class="px-4 py-3 rounded-xl border border-red-200 bg-red-50 hover:bg-red-100 text-red-700 font-display font-bold text-xs transition">
+              Limpar Dados
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <!-- ===================================================================== -->
+  <!-- RODAPÉ EXECUTIVO & PROTEÇÃO JURÍDICA (GRUPO VITALLY / VITALLY STUDIO) -->
+  <!-- ===================================================================== -->
+  <footer class="bg-dark-950 text-slate-300 border-t border-slate-800 mt-14">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 pt-12 pb-8">
+      <!-- Faixa Superior de Conversão Rápida -->
+      <div class="bg-slate-900/90 border border-slate-800 rounded-3xl p-6 sm:p-8 mb-10 flex flex-col md:flex-row items-center justify-between gap-5">
+        <div class="text-center md:text-left">
+          <span class="text-xs font-extrabold uppercase tracking-wider text-zap-400">Pronto para lotar sua agenda?</span>
+          <h3 class="font-display font-extrabold text-xl sm:text-2xl text-white mt-1">
+            Comece hoje a receber clientes da sua região no WhatsApp
+          </h3>
+        </div>
+        <div class="flex flex-wrap items-center justify-center gap-3 shrink-0">
+          <a href="#pacotes-secao" onclick="alternarTela('vendas')" class="px-5 py-3.5 rounded-xl bg-zap-600 hover:bg-zap-700 text-white font-display font-extrabold text-xs sm:text-sm shadow transition">
+            Ativar Meu WhatsApp
+          </a>
+          <button type="button" onclick="alternarTela('vitrine')" class="px-5 py-3.5 rounded-xl bg-white/10 hover:bg-white/15 text-white font-display font-bold text-xs sm:text-sm transition">
+            Explorar Vitrine
+          </button>
+        </div>
+      </div>
+
+      <!-- Grade Principal em 4 Colunas -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 pb-8 border-b border-slate-800/80 text-xs sm:text-sm">
+        <!-- Coluna 1: Marca -->
+        <div class="space-y-3">
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 rounded-xl bg-zap-500 flex items-center justify-center text-white">
+              <i data-lucide="message-circle" class="w-4 h-4"></i>
+            </div>
+            <span class="font-display font-extrabold text-lg text-white">
+              Cliente<span class="text-zap-400">NoZap</span>
+            </span>
+          </div>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            Captação ativa de clientes e páginas comerciais de alta conversão para autônomos, prestadores de serviço e MEIs.
+          </p>
+        </div>
+
+        <!-- Coluna 2: Plataforma -->
+        <div class="space-y-2.5">
+          <h4 class="font-display font-extrabold text-xs uppercase tracking-wider text-white">Plataforma</h4>
+          <ul class="space-y-2 text-xs text-slate-400">
+            <li><a href="#inicio" onclick="alternarTela('vendas')" class="hover:text-zap-400 transition">Sou Profissional / MEI</a></li>
+            <li><a href="#simulador-lucro" onclick="alternarTela('vendas')" class="hover:text-zap-400 transition">Calculadora de Retorno</a></li>
+            <li><button type="button" onclick="alternarTela('vitrine')" class="hover:text-zap-400 transition">Buscar Serviços na Região</button></li>
+            <li><button type="button" onclick="abrirModalLogin()" class="hover:text-zap-400 transition">Área do Gestor</button></li>
+          </ul>
+        </div>
+
+        <!-- Coluna 3: Jurídico & LGPD -->
+        <div class="space-y-2.5">
+          <h4 class="font-display font-extrabold text-xs uppercase tracking-wider text-white">Jurídico &amp; LGPD</h4>
+          <ul class="space-y-2 text-xs text-slate-400">
+            <li><button type="button" onclick="abrirModalJuridico('termos')" class="hover:text-zap-400 transition">Termos de Adesão</button></li>
+            <li><button type="button" onclick="abrirModalJuridico('agenda')" class="hover:text-zap-400 transition">Regras do Agenda na Mão</button></li>
+            <li><button type="button" onclick="abrirModalJuridico('lgpd')" class="hover:text-zap-400 transition">Privacidade &amp; LGPD (Lei 13.709/18)</button></li>
+          </ul>
+        </div>
+
+        <!-- Coluna 4: Cobertura & Suporte -->
+        <div class="space-y-2.5">
+          <h4 class="font-display font-extrabold text-xs uppercase tracking-wider text-white">Atendimento Regional</h4>
+          <p class="text-xs text-slate-400 leading-relaxed">
+            Belém • Ananindeua • Icoaraci • Mosqueiro • Marituba • Benevides • Benfica • Castanhal
+          </p>
+          <a href="https://wa.me/5591980789170?text=Ol%C3%A1!%20Vim%20pelo%20site%20do%20ClienteNoZap." target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-zap-600/20 border border-zap-500/40 text-zap-300 hover:bg-zap-600 hover:text-white font-display font-bold text-xs transition mt-1">
+            <i data-lucide="headphones" class="w-3.5 h-3.5"></i>
+            <span>Suporte Comercial no Zap</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Assinatura Institucional Grupo Vitally / Vitally Studio -->
+      <div class="pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-400">
+        <p>© 2026 <strong class="text-white">ClienteNoZap</strong>. Todos os direitos reservados.</p>
+        <p class="text-center sm:text-right">
+          <strong class="text-white">ClienteNoZap</strong> é um serviço do <strong class="text-zap-400">Grupo Vitally</strong> • Site feito pela <strong class="text-white">Vitally Studio</strong>
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Modal 1: Confirmação de Redirecionamento para o WhatsApp -->
+  <div id="modal-confirmacao" class="hidden fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm p-4 items-center justify-center">
+    <div class="bg-white rounded-3xl max-w-md w-full p-6 sm:p-7 shadow-2xl border border-slate-200 text-center space-y-4">
+      <div class="w-14 h-14 rounded-2xl bg-zap-100 text-zap-600 mx-auto flex items-center justify-center">
+        <i data-lucide="check-circle-2" class="w-8 h-8"></i>
+      </div>
+      <h3 class="font-display font-extrabold text-xl text-slate-900">Tudo Pronto!</h3>
+      <p id="texto-confirmacao" class="text-sm text-slate-600 leading-relaxed"></p>
+      <div class="pt-2 space-y-2.5">
+        <a id="link-whatsapp-final" href="#" target="_blank" rel="noopener noreferrer" onclick="fecharModal()" class="w-full py-4 px-5 rounded-2xl bg-zap-600 hover:bg-zap-700 text-white font-display font-extrabold text-sm sm:text-base shadow-lg flex items-center justify-center gap-2 transition">
+          <i data-lucide="message-circle" class="w-5 h-5"></i>
+          <span>Abrir Conversa no WhatsApp</span>
+        </a>
+        <button type="button" onclick="fecharModal()" class="w-full py-2.5 text-xs font-bold text-slate-500 hover:text-slate-800">
+          Fechar janela
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 2: Visualizador Full-Screen da Página Exclusiva do Profissional -->
+  <div id="modal-pagina-profissional" class="hidden fixed inset-0 z-50 bg-slate-950/90 overflow-y-auto">
+    <div class="sticky top-0 z-30 bg-dark-950/95 backdrop-blur border-b border-white/15 px-4 sm:px-6 h-14 flex items-center justify-between gap-2 text-white">
+      <button type="button" onclick="fecharPaginaProfissional()" class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 font-display font-bold text-xs sm:text-sm transition">
+        <i data-lucide="arrow-left" class="w-4 h-4"></i>
+        <span>Voltar</span>
+      </button>
+      <span class="text-xs text-slate-400 hidden sm:inline">Página Comercial Exclusiva • ClienteNoZap</span>
+      <button type="button" onclick="copiarLinkPaginaAtual()" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-zap-600 hover:bg-zap-700 font-display font-bold text-xs sm:text-sm transition">
+        <i data-lucide="share-2" class="w-3.5 h-3.5"></i>
+        <span>Copiar Link</span>
+      </button>
+    </div>
     <div id="conteudo-pagina-profissional"></div>
   </div>
 
@@ -1052,10 +1481,11 @@
 
       <!-- Conteúdo 3: Privacidade & LGPD -->
       <div id="conteudo-juridico-lgpd" class="hidden space-y-3 text-xs sm:text-sm text-slate-700 leading-relaxed max-h-[55vh] overflow-y-auto pr-1">
-        <p><strong>1. Conformidade com a Lei nº 13.709/2018 (LGPD):</strong> Coletamos apenas os dados estritamente necessários (nome, telefone/WhatsApp, serviço desejado e região) para conectar o morador ao profissional escolhido.</p>
-        <p><strong>2. Base Legal e Finalidade Única:</strong> O compartilhamento do contato do consumidor com o profissional ocorre mediante consentimento expresso e para execução de procedimentos preliminares de orçamento solicitados pelo próprio titular (Art. 7º, incisos I e V da LGPD).</p>
-        <p><strong>3. Proibição de Revenda ou Spam:</strong> É terminantemente proibida a venda de listas de contatos ou o envio de mensagens em massa não solicitadas. Após o recebimento do contato, o profissional torna-se controlador independente daquele atendimento.</p>
-        <p><strong>4. Direitos do Titular (Art. 18 da LGPD):</strong> Qualquer morador ou profissional pode solicitar a confirmação, correção ou exclusão de seus dados cadastrais a qualquer momento pelo nosso canal oficial de atendimento no WhatsApp.</p>
+        <p><strong>1. Controlador e Escopo da Plataforma:</strong> O <strong>ClienteNoZap</strong> (serviço operado pelo <strong>Grupo Vitally</strong>) atua exclusivamente na divulgação regional, criação de páginas comerciais e encaminhamento de solicitações de orçamento via WhatsApp, em total conformidade com a Lei Geral de Proteção de Dados (Lei nº 13.709/2018 — LGPD) e o Marco Civil da Internet (Lei nº 12.965/2014).</p>
+        <p><strong>2. Autonomia Profissional e Ausência de Vínculo (Art. 442-B da CLT):</strong> Os profissionais e empresas divulgados atuam como prestadores autônomos ou MEIs independentes, com plena liberdade de preços, agendas e execução, inexistindo subordinação ou vínculo empregatício. O ClienteNoZap não cobra comissão sobre serviços fechados e não intermedia pagamentos.</p>
+        <p><strong>3. Coleta, Base Legal e Finalidade Única (Art. 7º, I e V da LGPD):</strong> Coletamos apenas os dados estritamente necessários (nome, telefone/WhatsApp, serviço desejado e região). O compartilhamento do contato do consumidor com o profissional escolhido ocorre mediante consentimento expresso e exclusivamente para viabilizar o orçamento solicitado pelo próprio titular.</p>
+        <p><strong>4. Segurança, Sigilo e Proibição de Spam:</strong> Adotamos boas práticas de segurança da informação para proteger os cadastros. É terminantemente proibida a revenda de listas de contatos, o compartilhamento com terceiros estranhos ao atendimento ou o envio de spam. Ao receber o contato, o profissional torna-se controlador independente daquele atendimento comercial.</p>
+        <p><strong>5. Direitos do Titular e Canal de Atendimento (Art. 18 da LGPD):</strong> Qualquer morador ou profissional pode solicitar, a qualquer momento e gratuitamente, a confirmação de tratamento, acesso, correção, anonimização ou exclusão definitiva de seus dados pessoais pelo nosso canal oficial de suporte no WhatsApp.</p>
       </div>
 
       <div class="pt-3 border-t border-slate-200 flex justify-end">
@@ -1100,6 +1530,95 @@ ALTER TABLE public.clientenozap_state DISABLE ROW LEVEL SECURITY;</pre>
     </div>
   </div>
 
+  <!-- Modal 10: Cadastro Assistido de Empresa (Para o Gestor Preencher em Ligação/Atendimento) -->
+  <div id="modal-cadastro-empresa-admin" class="hidden fixed inset-0 z-50 bg-slate-950/75 backdrop-blur-sm p-3 sm:p-6 overflow-y-auto">
+    <div class="bg-white rounded-3xl max-w-2xl mx-auto p-6 sm:p-8 shadow-2xl border border-slate-200 my-4 space-y-5">
+      <div class="flex items-start justify-between gap-3 pb-4 border-b border-slate-200">
+        <div>
+          <span class="text-xs font-extrabold uppercase tracking-wider text-zap-700">Cadastro Rápido pelo Gestor</span>
+          <h3 class="font-display font-extrabold text-xl text-slate-900 mt-0.5">Cadastrar Empresa / Profissional</h3>
+          <p class="text-xs text-slate-500 mt-0.5">Preencha os dados durante a ligação ou conversa e escolha se quer publicar agora na Vitrine.</p>
+        </div>
+        <button type="button" onclick="fecharModalCadastroEmpresa()" class="p-2 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <form onsubmit="salvarCadastroEmpresaAdmin(event)" class="space-y-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+          <div>
+            <label for="adm-emp-nome" class="block text-xs font-bold uppercase text-slate-700 mb-1">Nome da Empresa / Negócio *</label>
+            <input type="text" id="adm-emp-nome" required placeholder="Ex: Oficina do João" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-300 text-sm focus:outline-none focus:border-zap-600" />
+          </div>
+          <div>
+            <label for="adm-emp-responsavel" class="block text-xs font-bold uppercase text-slate-700 mb-1">Nome do Responsável</label>
+            <input type="text" id="adm-emp-responsavel" placeholder="Ex: Sr. João" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-300 text-sm focus:outline-none focus:border-zap-600" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+          <div>
+            <label for="adm-emp-zap" class="block text-xs font-bold uppercase text-slate-700 mb-1">WhatsApp Comercial (com DDD) *</label>
+            <input type="tel" id="adm-emp-zap" required maxlength="15" oninput="mascaraTelefone(this)" placeholder="(91) 98888-7777" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-300 text-sm focus:outline-none focus:border-zap-600" />
+          </div>
+          <div>
+            <label for="adm-emp-oficio" class="block text-xs font-bold uppercase text-slate-700 mb-1">Serviço / Ofício Principal *</label>
+            <input type="text" id="adm-emp-oficio" required placeholder="Ex: Mecânica Automotiva" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-300 text-sm focus:outline-none focus:border-zap-600" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+          <div>
+            <label for="adm-emp-regiao" class="block text-xs font-bold uppercase text-slate-700 mb-1">Região / Cidades Atendidas *</label>
+            <input type="text" id="adm-emp-regiao" required placeholder="Ex: Ananindeua e Belém" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-300 text-sm focus:outline-none focus:border-zap-600" />
+          </div>
+          <div>
+            <label for="adm-emp-horario" class="block text-xs font-bold uppercase text-slate-700 mb-1">Horário de Atendimento</label>
+            <input type="text" id="adm-emp-horario" value="Seg a Sáb • 08h às 18h" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-300 text-sm focus:outline-none focus:border-zap-600" />
+          </div>
+        </div>
+
+        <div>
+          <label for="adm-emp-servicos" class="block text-xs font-bold uppercase text-slate-700 mb-1">Serviços Oferecidos (1 por linha)</label>
+          <textarea id="adm-emp-servicos" rows="3" placeholder="Ex:&#10;Revisão completa e troca de óleo&#10;Freios, suspensão e direção&#10;Socorro mecânico na região" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-300 text-xs sm:text-sm focus:outline-none focus:border-zap-600"></textarea>
+        </div>
+
+        <div>
+          <label for="adm-emp-diferenciais" class="block text-xs font-bold uppercase text-slate-700 mb-1">Diferenciais / Observações (1 por linha)</label>
+          <textarea id="adm-emp-diferenciais" rows="2" placeholder="Orçamento transparente sem compromisso&#10;Atendimento rápido no bairro" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-300 text-xs sm:text-sm focus:outline-none focus:border-zap-600"></textarea>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+          <div>
+            <label for="adm-emp-pacote" class="block text-xs font-bold uppercase text-slate-700 mb-1">Pacote / Modalidade</label>
+            <select id="adm-emp-pacote" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-slate-300 bg-slate-50 font-semibold text-sm text-slate-900">
+              <option value="7dias">Você Responde no Zap — 7 Dias (R$ 127)</option>
+              <option value="15dias" selected>Você Responde no Zap — 15 Dias (R$ 197)</option>
+              <option value="30dias">Você Responde no Zap — 30 Dias (R$ 347)</option>
+              <option value="agenda">Agenda na Mão — 15 Dias (R$ 397)</option>
+            </select>
+          </div>
+          <div>
+            <label for="adm-emp-destino" class="block text-xs font-bold uppercase text-slate-700 mb-1">Destino Imediato</label>
+            <select id="adm-emp-destino" class="w-full px-3.5 py-2.5 rounded-xl border-2 border-zap-400 bg-zap-50 font-bold text-sm text-zap-900">
+              <option value="vitrine" selected>✓ Ativar e Publicar na Vitrine Agora</option>
+              <option value="fila">Salvar na Fila de Novos Pedidos</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap items-center justify-end gap-2.5 pt-3 border-t border-slate-200">
+          <button type="button" onclick="fecharModalCadastroEmpresa()" class="px-4 py-2.5 rounded-xl border border-slate-300 text-slate-700 font-display font-bold text-xs sm:text-sm">
+            Cancelar
+          </button>
+          <button type="submit" class="px-6 py-2.5 rounded-xl bg-zap-600 hover:bg-zap-700 text-white font-display font-extrabold text-xs sm:text-sm shadow">
+            Salvar Cadastro
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <!-- Toast de Notificação Rápida -->
   <div id="toast-notificacao" class="hidden fixed bottom-5 right-5 z-50 bg-dark-900 text-white px-4 py-3.5 rounded-2xl shadow-2xl border border-slate-700 items-center gap-2.5 max-w-sm">
     <i data-lucide="check-circle-2" class="w-4 h-4 text-zap-400 shrink-0"></i>
@@ -1111,7 +1630,7 @@ ALTER TABLE public.clientenozap_state DISABLE ROW LEVEL SECURITY;</pre>
   <!-- ===================================================================== -->
   <script type="module">
     const WHATSAPP_GESTOR = '5591980789170';
-    const STORAGE_KEY = 'clientenozap_db_v13_prod';
+    const STORAGE_KEY = 'clientenozap_db_v14_limpo';
 
     let adminLogado = false;
     let telaAtual = 'vendas';
@@ -1244,282 +1763,9 @@ ALTER TABLE public.clientenozap_state DISABLE ROW LEVEL SECURITY;</pre>
       }
     ];
 
-    const PROFISSIONAIS_INICIAIS = [
-      {
-        id: 'PRO-01',
-        nome: 'Oficina Mecânica J&M',
-        oficio: 'Mecânica & Auto Elétrica',
-        regiao: 'Ananindeua e Belém (Cidade Nova, Coqueiro e Marco)',
-        whatsapp: '5591984121001',
-        modalidade: 'Atende direto no Zap',
-        pacoteChave: '15dias',
-        valorPacote: 197,
-        ciclo: 1,
-        diasTotais: 15,
-        diasRestantes: 1,
-        templateEstilo: 'editorial-dark',
-        paletaCor: 'amber',
-        headline: 'Seu carro falhou ou precisa de revisão? Resolvemos hoje com diagnóstico honesto.',
-        subheadline: 'Especialistas em freios, suspensão, troca de óleo e auto elétrica em Ananindeua e Belém — orçamento claro antes de mexer no seu veículo.',
-        descricao: 'Atendimento rápido para carros nacionais e importados. Aqui você acompanha o diagnóstico transparente antes de trocar qualquer peça, com atendimento ágil na região.',
-        diferenciais: [
-          'Diagnóstico transparente sem troca de peças desnecessárias',
-          'Atendimento ágil com horário combinado na região',
-          'Garantia escrita em peças e mão de obra'
-        ],
-        depoimentoTexto: 'Levei meu carro falhando na Cidade Nova, diagnosticaram na hora sem enrolação e cobraram um preço super justo.',
-        depoimentoAutor: 'Marcos R. • Cidade Nova, Ananindeua',
-        servicos: [
-          'Troca de óleo, filtros e revisão preventiva completa',
-          'Freios, embreagem, suspensão e alinhamento',
-          'Auto elétrica, bateria, alternador e motor de partida',
-          'Scanner automotivo e injeção eletrônica'
-        ],
-        horario: 'Seg a Sáb • 08h às 18h',
-        corCapa: 'from-amber-600 to-slate-900',
-        fotoUrl: 'https://images.unsplash.com/photo-1486262715619-67b85e0b08d3?auto=format&fit=crop&w=1600&q=85',
-        criadoEm: 1700000006
-      },
-      {
-        id: 'PRO-02',
-        nome: 'ClimaFrio Refrigeração',
-        oficio: 'Ar-Condicionado & Split',
-        regiao: 'Belém, Icoaraci e Ananindeua',
-        whatsapp: '5591984121002',
-        modalidade: 'Agenda na Mão',
-        pacoteChave: 'agenda',
-        valorPacote: 397,
-        ciclo: 2,
-        diasTotais: 15,
-        diasRestantes: 0,
-        templateEstilo: 'clean-studio',
-        paletaCor: 'sky',
-        headline: 'Ar-condicionado pingando ou sem gelar? Atendemos no mesmo dia na sua casa.',
-        subheadline: 'Limpeza profunda, instalação profissional e recarga de gás para Split Inverter e convencional com garantia e zero sujeira.',
-        descricao: 'Seu ar-condicionado perdeu rendimento ou está pingando dentro de casa? Atendemos residências e comércios em Belém, Icoaraci e Ananindeua com equipamento próprio e técnico pontual.',
-        diferenciais: [
-          'Atendimento no mesmo dia com horário marcado',
-          'Limpeza completa com bolsa coletora (sem molhar sua parede)',
-          'Garantia total no serviço e na recarga de gás'
-        ],
-        depoimentoTexto: 'Vieram no mesmo dia aqui no Marco, limparam o Split sem molhar nada e o ar voltou a gelar como novo!',
-        depoimentoAutor: 'Patrícia S. • Marco, Belém',
-        servicos: [
-          'Limpeza e higienização completa de Split (9.000 a 30.000 BTUs)',
-          'Instalação e desinstalação com teste de pressão',
-          'Recarga de gás ecológico e conserto de vazamentos',
-          'Troca de capacitor, placa e sensores'
-        ],
-        horario: 'Seg a Sáb • 07h30 às 19h',
-        corCapa: 'from-sky-600 to-slate-900',
-        fotoUrl: 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?auto=format&fit=crop&w=1600&q=85',
-        criadoEm: 1700000005
-      },
-      {
-        id: 'PRO-03',
-        nome: 'Maria Clara • Diarista & Limpeza',
-        oficio: 'Diarista & Limpeza Residencial',
-        regiao: 'Belém (Umarizal, Nazaré, Marco e Pedreira)',
-        whatsapp: '5591984121003',
-        modalidade: 'Atende direto no Zap',
-        pacoteChave: '15dias',
-        valorPacote: 197,
-        ciclo: 1,
-        diasTotais: 15,
-        diasRestantes: 9,
-        templateEstilo: 'soft-craft',
-        paletaCor: 'emerald',
-        headline: 'Sua casa limpa, cheirosa e organizada sem você precisar se preocupar com nada.',
-        subheadline: 'Diária completa, faxina pesada e limpeza pós-mudança em casas e apartamentos com pontualidade e referências locais.',
-        descricao: 'Limpeza detalhada cômodo por cômodo, organização de cozinha, banheiros, vidros e área de serviço. Atendimento cuidadoso e de confiança para famílias e escritórios.',
-        diferenciais: [
-          'Pontualidade rigorosa e referências comprovadas',
-          'Limpeza detalhada nos cantos que fazem diferença',
-          'Agendamento flexível para diária avulsa ou semanal'
-        ],
-        depoimentoTexto: 'Super caprichosa e pontual. Deixou meu apartamento impecável depois da mudança!',
-        depoimentoAutor: 'Fernanda L. • Umarizal, Belém',
-        servicos: [
-          'Diária completa para casas e apartamentos',
-          'Limpeza pesada de cozinha, banheiros e vidros',
-          'Faxina pós-mudança ou pós-pequena reforma',
-          'Organização interna de armários e despensa'
-        ],
-        horario: 'Seg a Sáb • 08h às 17h',
-        corCapa: 'from-emerald-600 to-slate-900',
-        fotoUrl: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?auto=format&fit=crop&w=1600&q=85',
-        criadoEm: 1700000004
-      },
-      {
-        id: 'PRO-04',
-        nome: 'Mestre Carlos Reformas',
-        oficio: 'Reformas, Pedreiro & Pintura',
-        regiao: 'Marituba, Benevides, Benfica e Ananindeua',
-        whatsapp: '5591984121004',
-        modalidade: 'Atende direto no Zap',
-        pacoteChave: '30dias',
-        valorPacote: 347,
-        ciclo: 1,
-        diasTotais: 30,
-        diasRestantes: 21,
-        templateEstilo: 'bold-pro',
-        paletaCor: 'gold',
-        headline: 'Reforma e pintura com acabamento limpo, orçamento fechado e prazo cumprido.',
-        subheadline: 'Piso, porcelanato, reboco, pintura residencial e reparos gerais sem dor de cabeça e sem desperdício de material.',
-        descricao: 'Execução cuidadosa para pequenas e médias reformas na sua casa ou comércio. Avaliamos o serviço, passamos a lista exata de materiais e entregamos tudo limpo.',
-        diferenciais: [
-          'Orçamento detalhado sem surpresas no meio da obra',
-          'Acabamento fino em piso, porcelanato e pintura',
-          'Compromisso com o prazo combinado'
-        ],
-        depoimentoTexto: 'Fez a pintura completa da minha casa em Marituba e trocou o piso da sala no prazo exato combinado.',
-        depoimentoAutor: 'Roberto A. • Marituba',
-        servicos: [
-          'Assentamento de piso, porcelanato e revestimento',
-          'Pintura interna, externa, massa corrida e textura',
-          'Reparos hidráulicos, telhado, calhas e alvenaria',
-          'Construção de muros, calçadas e áreas gourmet'
-        ],
-        horario: 'Seg a Sáb • 08h às 17h30',
-        corCapa: 'from-orange-600 to-slate-900',
-        fotoUrl: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1600&q=85',
-        criadoEm: 1700000003
-      },
-      {
-        id: 'PRO-05',
-        nome: 'Studio Camila Beleza',
-        oficio: 'Beleza, Cabelo & Manicure',
-        regiao: 'Castanhal (Centro e bairros próximos)',
-        whatsapp: '5591984121005',
-        modalidade: 'Agenda na Mão',
-        pacoteChave: 'agenda',
-        valorPacote: 397,
-        ciclo: 1,
-        diasTotais: 15,
-        diasRestantes: 11,
-        templateEstilo: 'soft-craft',
-        paletaCor: 'rose',
-        headline: 'Cabelo impecável e unhas perfeitas com horário marcado e zero fila de espera.',
-        subheadline: 'Escova modelada, progressiva sem formol, hidratação profunda e manicure com materiais 100% esterilizados em Castanhal.',
-        descricao: 'Atendimento personalizado com horário reservado em Castanhal. Produtos profissionais de alta durabilidade para você sair pronta e renovada.',
-        diferenciais: [
-          'Atendimento com hora marcada sem espera',
-          'Materiais 100% esterilizados e descartáveis',
-          'Produtos profissionais de alta durabilidade'
-        ],
-        depoimentoTexto: 'Atendimento maravilhoso em Castanhal, pontual no horário marcado e resultado perfeito no cabelo!',
-        depoimentoAutor: 'Juliana M. • Centro, Castanhal',
-        servicos: [
-          'Corte, escova modelada e hidratação profunda',
-          'Alinhamento térmico e progressiva sem formol',
-          'Manicure, pedicure e esmaltação em gel',
-          'Design de sobrancelhas e penteados para eventos'
-        ],
-        horario: 'Ter a Sáb • 08h30 às 19h',
-        corCapa: 'from-pink-600 to-slate-900',
-        fotoUrl: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=1600&q=85',
-        criadoEm: 1700000002
-      },
-      {
-        id: 'PRO-06',
-        nome: 'Rápido Pará Fretes & Mudanças',
-        oficio: 'Frete, Carreto & Mudanças',
-        regiao: 'Belém, Mosqueiro, Ananindeua e Castanhal',
-        whatsapp: '5591984121006',
-        modalidade: 'Atende direto no Zap',
-        pacoteChave: '15dias',
-        valorPacote: 197,
-        ciclo: 1,
-        diasTotais: 15,
-        diasRestantes: 7,
-        templateEstilo: 'clean-studio',
-        paletaCor: 'indigo',
-        headline: 'Frete rápido e mudança segura com cuidado total nos seus móveis.',
-        subheadline: 'Veículo utilitário equipado com mantas e cordas para carretos na cidade ou viagens para Mosqueiro, Benfica e Castanhal.',
-        descricao: 'Precisa transportar geladeira, sofá, cama ou fazer mudança completa? Chegamos no horário combinado e protegemos cada item durante o trajeto.',
-        diferenciais: [
-          'Pontualidade na coleta e na entrega',
-          'Mantas acolchoadas e cordas para proteger seus móveis',
-          'Atendimento inclusive aos domingos e feriados'
-        ],
-        depoimentoTexto: 'Levaram minha mudança para Mosqueiro sem um único arranhão e chegaram no horário combinado.',
-        depoimentoAutor: 'Paulo H. • Belém / Mosqueiro',
-        servicos: [
-          'Carretos rápidos de móveis e eletrodomésticos',
-          'Mudanças residenciais e comerciais completas',
-          'Viagens para Mosqueiro, Benevides, Benfica e Castanhal',
-          'Entregas programadas para lojas e autônomos'
-        ],
-        horario: 'Todos os dias • 07h às 21h',
-        corCapa: 'from-indigo-600 to-slate-900',
-        fotoUrl: 'https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&w=1600&q=85',
-        criadoEm: 1700000001
-      }
-    ];
-
-    const INTERESSADOS_INICIAIS = [
-      {
-        id: 'INT-101',
-        nome: 'Borracharia 24h do Zé',
-        whatsapp: '(91) 98234-5511',
-        servico: 'Borracharia e Socorro',
-        local: 'Ananindeua e Marituba',
-        pacoteChave: '15dias',
-        pacoteTitulo: 'Você Responde no Zap — 15 Dias Direto',
-        preco: 'R$ 197',
-        valorNumerico: 197,
-        dataCadastro: 'Hoje, 10:15',
-        status: 'novo',
-        criadoEm: 1700000002
-      },
-      {
-        id: 'INT-102',
-        nome: 'Ana Paula • Confeitaria Artesanal',
-        whatsapp: '(91) 98711-3344',
-        servico: 'Bolos e Doces para Festas',
-        local: 'Belém e Icoaraci',
-        pacoteChave: 'agenda',
-        pacoteTitulo: 'Agenda na Mão — 15 Dias Pré-Agendado',
-        preco: 'R$ 397',
-        valorNumerico: 397,
-        dataCadastro: 'Ontem, 17:40',
-        status: 'novo',
-        criadoEm: 1700000001
-      }
-    ];
-
-    const ENTREGAS_INICIAIS = [
-      {
-        id: 'LED-01',
-        profissionalId: 'PRO-01',
-        profissionalNome: 'Oficina Mecânica J&M',
-        clienteNome: 'Roberto Silva',
-        clienteWhatsapp: '(91) 98122-4401',
-        pedido: 'Revisão de freios e troca de óleo',
-        dataHora: 'Hoje, 09:20',
-        criadoEm: 1700000003
-      },
-      {
-        id: 'LED-02',
-        profissionalId: 'PRO-02',
-        profissionalNome: 'ClimaFrio Refrigeração',
-        clienteNome: 'Fernanda Costa',
-        clienteWhatsapp: '(91) 98345-8890',
-        pedido: 'Limpeza de 2 aparelhos Split 12.000 BTUs',
-        dataHora: 'Ontem, 15:10',
-        criadoEm: 1700000002
-      },
-      {
-        id: 'LED-03',
-        profissionalId: 'PRO-05',
-        profissionalNome: 'Studio Camila Beleza',
-        clienteNome: 'Juliana Oliveira',
-        clienteWhatsapp: '(91) 98901-7732',
-        pedido: 'Escova + Manicure em Castanhal',
-        dataHora: 'Ontem, 11:05',
-        criadoEm: 1700000001
-      }
-    ];
+    const PROFISSIONAIS_INICIAIS = [];
+    const INTERESSADOS_INICIAIS = [];
+    const ENTREGAS_INICIAIS = [];
 
     let db = {
       config: {
@@ -1714,6 +1960,9 @@ ALTER TABLE public.clientenozap_state DISABLE ROW LEVEL SECURITY;</pre>
       try {
         const salvo = localStorage.getItem(STORAGE_KEY);
         if (!salvo) {
+          db.profissionais = JSON.parse(JSON.stringify(PROFISSIONAIS_INICIAIS));
+          db.interessados = JSON.parse(JSON.stringify(INTERESSADOS_INICIAIS));
+          db.entregas = JSON.parse(JSON.stringify(ENTREGAS_INICIAIS));
           salvarBancoLocal(false);
           return;
         }
@@ -1829,10 +2078,12 @@ ALTER TABLE public.clientenozap_state DISABLE ROW LEVEL SECURITY;</pre>
       const viewVendas = document.getElementById('view-vendas');
       const viewVitrine = document.getElementById('view-vitrine');
       const viewAdmin = document.getElementById('view-admin');
+      const viewCadastro = document.getElementById('view-cadastro-empresa');
 
       if (viewVendas) viewVendas.classList.toggle('hidden', tela !== 'vendas');
       if (viewVitrine) viewVitrine.classList.toggle('hidden', tela !== 'vitrine');
       if (viewAdmin) viewAdmin.classList.toggle('hidden', tela !== 'admin');
+      if (viewCadastro) viewCadastro.classList.toggle('hidden', tela !== 'cadastro-empresa');
 
       const btnVendas = document.getElementById('nav-btn-vendas');
       const btnVitrine = document.getElementById('nav-btn-vitrine');
@@ -3063,16 +3314,25 @@ ALTER TABLE public.clientenozap_state DISABLE ROW LEVEL SECURITY;</pre>
         listaInt.innerHTML = db.interessados.map(item => {
           const telLimpo = '55' + item.whatsapp.replace(/\D/g, '').replace(/^55/, '');
           const msgZap = encodeURIComponent(`Olá *${item.nome}*! Recebi seu pedido no *ClienteNoZap* para *${item.servico}* (${item.local}) na opção *${item.pacoteTitulo}*. Vamos ativar hoje?`);
+          const origemBadge = item.origemFicha
+            ? `<span class="px-2.5 py-0.5 rounded-lg bg-zap-100 text-zap-800 text-xs font-extrabold">Ficha Completa</span>`
+            : `<span class="px-2.5 py-0.5 rounded-lg bg-amber-100 text-amber-800 text-xs font-extrabold">Novo Pedido</span>`;
+          const resumoServicos = Array.isArray(item.servicosLista) && item.servicosLista.length > 0
+            ? `<p class="text-xs text-slate-500 mt-1"><strong>Serviços:</strong> ${item.servicosLista.slice(0, 3).join(' • ')}</p>`
+            : '';
+
           return `
             <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-4">
               <div>
                 <div class="flex flex-wrap items-center gap-2 mb-1">
-                  <span class="px-2.5 py-0.5 rounded-lg bg-amber-100 text-amber-800 text-xs font-extrabold">Novo Pedido</span>
+                  ${origemBadge}
+                  ${item.responsavel ? `<span class="text-xs font-semibold text-slate-600">Resp: ${item.responsavel}</span>` : ''}
                   <span class="text-xs text-slate-500">${item.dataCadastro}</span>
                 </div>
                 <h3 class="font-display font-extrabold text-lg text-slate-900">${item.nome}</h3>
                 <p class="text-sm text-slate-700 mt-0.5"><strong>Serviço:</strong> ${item.servico} • <strong>Área:</strong> ${item.local}</p>
                 <p class="text-sm text-zap-700 font-semibold mt-0.5">WhatsApp: ${item.whatsapp} • ${item.pacoteTitulo} (${item.preco})</p>
+                ${resumoServicos}
               </div>
 
               <div class="flex flex-wrap items-center gap-2">
@@ -3249,9 +3509,26 @@ ALTER TABLE public.clientenozap_state DISABLE ROW LEVEL SECURITY;</pre>
       const variacaoUnica = escolherVariacaoUnicaNicho(`${item.servico} ${item.nome}`);
       const pacoteInfo = PACOTES[item.pacoteChave] || PACOTES['15dias'];
 
+      const servicosFinais = Array.isArray(item.servicosLista) && item.servicosLista.length > 0
+        ? item.servicosLista
+        : [
+            `${item.servico} com orçamento sem compromisso`,
+            `Atendimento residencial e comercial em ${item.local}`,
+            'Agendamento rápido para o mesmo dia ou data combinada'
+          ];
+
+      const diferenciaisFinais = Array.isArray(item.diferenciaisLista) && item.diferenciaisLista.length > 0
+        ? item.diferenciaisLista
+        : [
+            'Orçamento rápido e transparente direto no WhatsApp',
+            `Atendimento ágil em ${item.local}`,
+            'Compromisso com qualidade e pontualidade'
+          ];
+
       const novoPro = {
         id: 'PRO-' + Date.now(),
         nome: item.nome,
+        responsavel: item.responsavel || '',
         oficio: item.servico,
         regiao: item.local,
         whatsapp: telLimpo,
@@ -3266,19 +3543,11 @@ ALTER TABLE public.clientenozap_state DISABLE ROW LEVEL SECURITY;</pre>
         headline: `Precisando de ${item.servico} em ${item.local}? Atendemos você hoje com agilidade!`,
         subheadline: `Orçamento rápido e sem compromisso direto no WhatsApp com ${item.nome} — atendimento dedicado em ${item.local}.`,
         descricao: `Profissional ativo no ClienteNoZap atendendo ${item.local} com qualidade, pontualidade e negociação direta sem intermediários.`,
-        diferenciais: [
-          'Orçamento rápido e transparente direto no WhatsApp',
-          `Atendimento ágil em ${item.local}`,
-          'Compromisso com qualidade e pontualidade'
-        ],
+        diferenciais: diferenciaisFinais,
         depoimentoTexto: `Atendimento rápido, orçamento honesto e serviço muito bem feito por ${item.nome}. Super recomendo!`,
         depoimentoAutor: `Cliente verificado • ${item.local.split(',')[0]}`,
-        servicos: [
-          `${item.servico} com orçamento sem compromisso`,
-          `Atendimento residencial e comercial em ${item.local}`,
-          'Agendamento rápido para o mesmo dia ou data combinada'
-        ],
-        horario: 'Seg a Sáb • 08h às 18h',
+        servicos: servicosFinais,
+        horario: item.horario || 'Seg a Sáb • 08h às 18h',
         corCapa: variacaoUnica.corCapa,
         fotoUrl: variacaoUnica.fotoUrl,
         criadoEm: Date.now()
@@ -4035,14 +4304,14 @@ Estrutura obrigatória da página (padrão Vitally Studio):
       mostrarToast('Cliente de teste registrado!');
     }
 
-    function restaurarDadosDemonstracao() {
-      db.profissionais = JSON.parse(JSON.stringify(PROFISSIONAIS_INICIAIS));
-      db.interessados = JSON.parse(JSON.stringify(INTERESSADOS_INICIAIS));
-      db.entregas = JSON.parse(JSON.stringify(ENTREGAS_INICIAIS));
+    function zerarBancoProducao() {
+      db.profissionais = [];
+      db.interessados = [];
+      db.entregas = [];
       salvarBancoLocal();
       renderizarPainelAdmin();
       renderizarVitrine();
-      mostrarToast('Dados iniciais restaurados!');
+      mostrarToast('Sistema zerado! Pronto para cadastrar seus clientes reais.');
     }
 
     function copiarTextoParaClipboard(texto) {
@@ -4067,6 +4336,185 @@ Estrutura obrigatória da página (padrão Vitally Studio):
     function copiarLinkPaginaAtual() {
       if (!profissionalAtualId) return;
       copiarLinkPaginaProfissional(profissionalAtualId);
+    }
+
+    // =====================================================================
+    // CADASTRO DE EMPRESA (LINK EXTERNO PARA CLIENTE + MODAL ASSISTIDO)
+    // =====================================================================
+    function copiarLinkFormularioCadastro() {
+      const baseUrl = window.location.href.split('?')[0].split('#')[0];
+      const { url, key, ativo } = obterCredenciaisSupabase();
+      const linkCadastro = ativo
+        ? `${baseUrl}?cadastro=empresa&sb_url=${encodeURIComponent(url)}&sb_key=${encodeURIComponent(key)}`
+        : `${baseUrl}?cadastro=empresa`;
+      copiarTextoParaClipboard(linkCadastro);
+      mostrarToast('Link do formulário de cadastro copiado! Envie no WhatsApp do cliente.');
+    }
+
+    function enviarFormularioPublicoEmpresa(e) {
+      e.preventDefault();
+      const nome = document.getElementById('pub-emp-nome').value.trim();
+      const responsavel = document.getElementById('pub-emp-responsavel').value.trim();
+      const zap = document.getElementById('pub-emp-zap').value.trim();
+      const oficio = document.getElementById('pub-emp-oficio').value.trim();
+      const regiao = document.getElementById('pub-emp-regiao').value.trim();
+      const horario = document.getElementById('pub-emp-horario').value.trim() || 'Seg a Sáb • 08h às 18h';
+      const servicosLista = document.getElementById('pub-emp-servicos').value
+        .split('\n').map(s => s.trim()).filter(Boolean);
+      const diferenciaisLista = document.getElementById('pub-emp-diferenciais').value
+        .split('\n').map(s => s.trim()).filter(Boolean);
+      const chave = document.getElementById('pub-emp-pacote').value;
+      const info = PACOTES[chave] || PACOTES['15dias'];
+
+      db.interessados.unshift({
+        id: 'INT-' + Date.now(),
+        nome,
+        responsavel,
+        whatsapp: zap,
+        servico: oficio,
+        local: regiao,
+        horario,
+        servicosLista,
+        diferenciaisLista,
+        pacoteChave: chave,
+        pacoteTitulo: info.titulo,
+        preco: info.preco,
+        valorNumerico: info.valorNumerico || 197,
+        origemFicha: true,
+        dataCadastro: new Date().toLocaleString('pt-BR'),
+        status: 'novo',
+        criadoEm: Date.now()
+      });
+      salvarBancoLocal();
+
+      const zapDestino = (db.config && db.config.gestorWhatsapp) ? db.config.gestorWhatsapp : WHATSAPP_GESTOR;
+      const msgConfirmacao = encodeURIComponent(
+        `Olá! Acabei de preencher a *Ficha de Cadastro* no *ClienteNoZap*.\n\n` +
+        `*Empresa:* ${nome}\n` +
+        `*Responsável:* ${responsavel}\n` +
+        `*WhatsApp:* ${zap}\n` +
+        `*Ramo:* ${oficio}\n` +
+        `*Região:* ${regiao}\n` +
+        `*Opção:* ${info.titulo} (${info.preco})`
+      );
+
+      const formEl = document.getElementById('form-publico-empresa');
+      const sucessoEl = document.getElementById('pub-emp-sucesso');
+      const linkZapEl = document.getElementById('pub-emp-link-zap');
+
+      if (linkZapEl) linkZapEl.href = `https://wa.me/${zapDestino}?text=${msgConfirmacao}`;
+      if (formEl) formEl.classList.add('hidden');
+      if (sucessoEl) sucessoEl.classList.remove('hidden');
+      atualizarIcones();
+    }
+
+    function abrirModalCadastroEmpresa() {
+      document.getElementById('adm-emp-nome').value = '';
+      document.getElementById('adm-emp-responsavel').value = '';
+      document.getElementById('adm-emp-zap').value = '';
+      document.getElementById('adm-emp-oficio').value = '';
+      document.getElementById('adm-emp-regiao').value = '';
+      document.getElementById('adm-emp-horario').value = 'Seg a Sáb • 08h às 18h';
+      document.getElementById('adm-emp-servicos').value = '';
+      document.getElementById('adm-emp-diferenciais').value = '';
+      document.getElementById('adm-emp-pacote').value = '15dias';
+      document.getElementById('adm-emp-destino').value = 'vitrine';
+
+      const modal = document.getElementById('modal-cadastro-empresa-admin');
+      if (modal) modal.classList.remove('hidden');
+      atualizarIcones();
+    }
+
+    function fecharModalCadastroEmpresa() {
+      const modal = document.getElementById('modal-cadastro-empresa-admin');
+      if (modal) modal.classList.add('hidden');
+    }
+
+    function salvarCadastroEmpresaAdmin(e) {
+      e.preventDefault();
+      const nome = document.getElementById('adm-emp-nome').value.trim();
+      const responsavel = document.getElementById('adm-emp-responsavel').value.trim();
+      const zapFormatado = document.getElementById('adm-emp-zap').value.trim();
+      const telLimpo = '55' + zapFormatado.replace(/\D/g, '').replace(/^55/, '');
+      const oficio = document.getElementById('adm-emp-oficio').value.trim();
+      const regiao = document.getElementById('adm-emp-regiao').value.trim();
+      const horario = document.getElementById('adm-emp-horario').value.trim() || 'Seg a Sáb • 08h às 18h';
+      const servicosLista = document.getElementById('adm-emp-servicos').value
+        .split('\n').map(s => s.trim()).filter(Boolean);
+      const diferenciaisLista = document.getElementById('adm-emp-diferenciais').value
+        .split('\n').map(s => s.trim()).filter(Boolean);
+      const chave = document.getElementById('adm-emp-pacote').value;
+      const destino = document.getElementById('adm-emp-destino').value;
+      const info = PACOTES[chave] || PACOTES['15dias'];
+
+      if (destino === 'fila') {
+        db.interessados.unshift({
+          id: 'INT-' + Date.now(),
+          nome,
+          responsavel,
+          whatsapp: zapFormatado,
+          servico: oficio,
+          local: regiao,
+          horario,
+          servicosLista,
+          diferenciaisLista,
+          pacoteChave: chave,
+          pacoteTitulo: info.titulo,
+          preco: info.preco,
+          valorNumerico: info.valorNumerico || 197,
+          origemFicha: true,
+          dataCadastro: new Date().toLocaleString('pt-BR'),
+          status: 'novo',
+          criadoEm: Date.now()
+        });
+        salvarBancoLocal();
+        fecharModalCadastroEmpresa();
+        trocarAbaAdmin('interessados');
+        mostrarToast(`${nome} salvo na fila de Novos Pedidos!`);
+      } else {
+        const variacaoUnica = escolherVariacaoUnicaNicho(`${oficio} ${nome}`);
+        const novoPro = {
+          id: 'PRO-' + Date.now(),
+          nome,
+          responsavel,
+          oficio,
+          regiao,
+          whatsapp: telLimpo,
+          modalidade: chave === 'agenda' ? 'Agenda na Mão' : 'Atende direto no Zap',
+          pacoteChave: chave,
+          valorPacote: info.valorNumerico || 197,
+          ciclo: 1,
+          diasTotais: info.dias || 15,
+          diasRestantes: info.dias || 15,
+          templateEstilo: variacaoUnica.templateEstilo,
+          paletaCor: variacaoUnica.paletaCor,
+          headline: `Precisando de ${oficio} em ${regiao}? Atendemos você hoje com agilidade!`,
+          subheadline: `Orçamento rápido e sem compromisso direto no WhatsApp com ${nome} — atendimento dedicado em ${regiao}.`,
+          descricao: `Profissional ativo no ClienteNoZap atendendo ${regiao} com qualidade, pontualidade e negociação direta sem intermediários.`,
+          diferenciais: diferenciaisLista.length > 0 ? diferenciaisLista : [
+            'Orçamento rápido e transparente direto no WhatsApp',
+            `Atendimento ágil em ${regiao}`,
+            'Compromisso com qualidade e pontualidade'
+          ],
+          depoimentoTexto: `Atendimento rápido, orçamento honesto e serviço muito bem feito por ${nome}. Super recomendo!`,
+          depoimentoAutor: `Cliente verificado • ${regiao.split(',')[0]}`,
+          servicos: servicosLista.length > 0 ? servicosLista : [
+            `${oficio} com orçamento sem compromisso`,
+            `Atendimento residencial e comercial em ${regiao}`,
+            'Agendamento rápido para o mesmo dia ou data combinada'
+          ],
+          horario,
+          corCapa: variacaoUnica.corCapa,
+          fotoUrl: variacaoUnica.fotoUrl,
+          criadoEm: Date.now()
+        };
+        db.profissionais.unshift(novoPro);
+        salvarBancoLocal();
+        fecharModalCadastroEmpresa();
+        trocarAbaAdmin('ativos');
+        renderizarVitrine();
+        mostrarToast(`${nome} cadastrado e publicado na Vitrine!`);
+      }
     }
 
     function simularPassagemDeDia() {
@@ -4205,6 +4653,7 @@ Estrutura obrigatória da página (padrão Vitally Studio):
         fecharModalAuditoriaPro();
         fecharModalJuridico();
         fecharModalSqlSupabase();
+        fecharModalCadastroEmpresa();
       }
     });
 
@@ -4231,6 +4680,10 @@ Estrutura obrigatória da página (padrão Vitally Studio):
         atualizarIndicadoresNuvem('local');
       }
 
+      if (params.get('cadastro') === 'empresa') {
+        alternarTela('cadastro-empresa');
+      }
+
       const proParam = params.get('pro');
       if (proParam && db.profissionais.some(p => p.id === proParam)) {
         alternarTela('vitrine');
@@ -4254,6 +4707,11 @@ Estrutura obrigatória da página (padrão Vitally Studio):
       filtrarRapido,
       renderizarVitrine,
       abrirModalCriarComPrompt,
+      copiarLinkFormularioCadastro,
+      enviarFormularioPublicoEmpresa,
+      abrirModalCadastroEmpresa,
+      fecharModalCadastroEmpresa,
+      salvarCadastroEmpresaAdmin,
       simularPassagemDeDia,
       trocarAbaAdmin,
       renderizarPainelAdmin,
@@ -4264,7 +4722,7 @@ Estrutura obrigatória da página (padrão Vitally Studio):
       abrirModalSqlSupabase,
       fecharModalSqlSupabase,
       copiarSqlSupabase,
-      restaurarDadosDemonstracao,
+      zerarBancoProducao,
       fecharModal,
       copiarLinkPaginaAtual,
       fecharPaginaProfissional,
