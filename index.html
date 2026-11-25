@@ -4864,20 +4864,26 @@ Estrutura obrigatória da página (padrão Vitally Studio):
         alternarTela('cadastro-empresa');
       }
 
-      const proParam = params.get('pro');
-      const pathname = window.location.pathname.replace(/^\/+|\/+$/g, '');
+      const proParam = params.get('pro') || params.get('p');
+        const pathname = decodeURIComponent(window.location.pathname).replace(/^\/+|\/+$/g, '').toLowerCase();
+        const normSlug = (txt) => String(txt || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
 
-      let proEncontrado = null;
-      if (proParam) {
-        proEncontrado = db.profissionais.find(p => p.id === proParam);
-      } else if (pathname && pathname !== 'index.html' && pathname !== '') {
-        proEncontrado = db.profissionais.find(p => p.slug === pathname || p.id === pathname);
-      }
+        let proEncontrado = null;
+        if (proParam) {
+          proEncontrado = db.profissionais.find(p => String(p.id) === String(proParam));
+        } else if (pathname && pathname !== 'index.html' && pathname !== '') {
+          const pathSlug = normSlug(pathname);
+          proEncontrado = db.profissionais.find(p =>
+            normSlug(p.slug) === pathSlug ||
+            normSlug(p.nome) === pathSlug ||
+            String(p.id).toLowerCase() === pathname
+          );
+        }
 
-      if (proEncontrado) {
-        alternarTela('vitrine');
-        abrirPaginaProfissional(proEncontrado.id);
-      }
+        if (proEncontrado) {
+          alternarTela('vitrine');
+          abrirPaginaProfissional(proEncontrado.id);
+        }
 
       atualizarIcones();
     });
