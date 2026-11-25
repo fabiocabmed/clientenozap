@@ -1859,8 +1859,8 @@ ALTER TABLE public.clientenozap_state DISABLE ROW LEVEL SECURITY;</pre>
     let syncTimer = null;
 
     function obterCredenciaisSupabase() {
-      const url = ((db.config && db.config.supabaseUrl) || '').trim().replace(/\/+$/, '');
-      const key = ((db.config && db.config.supabaseAnonKey) || '').trim();
+      const url = ((db.config && db.config.supabaseUrl) || 'https://rabwcytgbvblvrqhsppa.supabase.co').trim().replace(/\/+$/, '');
+      const key = ((db.config && db.config.supabaseAnonKey) || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJhYndjeXRnYnZibHZycWhzcHBhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTU1NDY0NjUsImV4cCI6MjExMTEyMjQ2NX0.9W-PcrOhhOMW50HjdUK5kvytdh6Wt75m14_oj1GeZz8').trim();
       return { url, key, ativo: Boolean(url && key) };
     }
 
@@ -4495,9 +4495,10 @@ Estrutura obrigatória da página (padrão Vitally Studio):
     if (typeof salvarBancoLocal === 'function') salvarBancoLocal(true);
   }
   const baseUrl = window.location.origin;
-  const linkDireto = `${baseUrl}/${p.slug}?v=2`;
+  const linkDireto = `${baseUrl}/${p.slug}`;
   copiarTextoParaClipboard(linkDireto);
   mostrarToast(`Link da página de ${p.nome} copiado!`);
+}
 }
 
     function copiarLinkPaginaAtual() {
