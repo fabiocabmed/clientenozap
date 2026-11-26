@@ -5,8 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ClienteNoZap | Captação de Clientes, Vitrine &amp; Painel</title>
   <meta name="description" content="Captação ativa de clientes para autônomos, prestadores de serviço e MEIs em Belém, Ananindeua, Icoaraci, Mosqueiro, Marituba, Benevides, Benfica e Castanhal." />
- <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect x='2' y='2' width='60' height='60' rx='16' fill='%2316A34A'/%3E%3Cpath d='M32 14C21.5 14 13 21.6 13 31c0 3.7 1.3 7.1 3.5 9.9L14.2 49l8.6-2.2c2.8 1.4 5.9 2.2 9.2 2.2 10.5 0 19-7.6 19-17S42.5 14 32 14z' fill='%23FFFFFF'/%3E%3Cpath d='M33.8 22.5L26 32.5h5.5l-1.3 8L38 30.5h-5.5l1.3-8z' fill='%2316A34A'/%3E%3C/svg%3E" />
-  
+
   <!-- Google Fonts: Plus Jakarta Sans, Inter, Manrope & DM Sans -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -146,17 +145,9 @@
     <div class="max-w-5xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-2">
       <!-- Logotipo -->
       <a href="#inicio" onclick="alternarTela('vendas')" class="flex items-center gap-2 shrink-0">
-        <svg class="w-9 h-9 shrink-0 shadow-sm rounded-xl" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-  <defs>
-    <linearGradient id="zapBrandGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#22C55E" />
-      <stop offset="100%" stop-color="#15803D" />
-    </linearGradient>
-  </defs>
-  <rect x="2" y="2" width="60" height="60" rx="16" fill="url(#zapBrandGrad)" />
-  <path d="M32 14C21.5 14 13 21.6 13 31c0 3.7 1.3 7.1 3.5 9.9L14.2 49l8.6-2.2c2.8 1.4 5.9 2.2 9.2 2.2 10.5 0 19-7.6 19-17S42.5 14 32 14z" fill="#FFFFFF" />
-  <path d="M33.8 22.5L26 32.5h5.5l-1.3 8L38 30.5h-5.5l1.3-8z" fill="#16A34A" />
-</svg>
+        <div class="w-9 h-9 rounded-xl bg-zap-500 flex items-center justify-center text-white shadow-sm">
+          <i data-lucide="message-circle" class="w-5 h-5"></i>
+        </div>
         <span class="font-display font-extrabold text-lg sm:text-xl tracking-tight text-slate-900">
           Cliente<span class="text-zap-600">NoZap</span>
         </span>
@@ -1208,23 +1199,7 @@
         </button>
       </div>
 
-      <!-- Bloco de Geração Rápida por IA -->
-      <div class="bg-zap-50/80 border-2 border-zap-200 rounded-2xl p-4 mb-5 space-y-3">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-          <div>
-            <p class="font-display font-extrabold text-sm text-slate-900 flex items-center gap-1.5">
-              <i data-lucide="sparkles" class="w-4 h-4 text-zap-600"></i>
-              <span>Gerar Página Exclusiva em 1 Clique</span>
-            </p>
-            <p class="text-xs text-slate-600">Preencha Nome, Ofício e Região abaixo (ou escreva detalhes extras) e clique para gerar.</p>
-          </div>
-          <button type="button" id="btn-gerar-ia-pagina" onclick="gerarPaginaPorPromptIA()" class="px-4 py-2.5 rounded-xl bg-zap-600 hover:bg-zap-700 text-white font-display font-extrabold text-xs inline-flex items-center justify-center gap-1.5 shadow-sm shrink-0 transition">
-            <i data-lucide="wand-2" class="w-4 h-4"></i>
-            <span>Gerar Página com IA Agora</span>
-          </button>
-        </div>
-        <input type="text" id="prompt-ia-pagina" placeholder="Opcional: detalhes extras (ex: atende 24h, especialista em Split Inverter, kits festa infantil...)" class="w-full px-3.5 py-2.5 rounded-xl border border-zap-300 bg-white text-xs sm:text-sm focus:outline-none focus:border-zap-600" />
-      </div>
+
 
       <!-- Bloco de Upload de Arquivo HTML Externo -->
       <div class="bg-slate-50 border border-slate-200 rounded-2xl p-4 mb-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
@@ -1323,10 +1298,15 @@
           </div>
         </div>
 
-        <!-- Galeria de Capas Temáticas -->
+        <!-- Galeria de Capas Temáticas e Upload Local -->
         <div class="space-y-2">
-          <div class="flex items-center justify-between">
-            <label for="edit-pro-foto" class="text-xs font-bold uppercase text-slate-700">Foto de Capa (ou escolha na galeria abaixo)</label>
+          <div class="flex flex-wrap items-center justify-between gap-2">
+            <label for="edit-pro-foto" class="text-xs font-bold uppercase text-slate-700">Foto de Capa (URL ou Subir Foto)</label>
+            <label class="cursor-pointer px-3 py-1.5 rounded-xl bg-zap-50 border border-zap-200 hover:bg-zap-100 text-zap-800 font-display font-bold text-xs inline-flex items-center gap-1.5 transition">
+              <i data-lucide="upload" class="w-3.5 h-3.5"></i>
+              <span>Subir Foto de Capa</span>
+              <input type="file" accept="image/*" onchange="carregarArquivoCapaLocal(event)" class="hidden" />
+            </label>
           </div>
           <div class="grid grid-cols-1 sm:grid-cols-12 gap-3 items-center">
             <div class="sm:col-span-9">
@@ -1377,6 +1357,10 @@
         </div>
 
         <div class="flex flex-wrap items-center justify-end gap-2.5 pt-3 border-t border-slate-200">
+          <button type="button" onclick="baixarBriefingAtualEditor()" class="px-4 py-2.5 rounded-xl border border-slate-300 hover:bg-slate-50 text-slate-800 font-display font-bold text-xs sm:text-sm inline-flex items-center gap-1.5">
+            <i data-lucide="download" class="w-4 h-4 text-zap-600"></i>
+            <span>Baixar Dados (.txt)</span>
+          </button>
           <button type="button" onclick="fecharModalEditarPro()" class="px-4 py-2.5 rounded-xl border border-slate-300 text-slate-700 font-display font-bold text-xs sm:text-sm">
             Cancelar
           </button>
@@ -3580,6 +3564,10 @@ ALTER TABLE public.clientenozap_state DISABLE ROW LEVEL SECURITY;</pre>
               <button type="button" onclick="abrirAuditoriaPro('${p.id}')" class="px-3 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-display font-bold text-xs transition">
                 Clientes (${qtdEntregas})
               </button>
+              <button type="button" onclick="baixarBriefingPro('${p.id}')" class="px-3 py-2 rounded-xl border border-slate-300 hover:bg-slate-50 text-slate-800 font-display font-bold text-xs inline-flex items-center gap-1 transition" title="Baixar dados e briefing em .txt">
+                <i data-lucide="download" class="w-3.5 h-3.5 text-zap-600"></i>
+                <span>Baixar Dados (.txt)</span>
+              </button>
               ${botaoRenovarHtml}
               <button type="button" onclick="removerProfissional('${p.id}')" class="ml-auto p-2 rounded-xl text-slate-400 hover:text-red-600 hover:bg-red-50 transition" title="Remover da Vitrine">
                 <i data-lucide="trash-2" class="w-4 h-4"></i>
@@ -3922,135 +3910,132 @@ ALTER TABLE public.clientenozap_state DISABLE ROW LEVEL SECURITY;</pre>
       };
     }
 
-    async function gerarPaginaPorPromptIA() {
-      const nomeAtual = (document.getElementById('edit-pro-nome')?.value || '').trim();
-      const oficioAtual = (document.getElementById('edit-pro-oficio')?.value || '').trim();
-      const regiaoAtual = (document.getElementById('edit-pro-regiao')?.value || '').trim();
-      const extrasTexto = (document.getElementById('prompt-ia-pagina')?.value || '').trim();
+    function carregarArquivoCapaLocal(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement('canvas');
+          let width = img.width;
+          let height = img.height;
+          const maxWidth = 900;
+          if (width > maxWidth) {
+            height = Math.round((height * maxWidth) / width);
+            width = maxWidth;
+          }
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+          const dataUrl = canvas.toDataURL('image/jpeg', 0.82);
+          const inputFoto = document.getElementById('edit-pro-foto');
+          if (inputFoto) {
+            inputFoto.value = dataUrl;
+            atualizarPreviewCapaEditor(dataUrl);
+          }
+          mostrarToast('Foto de capa processada com sucesso!');
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
 
-      if (!nomeAtual && !oficioAtual && !extrasTexto) {
-        mostrarToast('Preencha ao menos o Nome ou o Ofício do cliente para a IA montar a página.');
+    function baixarBriefingPro(id) {
+      const p = db.profissionais.find(item => item.id === id);
+      if (!p) {
+        mostrarToast('Profissional não encontrado.');
         return;
       }
+      baixarBriefingProObjeto(p);
+    }
 
-      const fotoAtual = document.getElementById('edit-pro-foto')?.value || '';
-      const estiloAtual = document.getElementById('edit-pro-template')?.value || '';
-      const variacaoUnica = escolherVariacaoUnicaNicho(`${oficioAtual} ${nomeAtual} ${extrasTexto}`, fotoAtual, estiloAtual);
+    function baixarBriefingAtualEditor() {
+      const id = document.getElementById('edit-pro-id').value;
+      if (id) {
+        baixarBriefingPro(id);
+        return;
+      }
+      const nome = document.getElementById('edit-pro-nome').value.trim() || 'novo-profissional';
+      const slugLimpo = gerarSlugAmigavel(nome);
+      const p = {
+        id: 'novo-' + Date.now(),
+        nome: nome,
+        oficio: document.getElementById('edit-pro-oficio').value,
+        whatsapp: document.getElementById('edit-pro-zap').value,
+        slug: slugLimpo,
+        regiao: document.getElementById('edit-pro-regiao').value,
+        valorPacote: document.getElementById('edit-pro-valor').value,
+        diasRestantes: Number(document.getElementById('edit-pro-dias-restantes').value) || 15,
+        isVoucher: document.getElementById('edit-pro-is-voucher')?.checked || false,
+        modalidade: 'Atende direto no Zap',
+        horario: document.getElementById('edit-pro-horario').value,
+        templateEstilo: document.getElementById('edit-pro-template').value,
+        paletaCor: document.getElementById('edit-pro-paleta').value,
+        fotoUrl: document.getElementById('edit-pro-foto').value,
+        headline: document.getElementById('edit-pro-headline').value,
+        subheadline: document.getElementById('edit-pro-subheadline').value,
+        descricao: document.getElementById('edit-pro-descricao').value,
+        servicos: (document.getElementById('edit-pro-servicos').value || '').split('\n').map(s => s.trim()).filter(Boolean),
+        diferenciais: (document.getElementById('edit-pro-diferenciais').value || '').split('\n').map(s => s.trim()).filter(Boolean),
+        depoimentoTexto: document.getElementById('edit-pro-depoimento-texto').value,
+        depoimentoAutor: document.getElementById('edit-pro-depoimento-autor').value,
+        customHtml: htmlExternoTemporario || ''
+      };
+      baixarBriefingProObjeto(p);
+    }
 
-      const btn = document.getElementById('btn-gerar-ia-pagina');
-      const textoOriginal = btn.innerHTML;
-      btn.disabled = true;
-      btn.innerHTML = `<i data-lucide="loader-2" class="w-4 h-4 animate-spin"></i><span>Criando Página Exclusiva...</span>`;
-      atualizarIcones();
+    function baixarBriefingProObjeto(p) {
+      const leadsPro = db.entregas.filter(e => e.profissionalId === p.id);
+      const slugLimpo = gerarSlugAmigavel(p.slug || p.nome, p.id);
 
-      let resultado = null;
-      let geradaPorGeminiReal = false;
+      let conteudo = `===================================================\n`;
+      conteudo += `BRIEFING / DADOS DO PROFISSIONAL - CLIENTENOZAP\n`;
+      conteudo += `===================================================\n\n`;
+      conteudo += `Nome do Negócio: ${p.nome || ''}\n`;
+      conteudo += `Serviço / Ofício: ${p.oficio || ''}\n`;
+      conteudo += `WhatsApp: ${p.whatsapp || ''}\n`;
+      conteudo += `Slug / Link: ${window.location.origin}/${slugLimpo}\n`;
+      conteudo += `Região Atendida: ${p.regiao || ''}\n`;
+      conteudo += `Valor do Ciclo: R$ ${p.valorPacote || 197}\n`;
+      conteudo += `Dias Restantes no Ciclo: ${p.diasRestantes !== undefined ? p.diasRestantes : 15}\n`;
+      conteudo += `Status Voucher / Cortesia: ${p.isVoucher ? 'Sim (Cortesia)' : 'Não (Pagante)'}\n`;
+      conteudo += `Modalidade: ${p.modalidade || 'Atende direto no Zap'}\n`;
+      conteudo += `Horário de Atendimento: ${p.horario || 'Seg a Sáb • 08h às 18h'}\n`;
+      conteudo += `Template Visual: ${p.templateEstilo || 'editorial-dark'} | Paleta: ${p.paletaCor || 'amber'}\n`;
+      conteudo += `Foto de Capa: ${p.fotoUrl || '(Nenhuma)'}\n\n`;
 
-      const briefingCompleto = [
-        nomeAtual ? `Negócio/Profissional: ${nomeAtual}` : '',
-        oficioAtual ? `Especialidade/Ofício: ${oficioAtual}` : '',
-        regiaoAtual ? `Cidades/Bairros atendidos: ${regiaoAtual}` : '',
-        extrasTexto ? `Detalhes adicionais: ${extrasTexto}` : ''
-      ].filter(Boolean).join(' | ');
+      conteudo += `--- TEXTOS E CONTEÚDO DA PÁGINA ---\n`;
+      conteudo += `Título Principal (Headline): ${p.headline || ''}\n`;
+      conteudo += `Subtítulo: ${p.subheadline || ''}\n`;
+      conteudo += `Descrição: ${p.descricao || ''}\n`;
+      conteudo += `Serviços:\n${(p.servicos || []).map(s => `- ${s}`).join('\n')}\n`;
+      conteudo += `Diferenciais:\n${(p.diferenciais || []).map(d => `- ${d}`).join('\n')}\n`;
+      conteudo += `Depoimento: "${p.depoimentoTexto || ''}" — ${p.depoimentoAutor || ''}\n\n`;
 
-      const apiKey = ((db.config && db.config.geminiApiKey) || '').trim();
+      conteudo += `--- HTML PERSONALIZADO ---\n`;
+      conteudo += p.customHtml ? p.customHtml : '(Nenhum HTML personalizado carregado; usando template padrão da vitrine)\n\n';
 
-      if (apiKey) {
-        try {
-          const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${encodeURIComponent(apiKey)}`;
-          const payload = {
-            contents: [{
-              parts: [{
-                text: `Você é um especialista sênior em Landing Pages comerciais de alta conversão da Vitally Studio. Crie uma página de vendas limpa, persuasiva e direta (em português do Brasil) para este prestador de serviço local: "${briefingCompleto}". Gere textos naturais (sem jargões de marketing, sem endereço físico): título principal (headline), subtítulo persuasivo (subheadline), descrição objetiva, 3 diferenciais, 1 depoimento realista de cliente da região (depoimentoTexto e depoimentoAutor) e 6 serviços específicos do ramo.`
-              }]
-            }],
-            generationConfig: {
-              responseMimeType: 'application/json',
-              responseSchema: {
-                type: 'OBJECT',
-                properties: {
-                  nome: { type: 'STRING' },
-                  oficio: { type: 'STRING' },
-                  regiao: { type: 'STRING' },
-                  headline: { type: 'STRING' },
-                  subheadline: { type: 'STRING' },
-                  descricao: { type: 'STRING' },
-                  diferenciais: { type: 'ARRAY', items: { type: 'STRING' } },
-                  depoimentoTexto: { type: 'STRING' },
-                  depoimentoAutor: { type: 'STRING' },
-                  servicos: { type: 'ARRAY', items: { type: 'STRING' } }
-                },
-                required: ['nome', 'oficio', 'regiao', 'headline', 'subheadline', 'descricao', 'diferenciais', 'depoimentoTexto', 'depoimentoAutor', 'servicos']
-              }
-            }
-          };
-
-          const controller = new AbortController();
-          const timeoutId = setTimeout(() => controller.abort(), 15000);
-          const resp = await fetch(apiUrl, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload),
-            signal: controller.signal
-          });
-          clearTimeout(timeoutId);
-
-          if (resp.ok) {
-            const data = await resp.json();
-            const jsonText = data?.candidates?.[0]?.content?.parts?.[0]?.text;
-            if (jsonText) {
-              const parsed = JSON.parse(jsonText);
-              resultado = {
-                ...parsed,
-                nome: nomeAtual || parsed.nome,
-                oficio: oficioAtual || parsed.oficio,
-                regiao: regiaoAtual || parsed.regiao,
-                fotoUrl: variacaoUnica.fotoUrl,
-                corCapa: variacaoUnica.corCapa,
-                templateEstilo: variacaoUnica.templateEstilo,
-                paletaCor: variacaoUnica.paletaCor
-              };
-              geradaPorGeminiReal = true;
-            }
-          } else {
-            mostrarToast('Não foi possível conectar na chave Gemini. Usando motor local inteligente...');
-          }
-        } catch (_) {}
+      conteudo += `--- LEADS / CONTATOS RECEBIDOS (${leadsPro.length}) ---\n`;
+      if (leadsPro.length === 0) {
+        conteudo += `Nenhum contato registrado até o momento.\n`;
+      } else {
+        leadsPro.forEach((l, idx) => {
+          conteudo += `${idx + 1}. Data: ${l.dataHora || l.data || 'N/D'} | Nome: ${l.clienteNome} | WhatsApp: ${l.clienteWhatsapp} | Servico/Pedido: ${l.pedido || l.servico || 'Orçamento'}\n`;
+        });
       }
 
-      if (!resultado) {
-        resultado = construirCopysLocaisPorPrompt(extrasTexto, nomeAtual, oficioAtual, regiaoAtual, variacaoUnica);
-      }
-
-      document.getElementById('edit-pro-nome').value = resultado.nome;
-      if (!document.getElementById('edit-pro-zap').value.trim()) {
-        document.getElementById('edit-pro-zap').value = '5591988887777';
-      }
-      document.getElementById('edit-pro-oficio').value = resultado.oficio;
-      document.getElementById('edit-pro-regiao').value = resultado.regiao;
-      document.getElementById('edit-pro-headline').value = resultado.headline;
-      document.getElementById('edit-pro-subheadline').value = resultado.subheadline;
-      document.getElementById('edit-pro-descricao').value = resultado.descricao;
-      document.getElementById('edit-pro-diferenciais').value = (resultado.diferenciais || []).slice(0, 3).join('\n');
-      document.getElementById('edit-pro-depoimento-texto').value = resultado.depoimentoTexto || '';
-      document.getElementById('edit-pro-depoimento-autor').value = resultado.depoimentoAutor || '';
-      document.getElementById('edit-pro-servicos').value = (resultado.servicos || []).join('\n');
-
-      document.getElementById('edit-pro-template').value = resultado.templateEstilo || 'editorial-dark';
-      document.getElementById('edit-pro-paleta').value = resultado.paletaCor || 'amber';
-      document.getElementById('edit-pro-foto').value = resultado.fotoUrl;
-      document.getElementById('edit-pro-foto').dataset.corCapa = resultado.corCapa;
-      atualizarPreviewCapaEditor(resultado.fotoUrl);
-      renderizarGaleriaCapasEditor(resultado.fotoUrl);
-
-      btn.disabled = false;
-      btn.innerHTML = textoOriginal;
-      atualizarIcones();
-      mostrarToast(
-        geradaPorGeminiReal
-          ? 'Página exclusiva criada via API Gemini com estilo e capa únicos!'
-          : 'Página exclusiva montada com estilo, paleta e capa únicos!'
-      );
+      const blob = new Blob([conteudo], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `briefing-${slugLimpo}.txt`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      mostrarToast('Arquivo de briefing baixado com sucesso!');
     }
 
     let slugEditadoManualmente = false;
@@ -4060,7 +4045,6 @@ ALTER TABLE public.clientenozap_state DISABLE ROW LEVEL SECURITY;</pre>
       atualizarStatusHtmlExternoEditor('');
       document.getElementById('edit-pro-id').value = '';
       document.getElementById('titulo-modal-editor-pro').textContent = 'Criar Nova Página de Vendas';
-      document.getElementById('prompt-ia-pagina').value = '';
       document.getElementById('edit-pro-nome').value = '';
       document.getElementById('edit-pro-slug').value = '';
       slugEditadoManualmente = false;
@@ -4098,7 +4082,6 @@ ALTER TABLE public.clientenozap_state DISABLE ROW LEVEL SECURITY;</pre>
       atualizarStatusHtmlExternoEditor(htmlExternoTemporario ? 'Arquivo .HTML próprio ativo nesta página' : '');
       document.getElementById('edit-pro-id').value = p.id;
       document.getElementById('titulo-modal-editor-pro').textContent = `Editar Página: ${p.nome}`;
-      document.getElementById('prompt-ia-pagina').value = '';
       document.getElementById('edit-pro-nome').value = p.nome;
       document.getElementById('edit-pro-slug').value = p.slug || gerarSlugAmigavel(p.nome, p.id);
       slugEditadoManualmente = true;
@@ -4937,7 +4920,10 @@ Estrutura obrigatória da página (padrão Vitally Studio):
       processarLoginAdmin,
       alternarVisibilidadeSenha,
       fecharModalEditarPro,
-      gerarPaginaPorPromptIA,
+      carregarArquivoCapaLocal,
+      baixarBriefingPro,
+      baixarBriefingAtualEditor,
+      baixarBriefingProObjeto,
       copiarPromptExternoPadrao,
       carregarArquivoHtmlExterno,
       removerHtmlExternoEditor,
